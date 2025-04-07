@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>nuScene DA-UNIT</title>
+  <style>
+    /* Base body styles */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Text container: 70% of the screen, centered */
+    .text-container {
+      width: 70%;
+      margin: 0 auto;
+      padding: 20px;
+      text-align: left;
+    }
+
+    /* Headings are centered, paragraphs are left-aligned */
+    h1, h2, h3, h4 {
+      text-align: center;
+      margin-bottom: 1em;
+    }
+    p {
+      margin-bottom: 1em;
+    }
+
+    /* Links styling */
+    a {
+      color: #0066cc;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* Image container: full width so images can go 90vw */
+    .image-container {
+      width: 100%;
+      margin: 0 auto;
+      padding: 20px 0; /* spacing around images */
+      text-align: center; /* to center headings, if any */
+    }
+
+    /* Images: 90% of the viewport width, centered */
+    .image-container img {
+      width: 90vw;     /* 90% of the browser window width */
+      height: auto;
+      display: block;  /* make it a block-level element */
+      margin: 0 auto 1em; 
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Text Section (70% width) -->
+  <div class="text-container">
+    <h1>nuScene Clear to Rain, Night, and Fog using DA-UNIT</h1>
+    <h2>AIM-106</h2>
+
+    <p>
+      Welcome to our demo page showcasing <strong>DA-UNIT</strong> for the 
+      <strong>nuScene</strong> dataset. Our goal is to transform clear-weather 
+      images into different conditions—rain, night, and fog—so that autonomous 
+      perception systems can train and evaluate their robustness in varied 
+      real-world scenarios.
+    </p>
+  </div> <!-- /text-container -->
+  <div class="image-container">
+    <h3>Contact Information</h3>
+    <p>
+      <strong>Shapiro Yoel</strong><br>
+      Research Engineer<br>
+      <a href="mailto:Yoel.Shapiro@il.bosch.com">Yoel.Shapiro@il.bosch.com</a>
+    </p>
+    <p>
+      <strong>Mullick Koustav</strong><br>
+      Computer Vision Researcher<br>
+      <a href="mailto:Koustav.Mullick@in.bosch.com">Koustav.Mullick@in.bosch.com</a>
+    </p>
+  </div>
+  <div class="text-container">
+
+    <h3>DA-UNIT Model Overview</h3>
+    <p>
+      The figure below illustrates the DA-UNIT architecture used to adapt clear images
+      to various target domains. By combining data-driven learning with auxiliary inputs
+      (such as depth or semantic labels), the model can generate realistic weather 
+      conditions while preserving crucial scene information.
+    </p>
+
+    <!-- You could also keep this image at 70% if you want it within the text container. -->
+    <img src="daunit-min.png" alt="DA-UNIT Model Diagram" style="width: 90%; height: auto; display: block; margin: 0 auto;" />
+
+
+    <h3>Model Background & Enhancements</h3>
+    <p>
+      Our work builds on the base model presented in the paper 
+      <a href="https://arxiv.org/abs/2302.04149" target="_blank">
+        "Domain Adaptation of Synthetic Driving Datasets for Real-World Autonomous Driving"
+      </a>
+      by Koustav Mullick, Harshil Jain, Sanchit Gupta, and Amit Arvind Kale. This paper lays the foundation for our approach.
+    </p>
+    <p>In our implementation, we extend the base model by incorporating additional auxiliary inputs—such as <b>depth maps, semantic segmentation, and other sensor data</b>—to provide richer contextual information for the transformation process. Additionally, we introduce modifications to the <b>network architecture and training procedures</b> to enhance performance under challenging conditions such as <b>rain, night, and fog</b>. These improvements are detailed in our work, which is currently <b>under review at ICML</b>. More details can be found in our <a href="https://feber.bosch.tech/access-mediator/49740" target="_blank"><b>Feber report</b></a>.</p>
+    <p>The results presented here are inferred using our model with <b>only depth as an auxiliary input</b>. The model was trained on a combination of <b>CARLA simulated images</b> (paired clear and adverse condition images) mixed with 10% <b>ACDC dataset images</b> (clear condition).</p>
+    
+
+
+  <h3>Postprocessing Details</h3>
+    <p>
+      Please note that the images displayed on this page are shown <strong>without any post processing</strong>. 
+      For a version with enhanced brightness consistency, we also offer a page where we apply a histogram equalization adjustment. 
+      In that version, we compute the average histogram of the L channel (Lightness) over the 6 images (one from each camera) in the LAB color space 
+      and use it to equalize the brightness across all images.
+    </p>
+    <p>
+      <a href="main_with_hist_eq.html">View Results with Histogram Equalization</a>
+    </p>
+    
+    
+  </div> <!-- /text-container -->
+
+  
+
+  <!-- Image Section (full width, images at 90vw) -->
+  <div class="image-container">
+    <h3>APNG Demonstrations</h3>
+    <p>Below, you can compare the original (clear) nuScene images to our generated rain, night, and fog versions.</p>
+
+    <h4>First Image</h4>
+    <p><em>Clear:</em></p>
+    <img src="gifs_reduced/nuScenes_clear/n008-2018-08-30-15-52-26-0400_TOTAL.apng" alt="Clear APNG" />
+    <p><em>Rain:</em></p>
+    <img src="gifs_reduced/nuScenes_aug_rain/n008-2018-08-30-15-52-26-0400_TOTAL.apng" alt="Rain APNG" />
+    <p><em>Night:</em></p>
+    <img src="gifs_reduced/nuScenes_night/n008-2018-08-30-15-52-26-0400_TOTAL.apng" alt="Night APNG" />
+    <p><em>Fog:</em></p>
+    <img src="gifs_reduced/nuScenes_FHD_fog/n008-2018-08-30-15-52-26-0400_TOTAL.apng" alt="Fog APNG" />
+
+
+    <!-- Second Image Set -->
+    <h4>Second Image</h4>
+    <p><em>Clear:</em></p>
+    <img src="gifs_reduced/nuScenes_clear/n015-2018-07-18-11-50-34+0800_TOTAL.apng" alt="Clear APNG" />
+    <p><em>Rain:</em></p>
+    <img src="gifs_reduced/nuScenes_aug_rain/n015-2018-07-18-11-50-34+0800_TOTAL.apng" alt="Rain APNG" />
+    <p><em>Night:</em></p>
+    <img src="gifs_reduced/nuScenes_night/n015-2018-07-18-11-50-34+0800_TOTAL.apng" alt="Night APNG" />
+    <p><em>Fog:</em></p>
+    <img src="gifs_reduced/nuScenes_FHD_fog/n015-2018-07-18-11-50-34+0800_TOTAL.apng" alt="Fog APNG" />
+
+    <!-- Third Image Set -->
+    <h4>Third Image</h4>
+    <p><em>Clear:</em></p>
+    <img src="gifs_reduced/nuScenes_clear/n015-2018-10-08-16-03-24+0800_TOTAL.apng" alt="Clear APNG" />
+    <p><em>Rain:</em></p>
+    <img src="gifs_reduced/nuScenes_aug_rain/n015-2018-10-08-16-03-24+0800_TOTAL.apng" alt="Rain APNG" />
+    <p><em>Night:</em></p>
+    <img src="gifs_reduced/nuScenes_night/n015-2018-10-08-16-03-24+0800_TOTAL.apng" alt="Night APNG" />
+    <p><em>Fog:</em></p>
+    <img src="gifs_reduced/nuScenes_FHD_fog/n015-2018-10-08-16-03-24+0800_TOTAL.apng" alt="Fog APNG" />
+  </div>
+</body>
+</html>
