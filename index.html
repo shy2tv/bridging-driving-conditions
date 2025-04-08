@@ -1,9 +1,1098 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta http-equiv="refresh" content="0.5; url=https://pages.github.boschdevcloud.com/SHY2TV/DAUNIT_nuScenes/main_no_hist_eq.html" />    <title>Redirecting...</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Domain Adaptation for Autonomous Driving</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1a2c53; /* Darker blue from Bosch branding */
+            --secondary-color: #0076ce; /* Brighter Bosch blue */
+            --accent-color: #e30613; /* Bosch signature red */
+            --highlight-color: #42b4e6; /* Light blue accent */
+            --success-color: #5DAC50; /* Green for success elements */
+            --text-color: #333;
+            --light-bg: #ebf3fa; /* Light blue tint for backgrounds */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+        }
+
+        /* Navigation */
+        .navbar {
+            background-color: var(--primary-color);
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .navbar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-content h2 {
+            color: white;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 2rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary-color);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background-image: linear-gradient(rgba(26, 44, 83, 0.8), rgba(0, 0, 0, 0.7)), url('Bosch-Cover.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 6rem 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-section h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: white; /* Ensure white color for contrast */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-section p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: #f0f0f0; /* Lighter gray for subtitle */
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background-color: #c10510; /* Darker Bosch red */
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s;
+            margin: 0.5rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+            background-color: #a0040d; /* Even darker on hover */
+        }
+
+        .cta-button.secondary {
+            background-color: #00558f; /* Darker Bosch blue */
+        }
+         .cta-button.secondary:hover {
+            background-color: #004575; /* Even darker blue on hover */
+        }
+
+        /* Demo Section */
+        .demo-section {
+            padding: 4rem 2rem;
+            background-color: var(--light-bg);
+        }
+
+        .demo-container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .demo-instructions {
+            text-align: center;
+            margin: 2rem auto;
+            padding: 1rem;
+            background: rgba(52, 152, 219, 0.1);
+            border-radius: 8px;
+            max-width: 800px;
+        }
+
+        .demo-instructions i {
+            margin-right: 0.5rem;
+            color: var(--secondary-color);
+        }
+
+        .fullscreen-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+        }
+
+        .fullscreen-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .fullscreen-overlay img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90vw;
+            height: 90vh;
+            object-fit: contain;
+        }
+
+        .fullscreen-caption {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1.2rem;
+        }
+
+        .close-fullscreen {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 10px;
+        }
+
+        .fullscreen-control {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.7);
+            color: white;
+            border: none;
+            padding: 1rem;
+            cursor: pointer;
+            font-size: 2.5rem;
+            z-index: 10000;
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+
+        .fullscreen-control:hover {
+            background: rgba(0,0,0,0.9);
+        }
+
+        .fullscreen-control.prev {
+            left: 30px;
+        }
+
+        .fullscreen-control.next {
+            right: 30px;
+        }
+
+        .carousel {
+            position: relative;
+            width: 70%;
+            margin: 4rem auto;
+            overflow: hidden;
+        }
+
+        .carousel h3 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+        }
+
+        .carousel-container {
+            display: flex;
+            overflow: hidden;
+            width: 100%;
+            position: relative;
+            height: 70vh;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            transition: transform 0.5s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            position: relative;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            object-fit: contain;
+        }
+
+        .zoom-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            font-size: 1.2rem;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .zoom-icon:hover {
+            transform: scale(1.1);
+            background: rgba(0, 0, 0, 0.9);
+        }
+
+        .hist-toggle {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 20;
+            font-size: 1.2rem;
+            transition: transform 0.2s, background-color 0.2s;
+            pointer-events: auto;
+        }
+
+        .hist-toggle:hover {
+            transform: scale(1.1);
+            background: rgba(0, 0, 0, 0.9);
+        }
+         .hist-toggle.active {
+            background: #00558f; /* Darker Bosch blue */
+            color: white;
+        }
+
+        /* Ensure icons are visible */
+        .carousel-slide i {
+            pointer-events: none; /* Prevent icon from stealing clicks */
+        }
+
+        .carousel-caption {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            z-index: 5;
+            font-size: 1.2rem;
+        }
+
+        /* Technical Overview */
+        .technical-section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .technical-section h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+        }
+
+        .technical-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .tech-card {
+            background: var(--light-bg);
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .tech-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .tech-card i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tech-card:nth-child(1) i { color: var(--accent-color); }
+        .tech-card:nth-child(2) i { color: var(--secondary-color); }
+        .tech-card:nth-child(3) i { color: var(--highlight-color); }
+        .tech-card:nth-child(4) i { color: var(--success-color); }
+
+        /* Contact Section */
+        .contact-section {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .contact-card {
+            padding: 2rem;
+        }
+
+        .contact-card h3 {
+            margin-bottom: 1rem;
+        }
+
+        .contact-card p {
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-card > a {
+            color: #a8d5ff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .contact-card > a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        .contact-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-links a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .contact-links a:hover {
+            text-decoration: underline;
+        }
+
+        .contact-links i {
+            font-size: 1.2rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #1a252f;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero-section h1 {
+                font-size: 2rem;
+            }
+            
+            .navbar-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .nav-links {
+                margin-top: 1rem;
+            }
+
+            .nav-links a {
+                margin: 0 1rem;
+            }
+        }
+
+        .carousel-control {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(193, 5, 16, 0.8); /* Darker Bosch red with transparency */
+            color: white;
+            border: none;
+            padding: 1rem;
+            cursor: pointer;
+            font-size: 2rem;
+            z-index: 10;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+
+        .carousel-control:hover {
+            background: #c10510; /* Solid darker Bosch red on hover */
+        }
+
+        .carousel-control.prev {
+            left: 20px;
+        }
+
+        .carousel-control.next {
+            right: 20px;
+        }
+    </style>
 </head>
 <body>
-    If you are not redirected automatically, follow the <a href="https://pages.github.boschdevcloud.com/SHY2TV/DAUNIT_nuScenes/main_no_hist_eq.html">link</a>.
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <h2>Weather Domain Adaptation</h2>
+            <div class="nav-links">
+                <a href="#demo">Demo</a>
+                <a href="architecture.html">Architecture</a>
+                <a href="#technical">Technical</a>
+                <a href="#contact">Contact</a>
+                <a href="#" class="cta-button">arXiv</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1>Hybrid Data Generation for Autonomous Driving</h1>
+            <p>A cost-effective pipeline using Simulation (CARLA), Diffusion (Stable Diffusion), and GANs (DA-UNIT) for realistic adverse-condition data.</p>
+            <a href="#demo" class="cta-button">View Demos</a>
+            <a href="architecture.html" class="cta-button secondary">Architecture Details</a>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section id="demo" class="demo-section">
+        <div class="demo-container">
+            <h2>Interactive Demonstrations</h2>
+            <div class="demo-instructions">
+                <p><i class="fas fa-hand-pointer"></i>Click image to pause/play animation</p>
+                <p><i class="fas fa-expand"></i>Click zoom icon (top-right) for fullscreen</p>
+                <p><i class="fas fa-adjust"></i>Click histogram icon (top-left) to toggle correction (Generated images only)</p>
+                <p><i class="fas fa-arrows-left-right"></i>Use arrows to navigate conditions</p>
+            </div>
+
+            <!-- Scene 1 -->
+            <div class="carousel">
+                <h3>Scene 1</h3>
+                <div class="carousel-container">
+                    <div class="carousel-slide" data-scene-id="n008-2018-08-30-15-52-26-0400">
+                        <img src="gifs_reduced/nuScenes_clear/n008-2018-08-30-15-52-26-0400_TOTAL.apng" alt="Clear Weather">
+                        <div class="carousel-caption">Clear Weather (Original)</div>
+                        <div class="zoom-icon"><i class="fas fa-expand"></i></div>
+                    </div>
+                    <div class="carousel-slide" data-scene-id="n008-2018-08-30-15-52-26-0400">
+                        <img src="gifs_reduced/nuScenes_aug_rain/n008-2018-08-30-15-52-26-0400_TOTAL.apng"
+                             data-normal-src="gifs_reduced/nuScenes_aug_rain/n008-2018-08-30-15-52-26-0400_TOTAL.apng"
+                             data-hist-src="histogram_gifs_reduced/nuScenes_aug_rain/n008-2018-08-30-15-52-26-0400_TOTAL.apng"
+                             alt="Rain Condition">
+                        <div class="carousel-caption">Rain Condition (Generated)</div>
+                        <button class="hist-toggle" title="Toggle Histogram Correction"><i class="fas fa-adjust"></i></button>
+                        <div class="zoom-icon"><i class="fas fa-expand"></i></div>
+                    </div>
+                     <div class="carousel-slide" data-scene-id="n008-2018-08-30-15-52-26-0400">
+                        <img src="gifs_reduced/nuScenes_FHD_fog/n008-2018-08-30-15-52-26-0400_TOTAL.apng"
+                             data-normal-src="gifs_reduced/nuScenes_FHD_fog/n008-2018-08-30-15-52-26-0400_TOTAL.apng"
+                             data-hist-src="histogram_gifs_reduced/nuScenes_FHD_fog/n008-2018-08-30-15-52-26-0400_TOTAL.apng"
+                             alt="Fog Condition">
+                        <div class="carousel-caption">Fog Condition (Generated)</div>
+                        <button class="hist-toggle" title="Toggle Histogram Correction"><i class="fas fa-adjust"></i></button>
+                        <div class="zoom-icon"><i class="fas fa-expand"></i></div>
+                    </div>
+                    <div class="carousel-slide" data-scene-id="n008-2018-08-30-15-52-26-0400">
+                        <img src="gifs_reduced/nuScenes_night/n008-2018-08-30-15-52-26-0400_TOTAL.apng"
+                             data-normal-src="gifs_reduced/nuScenes_night/n008-2018-08-30-15-52-26-0400_TOTAL.apng"
+                             data-hist-src="histogram_gifs_reduced/nuScenes_night/n008-2018-08-30-15-52-26-0400_TOTAL.apng"
+                             alt="Night Condition">
+                        <div class="carousel-caption">Night Condition (Generated)</div>
+                        <button class="hist-toggle" title="Toggle Histogram Correction"><i class="fas fa-adjust"></i></button>
+                        <div class="zoom-icon"><i class="fas fa-expand"></i></div>
+                    </div>
+                </div>
+                <button class="carousel-control prev">❮</button>
+                <button class="carousel-control next">❯</button>
+            </div>
+
+            <!-- Scene 2 -->
+            <div class="carousel">
+                <h3>Scene 2</h3>
+                 <div class="carousel-container">
+                    <div class="carousel-slide" data-scene-id="n015-2018-07-18-11-50-34+0800">
+                        <img src="gifs_reduced/nuScenes_clear/n015-2018-07-18-11-50-34+0800_TOTAL.apng" alt="Clear Weather">
+                        <div class="carousel-caption">Clear Weather (Original)</div>
+                        <div class="zoom-icon"><i class="fas fa-expand"></i></div>
+                    </div>
+                    <div class="carousel-slide" data-scene-id="n015-2018-07-18-11-50-34+0800">
+                        <img src="gifs_reduced/nuScenes_aug_rain/n015-2018-07-18-11-50-34+0800_TOTAL.apng"
+                             data-normal-src="gifs_reduced/nuScenes_aug_rain/n015-2018-07-18-11-50-34+0800_TOTAL.apng"
+                             data-hist-src="histogram_gifs_reduced/nuScenes_aug_rain/n015-2018-07-18-11-50-34+0800_TOTAL.apng"
+                             alt="Rain Condition">
+                        <div class="carousel-caption">Rain Condition (Generated)</div>
+                        <button class="hist-toggle" title="Toggle Histogram Correction"><i class="fas fa-adjust"></i></button>
+                        <div class="zoom-icon"><i class="fas fa-expand"></i></div>
+                    </div>
+                     <div class="carousel-slide" data-scene-id="n015-2018-07-18-11-50-34+0800">
+                        <img src="gifs_reduced/nuScenes_FHD_fog/n015-2018-07-18-11-50-34+0800_TOTAL.apng"
+                             data-normal-src="gifs_reduced/nuScenes_FHD_fog/n015-2018-07-18-11-50-34+0800_TOTAL.apng"
+                             data-hist-src="histogram_gifs_reduced/nuScenes_FHD_fog/n015-2018-07-18-11-50-34+0800_TOTAL.apng"
+                             alt="Fog Condition">
+                        <div class="carousel-caption">Fog Condition (Generated)</div>
+                        <button class="hist-toggle" title="Toggle Histogram Correction"><i class="fas fa-adjust"></i></button>
+                        <div class="zoom-icon"><i class="fas fa-expand"></i></div>
+                    </div>
+                    <div class="carousel-slide" data-scene-id="n015-2018-07-18-11-50-34+0800">
+                        <img src="gifs_reduced/nuScenes_night/n015-2018-07-18-11-50-34+0800_TOTAL.apng"
+                             data-normal-src="gifs_reduced/nuScenes_night/n015-2018-07-18-11-50-34+0800_TOTAL.apng"
+                             data-hist-src="histogram_gifs_reduced/nuScenes_night/n015-2018-07-18-11-50-34+0800_TOTAL.apng"
+                             alt="Night Condition">
+                        <div class="carousel-caption">Night Condition (Generated)</div>
+                        <button class="hist-toggle" title="Toggle Histogram Correction"><i class="fas fa-adjust"></i></button>
+                        <div class="zoom-icon"><i class="fas fa-expand"></i></div>
+                    </div>
+                </div>
+                <button class="carousel-control prev">❮</button>
+                <button class="carousel-control next">❯</button>
+            </div>
+
+            <!-- Scene 3 -->
+             <div class="carousel">
+                <h3>Scene 3</h3>
+                 <div class="carousel-container">
+                    <div class="carousel-slide" data-scene-id="n015-2018-07-24-10-42-41+0800">
+                        <img src="gifs_reduced/nuScenes_clear/n015-2018-07-24-10-42-41+0800_TOTAL.apng" alt="Clear Weather">
+                        <div class="carousel-caption">Clear Weather (Original)</div>
+                        <div class="zoom-icon"><i class="fas fa-expand"></i></div>
+                    </div>
+                    <div class="carousel-slide" data-scene-id="n015-2018-07-24-10-42-41+0800">
+                        <img src="gifs_reduced/nuScenes_aug_rain/n015-2018-07-24-10-42-41+0800_TOTAL.apng"
+                             data-normal-src="gifs_reduced/nuScenes_aug_rain/n015-2018-07-24-10-42-41+0800_TOTAL.apng"
+                             data-hist-src="histogram_gifs_reduced/nuScenes_aug_rain/n015-2018-07-24-10-42-41+0800_TOTAL.apng"
+                             alt="Rain Condition">
+                        <div class="carousel-caption">Rain Condition (Generated)</div>
+                        <button class="hist-toggle" title="Toggle Histogram Correction"><i class="fas fa-adjust"></i></button>
+                        <div class="zoom-icon"><i class="fas fa-expand"></i></div>
+                    </div>
+                     <div class="carousel-slide" data-scene-id="n015-2018-07-24-10-42-41+0800">
+                        <img src="gifs_reduced/nuScenes_FHD_fog/n015-2018-07-24-10-42-41+0800_TOTAL.apng"
+                             data-normal-src="gifs_reduced/nuScenes_FHD_fog/n015-2018-07-24-10-42-41+0800_TOTAL.apng"
+                             data-hist-src="histogram_gifs_reduced/nuScenes_FHD_fog/n015-2018-07-24-10-42-41+0800_TOTAL.apng"
+                             alt="Fog Condition">
+                        <div class="carousel-caption">Fog Condition (Generated)</div>
+                        <button class="hist-toggle" title="Toggle Histogram Correction"><i class="fas fa-adjust"></i></button>
+                        <div class="zoom-icon"><i class="fas fa-expand"></i></div>
+                    </div>
+                    <div class="carousel-slide" data-scene-id="n015-2018-07-24-10-42-41+0800">
+                        <img src="gifs_reduced/nuScenes_night/n015-2018-07-24-10-42-41+0800_TOTAL.apng"
+                             data-normal-src="gifs_reduced/nuScenes_night/n015-2018-07-24-10-42-41+0800_TOTAL.apng"
+                             data-hist-src="histogram_gifs_reduced/nuScenes_night/n015-2018-07-24-10-42-41+0800_TOTAL.apng"
+                             alt="Night Condition">
+                        <div class="carousel-caption">Night Condition (Generated)</div>
+                        <button class="hist-toggle" title="Toggle Histogram Correction"><i class="fas fa-adjust"></i></button>
+                        <div class="zoom-icon"><i class="fas fa-expand"></i></div>
+                    </div>
+                </div>
+                <button class="carousel-control prev">❮</button>
+                <button class="carousel-control next">❯</button>
+            </div>
+
+            <!-- Scene 4 -->
+             <div class="carousel">
+                <h3>Scene 4</h3>
+                 <div class="carousel-container">
+                    <div class="carousel-slide" data-scene-id="n015-2018-10-08-15-44-23+0800">
+                        <img src="gifs_reduced/nuScenes_clear/n015-2018-10-08-15-44-23+0800_TOTAL.apng" alt="Clear Weather">
+                        <div class="carousel-caption">Clear Weather (Original)</div>
+                        <div class="zoom-icon"><i class="fas fa-expand"></i></div>
+                    </div>
+                    <div class="carousel-slide" data-scene-id="n015-2018-10-08-15-44-23+0800">
+                        <img src="gifs_reduced/nuScenes_aug_rain/n015-2018-10-08-15-44-23+0800_TOTAL.apng"
+                             data-normal-src="gifs_reduced/nuScenes_aug_rain/n015-2018-10-08-15-44-23+0800_TOTAL.apng"
+                             data-hist-src="histogram_gifs_reduced/nuScenes_aug_rain/n015-2018-10-08-15-44-23+0800_TOTAL.apng"
+                             alt="Rain Condition">
+                        <div class="carousel-caption">Rain Condition (Generated)</div>
+                        <button class="hist-toggle" title="Toggle Histogram Correction"><i class="fas fa-adjust"></i></button>
+                        <div class="zoom-icon"><i class="fas fa-expand"></i></div>
+                    </div>
+                     <div class="carousel-slide" data-scene-id="n015-2018-10-08-15-44-23+0800">
+                        <img src="gifs_reduced/nuScenes_FHD_fog/n015-2018-10-08-15-44-23+0800_TOTAL.apng"
+                             data-normal-src="gifs_reduced/nuScenes_FHD_fog/n015-2018-10-08-15-44-23+0800_TOTAL.apng"
+                             data-hist-src="histogram_gifs_reduced/nuScenes_FHD_fog/n015-2018-10-08-15-44-23+0800_TOTAL.apng"
+                             alt="Fog Condition">
+                        <div class="carousel-caption">Fog Condition (Generated)</div>
+                        <button class="hist-toggle" title="Toggle Histogram Correction"><i class="fas fa-adjust"></i></button>
+                        <div class="zoom-icon"><i class="fas fa-expand"></i></div>
+                    </div>
+                    <div class="carousel-slide" data-scene-id="n015-2018-10-08-15-44-23+0800">
+                        <img src="gifs_reduced/nuScenes_night/n015-2018-10-08-15-44-23+0800_TOTAL.apng"
+                             data-normal-src="gifs_reduced/nuScenes_night/n015-2018-10-08-15-44-23+0800_TOTAL.apng"
+                             data-hist-src="histogram_gifs_reduced/nuScenes_night/n015-2018-10-08-15-44-23+0800_TOTAL.apng"
+                             alt="Night Condition">
+                        <div class="carousel-caption">Night Condition (Generated)</div>
+                        <button class="hist-toggle" title="Toggle Histogram Correction"><i class="fas fa-adjust"></i></button>
+                        <div class="zoom-icon"><i class="fas fa-expand"></i></div>
+                    </div>
+                </div>
+                <button class="carousel-control prev">❮</button>
+                <button class="carousel-control next">❯</button>
+            </div>
+
+            <!-- Scene 5 -->
+             <div class="carousel">
+                <h3>Scene 5</h3>
+                 <div class="carousel-container">
+                    <div class="carousel-slide" data-scene-id="n015-2018-10-08-16-03-24+0800">
+                        <img src="gifs_reduced/nuScenes_clear/n015-2018-10-08-16-03-24+0800_TOTAL.apng" alt="Clear Weather">
+                        <div class="carousel-caption">Clear Weather (Original)</div>
+                        <div class="zoom-icon"><i class="fas fa-expand"></i></div>
+                    </div>
+                    <div class="carousel-slide" data-scene-id="n015-2018-10-08-16-03-24+0800">
+                        <img src="gifs_reduced/nuScenes_aug_rain/n015-2018-10-08-16-03-24+0800_TOTAL.apng"
+                             data-normal-src="gifs_reduced/nuScenes_aug_rain/n015-2018-10-08-16-03-24+0800_TOTAL.apng"
+                             data-hist-src="histogram_gifs_reduced/nuScenes_aug_rain/n015-2018-10-08-16-03-24+0800_TOTAL.apng"
+                             alt="Rain Condition">
+                        <div class="carousel-caption">Rain Condition (Generated)</div>
+                        <button class="hist-toggle" title="Toggle Histogram Correction"><i class="fas fa-adjust"></i></button>
+                        <div class="zoom-icon"><i class="fas fa-expand"></i></div>
+                    </div>
+                     <div class="carousel-slide" data-scene-id="n015-2018-10-08-16-03-24+0800">
+                        <img src="gifs_reduced/nuScenes_FHD_fog/n015-2018-10-08-16-03-24+0800_TOTAL.apng"
+                             data-normal-src="gifs_reduced/nuScenes_FHD_fog/n015-2018-10-08-16-03-24+0800_TOTAL.apng"
+                             data-hist-src="histogram_gifs_reduced/nuScenes_FHD_fog/n015-2018-10-08-16-03-24+0800_TOTAL.apng"
+                             alt="Fog Condition">
+                        <div class="carousel-caption">Fog Condition (Generated)</div>
+                        <button class="hist-toggle" title="Toggle Histogram Correction"><i class="fas fa-adjust"></i></button>
+                        <div class="zoom-icon"><i class="fas fa-expand"></i></div>
+                    </div>
+                    <div class="carousel-slide" data-scene-id="n015-2018-10-08-16-03-24+0800">
+                        <img src="gifs_reduced/nuScenes_night/n015-2018-10-08-16-03-24+0800_TOTAL.apng"
+                             data-normal-src="gifs_reduced/nuScenes_night/n015-2018-10-08-16-03-24+0800_TOTAL.apng"
+                             data-hist-src="histogram_gifs_reduced/nuScenes_night/n015-2018-10-08-16-03-24+0800_TOTAL.apng"
+                             alt="Night Condition">
+                        <div class="carousel-caption">Night Condition (Generated)</div>
+                        <button class="hist-toggle" title="Toggle Histogram Correction"><i class="fas fa-adjust"></i></button>
+                        <div class="zoom-icon"><i class="fas fa-expand"></i></div>
+                    </div>
+                </div>
+                <button class="carousel-control prev">❮</button>
+                <button class="carousel-control next">❯</button>
+            </div>
+        </div>
+    </section>
+
+    <div id="fullscreen" class="fullscreen-overlay">
+        <div class="fullscreen-container">
+            <button class="close-fullscreen">&times;</button>
+            <img src="" alt="Fullscreen view" data-normal-src="" data-hist-src="">
+            <div class="fullscreen-caption"></div>
+            <button class="fullscreen-control prev">❮</button>
+            <button class="fullscreen-control next">❯</button>
+            <button class="hist-toggle fullscreen" title="Toggle Histogram Correction" style="display: none;"><i class="fas fa-adjust"></i></button>
+        </div>
+    </div>
+
+    <!-- Technical Overview -->
+    <section id="technical" class="technical-section">
+        <h2>Technical Overview</h2>
+        <div class="technical-grid">
+            <div class="tech-card">
+                <i class="fas fa-cogs"></i>
+                <h3>Hybrid Pipeline</h3>
+                <p>Combines simulation (CARLA), diffusion (Stable Diffusion/ALDM), and GAN-based adaptation for cost-effective adverse condition generation</p>
+            </div>
+            <div class="tech-card">
+                <i class="fas fa-brain"></i>
+                <h3>Enhanced DA-UNIT</h3>
+                <p>Extended architecture supporting depth, semantic, and instance data for improved object preservation and label alignment</p>
+            </div>
+            <div class="tech-card">
+                <i class="fas fa-magic"></i>
+                <h3>Blending Technique</h3>
+                <p>Novel approach to correct diffusion artifacts while preserving photorealistic enhancements</p>
+            </div>
+            <div class="tech-card">
+                <i class="fas fa-chart-line"></i>
+                <h3>Performance Gains</h3>
+                <p>+12.1% object detection and up to +4.6% semantic segmentation improvement on ACDC benchmark</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <h2>Contact Information</h2>
+        <div class="contact-grid">
+            <div class="contact-card">
+                <h3>Shapiro Yoel</h3>
+                <p>Research Engineer</p>
+                <a href="mailto:Yoel.Shapiro@il.bosch.com">Yoel.Shapiro@il.bosch.com</a>
+                <div class="contact-links">
+                    <a href="https://www.linkedin.com/in/yoel-shapiro-142abb21/" target="_blank"><i class="fab fa-linkedin"></i>LinkedIn</a>
+                    <a href="https://scholar.google.com/citations?user=Ry_iQqEAAAAJ&hl=en" target="_blank"><i class="fas fa-graduation-cap"></i>Scholar</a>
+                </div>
+            </div>
+            <div class="contact-card">
+                <h3>Mullick Koustav</h3>
+                <p>Computer Vision Researcher</p>
+                <a href="mailto:Koustav.Mullick@in.bosch.com">Koustav.Mullick@in.bosch.com</a>
+                <div class="contact-links">
+                    <a href="https://www.linkedin.com/in/kmul00/" target="_blank"><i class="fab fa-linkedin"></i>LinkedIn</a>
+                    <a href="https://scholar.google.com/citations?user=lP2FUZ0AAAAJ&hl=en" target="_blank"><i class="fas fa-graduation-cap"></i>Scholar</a>
+                </div>
+            </div>
+            <div class="contact-card">
+                <h3>Yahia Showgan</h3>
+                <p>Computer Vision Researcher</p>
+                <a href="mailto:YahiaShowgan@gmail.com">YahiaShowgan@gmail.com</a>
+                <div class="contact-links">
+                    <a href="https://www.linkedin.com/in/yahia-showgan/" target="_blank"><i class="fab fa-linkedin"></i>LinkedIn</a>
+                    <a href="https://scholar.google.com/citations?user=Ry_iQqEAAAAJ&hl=en" target="_blank"><i class="fas fa-graduation-cap"></i>Scholar</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Weather Domain Adaptation Research Team. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const carousels = document.querySelectorAll('.carousel');
+            const fullscreenOverlay = document.getElementById('fullscreen');
+            const fullscreenContainer = fullscreenOverlay.querySelector('.fullscreen-container');
+            const fullscreenImg = fullscreenOverlay.querySelector('img');
+            const fullscreenCaption = fullscreenOverlay.querySelector('.fullscreen-caption');
+            const fullscreenPrev = fullscreenOverlay.querySelector('.fullscreen-control.prev');
+            const fullscreenNext = fullscreenOverlay.querySelector('.fullscreen-control.next');
+            const fullscreenHistToggle = fullscreenOverlay.querySelector('.hist-toggle.fullscreen');
+
+            let currentFullscreenSlideIndex = null;
+            let currentCarouselSlides = null;
+            let currentHistState = false; // false = normal, true = hist
+
+            // --- Fullscreen Logic ---
+
+            function openFullscreen(imgElement, slideIndex, slides) {
+                const normalSrc = imgElement.dataset.normalSrc;
+                const histSrc = imgElement.dataset.histSrc;
+                const isToggleable = !!normalSrc; // Check if toggle attributes exist
+                const isHistActive = imgElement.dataset.histActive === 'true';
+
+                currentCarouselSlides = slides;
+                currentFullscreenSlideIndex = slideIndex;
+
+                // Set image source and data attributes for fullscreen
+                fullscreenImg.src = imgElement.src;
+                fullscreenImg.dataset.normalSrc = normalSrc || '';
+                fullscreenImg.dataset.histSrc = histSrc || '';
+                fullscreenImg.dataset.histActive = imgElement.dataset.histActive || 'false';
+                fullscreenImg.style.animationPlayState = imgElement.style.animationPlayState || 'running'; // Preserve state
+                fullscreenCaption.textContent = imgElement.closest('.carousel-slide').querySelector('.carousel-caption').textContent;
+
+                // Show/hide and update histogram toggle in fullscreen
+                if (isToggleable) {
+                    fullscreenHistToggle.style.display = 'flex';
+                    currentHistState = isHistActive;
+                    fullscreenHistToggle.classList.toggle('active', currentHistState);
+                } else {
+                    fullscreenHistToggle.style.display = 'none';
+                    currentHistState = false; // Reset for non-toggleable images
+                }
+
+                fullscreenOverlay.style.display = 'flex'; // Use flex to center container
+            }
+
+            function closeFullscreen() {
+                 // Sync animation state back before closing
+                const originalSlide = currentCarouselSlides ? currentCarouselSlides[currentFullscreenSlideIndex] : null;
+                if (originalSlide) {
+                    const originalImg = originalSlide.querySelector('img');
+                    if(originalImg) {
+                        originalImg.style.animationPlayState = fullscreenImg.style.animationPlayState;
+                    }
+                }
+                fullscreenOverlay.style.display = 'none';
+                currentCarouselSlides = null;
+                currentFullscreenSlideIndex = null;
+            }
+
+             function navigateFullscreen(direction) {
+                if (!currentCarouselSlides) return;
+
+                let newIndex = currentFullscreenSlideIndex + direction;
+                if (newIndex >= currentCarouselSlides.length) newIndex = 0;
+                if (newIndex < 0) newIndex = currentCarouselSlides.length - 1;
+
+                const targetSlide = currentCarouselSlides[newIndex];
+                const targetImg = targetSlide.querySelector('img');
+                if (!targetImg) return;
+
+                const normalSrc = targetImg.dataset.normalSrc;
+                const histSrc = targetImg.dataset.histSrc;
+                const isToggleable = !!normalSrc;
+
+                // Maintain current histogram state if the next image is toggleable, otherwise use normal
+                const targetSrc = isToggleable ? (currentHistState ? histSrc : normalSrc) : targetImg.src;
+
+                fullscreenImg.src = targetSrc;
+                fullscreenImg.dataset.normalSrc = normalSrc || '';
+                fullscreenImg.dataset.histSrc = histSrc || '';
+                fullscreenImg.style.animationPlayState = targetImg.style.animationPlayState || 'running';
+                fullscreenCaption.textContent = targetSlide.querySelector('.carousel-caption').textContent;
+                currentFullscreenSlideIndex = newIndex;
+
+                 // Show/hide and update histogram toggle in fullscreen
+                if (isToggleable) {
+                    fullscreenHistToggle.style.display = 'flex';
+                    // Update toggle state based on the *maintained* state (currentHistState)
+                    fullscreenHistToggle.classList.toggle('active', currentHistState);
+                } else {
+                    fullscreenHistToggle.style.display = 'none';
+                }
+            }
+
+            function toggleFullscreenHist() {
+                const normalSrc = fullscreenImg.dataset.normalSrc;
+                const histSrc = fullscreenImg.dataset.histSrc;
+                if (!normalSrc) return; // Not toggleable
+                
+                // Use data attribute to determine state
+                const isHistActive = fullscreenImg.dataset.histActive === 'true';
+                
+                if (isHistActive) {
+                    // Switch to normal
+                    fullscreenImg.src = normalSrc;
+                    fullscreenImg.dataset.histActive = 'false';
+                    fullscreenHistToggle.classList.remove('active');
+                    currentHistState = false;
+                } else {
+                    // Switch to histogram
+                    fullscreenImg.src = histSrc;
+                    fullscreenImg.dataset.histActive = 'true';
+                    fullscreenHistToggle.classList.add('active');
+                    currentHistState = true;
+                }
+
+                // Sync back to the corresponding carousel slide immediately
+                const originalSlide = currentCarouselSlides[currentFullscreenSlideIndex];
+                if (originalSlide) {
+                    const originalImg = originalSlide.querySelector('img');
+                    const originalToggle = originalSlide.querySelector('.hist-toggle');
+                    
+                    if (originalImg) {
+                        originalImg.src = fullscreenImg.src;
+                        originalImg.dataset.histActive = fullscreenImg.dataset.histActive;
+                    }
+                    
+                    if (originalToggle) {
+                        if (currentHistState) {
+                            originalToggle.classList.add('active');
+                        } else {
+                            originalToggle.classList.remove('active');
+                        }
+                    }
+                }
+            }
+
+            // Fullscreen Event Listeners
+            document.addEventListener('keydown', (e) => e.key === 'Escape' && closeFullscreen());
+            fullscreenContainer.addEventListener('click', (e) => (e.target === fullscreenContainer || e.target.classList.contains('close-fullscreen')) && closeFullscreen());
+            fullscreenPrev.addEventListener('click', (e) => { e.stopPropagation(); navigateFullscreen(-1); });
+            fullscreenNext.addEventListener('click', (e) => { e.stopPropagation(); navigateFullscreen(1); });
+            fullscreenHistToggle.addEventListener('click', (e) => { e.stopPropagation(); toggleFullscreenHist(); });
+
+             // Fullscreen image click for play/pause
+            fullscreenImg.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const newState = this.style.animationPlayState === 'paused' ? 'running' : 'paused';
+                this.style.animationPlayState = newState;
+                // Sync state back immediately
+                const originalSlide = currentCarouselSlides ? currentCarouselSlides[currentFullscreenSlideIndex] : null;
+                 if (originalSlide) {
+                    const originalImg = originalSlide.querySelector('img');
+                    if(originalImg) originalImg.style.animationPlayState = newState;
+                }
+            });
+
+
+            // --- Carousel Logic ---
+            carousels.forEach(carousel => {
+                const slides = Array.from(carousel.querySelectorAll('.carousel-slide')); // Use Array.from for easier indexing
+                const prevBtn = carousel.querySelector('.prev');
+                const nextBtn = carousel.querySelector('.next');
+                let currentSlideIndex = 0;
+
+                // Initialize slides positioning for carousel effect
+                 slides.forEach((slide, index) => {
+                    slide.style.transform = `translateX(${(index * 100)}%)`; // Correctly escaped template literal
+                    slide.style.position = 'absolute'; // Ensure absolute positioning for translation
+                    slide.style.width = '100%';
+                    slide.style.height = '100%';
+                    slide.style.left = '0';
+                    slide.style.top = '0';
+                });
+
+                function goToSlide(index) {
+                    if(index < 0 || index >= slides.length) return; // Boundary check
+                    slides.forEach((slide, i) => {
+                        slide.style.transform = `translateX(${(i - index) * 100}%)`; // Correctly escaped template literal
+                    });
+                    currentSlideIndex = index;
+                }
+
+                // Carousel Navigation
+                prevBtn.addEventListener('click', () => goToSlide(currentSlideIndex - 1 < 0 ? slides.length - 1 : currentSlideIndex - 1));
+                nextBtn.addEventListener('click', () => goToSlide((currentSlideIndex + 1) % slides.length));
+
+                // Individual Slide Interactions
+                slides.forEach((slide, index) => {
+                    const img = slide.querySelector('img');
+                    const zoomIcon = slide.querySelector('.zoom-icon');
+                    const histToggle = slide.querySelector('.hist-toggle');
+
+                    if (img) {
+                        // Play/Pause
+                        img.addEventListener('click', function(e) {
+                            // Prevent interfering with other clicks
+                            if(e.target !== img) return;
+                            const newState = this.style.animationPlayState === 'paused' ? 'running' : 'paused';
+                            this.style.animationPlayState = newState;
+                            // Sync if this image is currently in fullscreen
+                            if (fullscreenOverlay.style.display === 'flex' && fullscreenImg.src === this.src) {
+                                fullscreenImg.style.animationPlayState = newState;
+                            }
+                        });
+
+                        // Zoom Icon
+                        if (zoomIcon) {
+                            zoomIcon.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                                openFullscreen(img, index, slides);
+                            });
+                        }
+
+                        // Histogram Toggle
+                        if (histToggle) {
+                            histToggle.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                                const normalSrc = img.dataset.normalSrc;
+                                const histSrc = img.dataset.histSrc;
+                                
+                                // Add a data attribute to track if histogram is active
+                                const isHistActive = img.dataset.histActive === 'true';
+                                
+                                if (isHistActive) {
+                                    // Switch to normal
+                                    img.src = normalSrc;
+                                    img.dataset.histActive = 'false';
+                                    histToggle.classList.remove('active');
+                                } else {
+                                    // Switch to histogram
+                                    img.src = histSrc;
+                                    img.dataset.histActive = 'true';
+                                    histToggle.classList.add('active');
+                                }
+
+                                // Sync if this image is currently in fullscreen
+                                if (fullscreenOverlay.style.display === 'flex' && 
+                                    currentCarouselSlides === slides && 
+                                    currentFullscreenSlideIndex === index) {
+                                    
+                                    fullscreenImg.src = img.src;
+                                    fullscreenImg.dataset.histActive = img.dataset.histActive;
+                                    currentHistState = img.dataset.histActive === 'true';
+                                    
+                                    if (currentHistState) {
+                                        fullscreenHistToggle.classList.add('active');
+                                    } else {
+                                        fullscreenHistToggle.classList.remove('active');
+                                    }
+                                }
+                            });
+                            
+                            // Initialize histogram state attribute
+                            img.dataset.histActive = 'false';
+                        }
+                         // Initialize animation state
+                        img.style.animationPlayState = 'running';
+
+                        // Error/Load handlers (optional but good practice)
+                        img.onerror = () => console.error('Failed to load image:', img.src);
+                        // img.onload = () => console.log('Loaded image:', img.src);
+                    }
+                });
+                 // Initialize first slide view
+                goToSlide(0);
+            });
+        });
+    </script>
 </body>
 </html>

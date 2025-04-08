@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Architecture - Weather Domain Adaptation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --text-color: #333;
+            --light-bg: #f8f9fa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+        }
+
+        /* Navigation */
+        .navbar {
+            background-color: var(--primary-color);
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .navbar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-content h2 {
+            color: white;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 2rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary-color);
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 6rem 2rem 2rem;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+        }
+
+        .section h2 {
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--secondary-color);
+        }
+
+        .architecture-image {
+            width: 100%;
+            max-width: 800px;
+            margin: 2rem auto;
+            display: block;
+        }
+
+        .paper-summary {
+            background: var(--light-bg);
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+        }
+
+        .paper-summary h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .paper-summary p {
+            margin-bottom: 1rem;
+        }
+
+        .key-points {
+            list-style-type: none;
+            margin: 1rem 0;
+        }
+
+        .key-points li {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .key-points li:before {
+            content: "•";
+            color: var(--secondary-color);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background-color: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: transform 0.3s;
+            margin: 1rem 0;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+        }
+
+        /* Footer */
+        footer {
+            background-color: #1a252f;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .navbar-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .nav-links {
+                margin-top: 1rem;
+            }
+
+            .nav-links a {
+                margin: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <h2>Weather Domain Adaptation</h2>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="#architecture">Architecture</a>
+                <a href="#paper">Paper</a>
+                <a href="index.html#contact">Contact</a>
+                <a href="#" class="cta-button">arXiv</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Pipeline Overview -->
+        <section id="pipeline" class="section">
+            <h2>Hybrid Pipeline Overview</h2>
+            <div class="paper-summary">
+                <h3>Three-Stage Generation Process</h3>
+                <p>Our hybrid pipeline combines three key components to create realistic adverse-condition training data:</p>
+                <ul class="key-points">
+                    <li><strong>Simulation (S):</strong> Uses CARLA to generate perfectly paired sequences in clear vs. adverse conditions</li>
+                    <li><strong>Diffusion (D):</strong> Applies Stable Diffusion/ALDM guided by segmentation labels to enhance realism</li>
+                    <li><strong>GAN-Based Adaptation (G):</strong> Trains an enhanced DA-UNIT model on synthetic and real images</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Architecture Section -->
+        <section id="architecture" class="section">
+            <h2>Enhanced DA-UNIT Architecture</h2>
+            <img src="daunit-min.png" alt="Model Architecture" class="architecture-image">
+            <div class="paper-summary">
+                <h3>Key Architectural Improvements</h3>
+                <ul class="key-points">
+                    <li>Support for depth, semantic, and instance data at encoder/decoder stages</li>
+                    <li>Improved object shape preservation through auxiliary inputs</li>
+                    <li>Enhanced label alignment with ground-truth data</li>
+                    <li>Novel training strategy combining simulated and real images</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Technical Details Section -->
+        <section id="technical" class="section">
+            <h2>Technical Details</h2>
+            <div class="paper-summary">
+                <h3>Blending Technique</h3>
+                <p>Our novel blending approach addresses key challenges in the generation process:</p>
+                <ul class="key-points">
+                    <li>Adaptive merging of diffusion output with original simulated images</li>
+                    <li>Mitigation of artifacts (e.g., distorted vehicles)</li>
+                    <li>Preservation of photorealistic enhancements (e.g., wet roads, nighttime lighting)</li>
+                </ul>
+
+                <h3>Training Strategy</h3>
+                <p>The enhanced training process combines multiple data sources:</p>
+                <ul class="key-points">
+                    <li>Simulation images for perfect pixel-level matching</li>
+                    <li>Unlabeled real images to close the simulation-to-real gap</li>
+                    <li>Auxiliary inputs (depth, semantic segmentation) for improved guidance</li>
+                </ul>
+
+                <h3>Performance Results</h3>
+                <p>Comprehensive evaluation on the ACDC benchmark shows significant improvements:</p>
+                <ul class="key-points">
+                    <li>+12.1% relative improvement in object detection</li>
+                    <li>Up to +4.6% improvement in nighttime semantic segmentation</li>
+                    <li>Notable gains in rain and foggy conditions</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Applications Section -->
+        <section id="applications" class="section">
+            <h2>Applications</h2>
+            <div class="paper-summary">
+                <h3>Practical Benefits</h3>
+                <ul class="key-points">
+                    <li>Cost-effective generation of adverse-condition training data</li>
+                    <li>Significant reduction in real-world data collection needs</li>
+                    <li>Improved robustness of autonomous perception systems</li>
+                    <li>Flexible adaptation to various adverse conditions (night, rain, fog, snow)</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Weather Domain Adaptation Research Team. All rights reserved.</p>
+    </footer>
+</body>
+</html> 
