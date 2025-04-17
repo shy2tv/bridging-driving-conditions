@@ -31,7 +31,7 @@
         /* Navigation */
         .navbar {
             background-color: var(--primary-color);
-            padding: 1rem 2rem;
+            padding: 1rem 0;
             position: fixed;
             width: 100%;
             top: 0;
@@ -40,15 +40,41 @@
         }
 
         .navbar-content {
-            max-width: 1200px;
-            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 0 2rem;
+            position: relative;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-right: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+        }
+
+        .logo-container {
+            position: relative;
+            margin-left: 2rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-container img {
+            height: 50px;
+            width: auto;
         }
 
         .navbar-content h2 {
             color: white;
+            font-size: 1.8rem;
         }
 
         .nav-links a {
@@ -68,27 +94,33 @@
             background-size: cover;
             background-position: center;
             color: white;
-            padding: 6rem 2rem;
             text-align: center;
             position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 400px;
+            margin-top: 84px; /* To account for fixed navbar */
         }
 
         .hero-content {
             position: relative;
             z-index: 2;
+            width: 100%;
+            padding: 0 2rem;
         }
 
         .hero-section h1 {
             font-size: 3.5rem;
             margin-bottom: 1rem;
-            color: white; /* Ensure white color for contrast */
+            color: white;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
 
         .hero-section p {
             font-size: 1.5rem;
             margin-bottom: 2rem;
-            color: #f0f0f0; /* Lighter gray for subtitle */
+            color: #f0f0f0;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
         }
 
@@ -128,14 +160,20 @@
             margin: 0 auto;
             padding: 0 1rem;
         }
+        
+        .demo-container h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+        }
 
         .demo-instructions {
-            text-align: center;
+            text-align: left;
             margin: 2rem auto;
             padding: 1rem;
             background: rgba(52, 152, 219, 0.1);
             border-radius: 8px;
-            max-width: 800px;
+            max-width: 600px;
         }
 
         .demo-instructions i {
@@ -360,7 +398,7 @@
             background: var(--light-bg);
             padding: 2rem;
             border-radius: 10px;
-            text-align: center;
+            text-align: left;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             transition: transform 0.3s, box-shadow 0.3s;
         }
@@ -373,6 +411,7 @@
         .tech-card i {
             font-size: 2.5rem;
             margin-bottom: 1rem;
+            display: block;
         }
 
         .tech-card:nth-child(1) i { color: var(--accent-color); }
@@ -507,13 +546,18 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="navbar-content">
-            <h2>Weather Domain Adaptation</h2>
+            <div class="navbar-brand">
+                <h2>Weather Domain Adaptation</h2>
+            </div>
             <div class="nav-links">
                 <a href="#demo">Demo</a>
                 <a href="architecture.html">Architecture</a>
                 <a href="#technical">Technical</a>
                 <a href="#contact">Contact</a>
                 <a href="#" class="cta-button">arXiv</a>
+            </div>
+            <div class="logo-container">
+                <img src="Bosch-Logo.png" alt="Bosch Logo">
             </div>
         </div>
     </nav>
@@ -535,7 +579,7 @@
             <div class="demo-instructions">
                 <p><i class="fas fa-hand-pointer"></i>Click image to pause/play animation</p>
                 <p><i class="fas fa-expand"></i>Click zoom icon (top-right) for fullscreen</p>
-                <p><i class="fas fa-adjust"></i>Click histogram icon (top-left) to toggle correction (Generated images only)</p>
+                <p><i class="fas fa-adjust"></i>Click histogram icon (top-left) to toggle Exposure-Correction</p>
                 <p><i class="fas fa-arrows-left-right"></i>Use arrows to navigate conditions</p>
             </div>
 

@@ -7,11 +7,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --accent-color: #e74c3c;
+            --primary-color: #1a2c53; /* Darker blue from Bosch branding */
+            --secondary-color: #0076ce; /* Brighter Bosch blue */
+            --accent-color: #e30613; /* Bosch signature red */
+            --highlight-color: #42b4e6; /* Light blue accent */
+            --success-color: #5DAC50; /* Green for success elements */
             --text-color: #333;
-            --light-bg: #f8f9fa;
+            --light-bg: #ebf3fa; /* Light blue tint for backgrounds */
         }
 
         * {
@@ -29,7 +31,7 @@
         /* Navigation */
         .navbar {
             background-color: var(--primary-color);
-            padding: 1rem 2rem;
+            padding: 1rem 0;
             position: fixed;
             width: 100%;
             top: 0;
@@ -38,15 +40,48 @@
         }
 
         .navbar-content {
-            max-width: 1200px;
-            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 0 2rem;
+            position: relative;
+            max-width: 100%;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-right: 2rem;
+        }
+
+        .navbar-brand img {
+            height: 55px;
+            width: auto;
+            margin-right: 0.5rem;
         }
 
         .navbar-content h2 {
             color: white;
+            font-size: 1.8rem;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+        }
+
+        .logo-container {
+            position: relative;
+            margin-left: 2rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-container img {
+            height: 50px;
+            width: auto;
         }
 
         .nav-links a {
@@ -60,15 +95,33 @@
             color: var(--secondary-color);
         }
 
+        .cta-button {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background-color: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: transform 0.3s;
+            margin-left: 2rem;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+            background-color: #a0040d; /* Even darker on hover */
+        }
+
         /* Main Content */
         .main-content {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 6rem 2rem 2rem;
+            padding: 8rem 2rem 2rem;
         }
 
         .section {
             margin-bottom: 4rem;
+            padding-top: 2rem;
         }
 
         .section h2 {
@@ -120,21 +173,6 @@
             left: 0;
         }
 
-        .cta-button {
-            display: inline-block;
-            padding: 1rem 2rem;
-            background-color: var(--accent-color);
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: transform 0.3s;
-            margin: 1rem 0;
-        }
-
-        .cta-button:hover {
-            transform: translateY(-3px);
-        }
-
         /* Footer */
         footer {
             background-color: #1a252f;
@@ -158,19 +196,29 @@
                 margin: 0 1rem;
             }
         }
+
+        /* Fix for pipeline section specifically */
+        #pipeline {
+            padding-top: 3rem;
+        }
     </style>
 </head>
 <body>
     <!-- Navigation -->
     <nav class="navbar">
         <div class="navbar-content">
-            <h2>Weather Domain Adaptation</h2>
+            <div class="navbar-brand">
+                <h2>Weather Domain Adaptation</h2>
+            </div>
             <div class="nav-links">
                 <a href="index.html">Home</a>
                 <a href="#architecture">Architecture</a>
                 <a href="#paper">Paper</a>
                 <a href="index.html#contact">Contact</a>
                 <a href="#" class="cta-button">arXiv</a>
+            </div>
+            <div class="logo-container">
+                <img src="Bosch-Logo.png" alt="Bosch Logo">
             </div>
         </div>
     </nav>
