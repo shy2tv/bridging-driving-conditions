@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bridging Clear and Adverse Driving Conditions</title>
+    <title>Technical Details | Bridging Clear and Adverse Driving Conditions</title>
     <!-- OpenGraph meta tags for social media previews -->
-    <meta property="og:title" content="Model Architecture & Technical Details">
+    <meta property="og:title" content="Technical Details & Model Architecture">
     <meta property="og:description" content="Detailed overview of our hybrid pipeline combining simulation, diffusion, and GANs for adverse-condition driving data.">
     <meta property="og:image" content="daunit-min.png">
     <meta property="og:url" content="https://example.com/architecture.html">
@@ -51,6 +51,7 @@
             align-items: center;
             padding: 0 2rem;
             position: relative;
+            min-height: 80px; /* Ensure minimum height */
         }
 
         .navbar-brand {
@@ -69,6 +70,7 @@
         .navbar-content h2 {
             color: white;
             font-size: 1.8rem;
+            margin: 0;
         }
 
         .nav-links {
@@ -98,6 +100,24 @@
 
         .nav-links a:hover {
             color: var(--secondary-color);
+        }
+
+        /* Active state for navigation links */
+        .nav-links a.active {
+            color: var(--accent-color);
+            font-weight: bold;
+            position: relative;
+        }
+        
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--accent-color);
+            border-radius: 2px;
         }
 
         .cta-button {
@@ -404,8 +424,10 @@
             </div>
             <div class="nav-links">
                 <a href="index.html">Home</a>
-                <a href="#architecture">Architecture</a>
+                <a href="index.html#demo">Demo</a>
+                <a href="#" class="active">Technical Details</a>
                 <a href="#paper">Paper</a>
+                <a href="index.html#features">Key Features</a>
                 <a href="index.html#contact">Contact</a>
                 <a href="#" class="cta-button">arXiv</a>
             </div>
@@ -418,8 +440,8 @@
     <!-- Hero Section -->
     <section class="hero-section">
         <div class="hero-content">
-            <h1>Model Architecture & Technical Details</h1>
-            <p>Detailed overview of our hybrid pipeline and its components</p>
+            <h1>Technical Details</h1>
+            <p>Our approach to bridging clear and adverse driving conditions</p>
         </div>
     </section>
 
@@ -519,6 +541,42 @@
     <!-- Add JavaScript at the end of the file -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Always keep Technical Details highlighted on this page
+            const techDetailsLink = document.querySelector('.nav-links a[href="#"]');
+            if (techDetailsLink) {
+                techDetailsLink.classList.add('active');
+            }
+            
+            // For section tracking - only affects other links, not Technical Details
+            const sections = document.querySelectorAll('section[id]');
+            const sectionLinks = document.querySelectorAll('.nav-links a[href^="#"]:not([href="#"])');
+            
+            // Update active section link based on scroll position
+            function updateActiveSection() {
+                let currentSectionId = '';
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - 100;
+                    const sectionHeight = section.offsetHeight;
+                    if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+                        currentSectionId = '#' + section.getAttribute('id');
+                    }
+                });
+                
+                // Update section links besides Technical Details
+                sectionLinks.forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href') === currentSectionId);
+                });
+                
+                // Always keep Technical Details highlighted
+                if (techDetailsLink) {
+                    techDetailsLink.classList.add('active');
+                }
+            }
+            
+            // Listen for scroll events to update active section
+            window.addEventListener('scroll', updateActiveSection);
+            
             // Architecture image zoom functionality
             const archImg = document.querySelector('.architecture-image');
             const zoomIcon = document.querySelector('.zoom-icon');

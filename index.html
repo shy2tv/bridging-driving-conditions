@@ -43,6 +43,7 @@
             z-index: 1000;
             box-shadow: none;
             border: none;
+            margin: 0;
         }
 
         .navbar-content {
@@ -51,6 +52,7 @@
             align-items: center;
             padding: 0 2rem;
             position: relative;
+            min-height: 80px; /* Ensure minimum height */
         }
 
         .navbar-brand {
@@ -92,6 +94,23 @@
 
         .nav-links a:hover {
             color: var(--secondary-color);
+        }
+
+        /* Active state for navigation links */
+        .nav-links a.active {
+            color: var(--accent-color);
+            font-weight: bold;
+            position: relative;
+        }
+         .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--accent-color);
+            border-radius: 2px;
         }
 
         /* Hero Section */
@@ -171,8 +190,7 @@
             margin: 0 auto;
             padding: 0 1rem;
         }
-        
-        .demo-container h2 {
+         .demo-container h2 {
             text-align: center;
             margin-bottom: 2rem;
             color: var(--primary-color);
@@ -386,62 +404,89 @@
             font-size: 1.2rem;
         }
 
-        /* Technical Overview */
+       /* ─────────────────────────  Technical Overview  ───────────────────────── */
+
+/* Wrapper */
         .technical-section {
-            padding: 4rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
+        padding: 4rem 1.5rem;   /* a bit narrower side‑padding */
+        max-width: 1200px;
+        margin: 0 auto;
         }
 
+        /* ───────── Section heading (unchanged) ───────── */
         .technical-section h2 {
-            text-align: center;
-            margin-bottom: 2rem;
-            color: var(--primary-color);
+        text-align: center;
+        margin-bottom: 2.5rem;
+        color: var(--primary-color);
         }
 
+        /* ───────── Responsive grid ───────── */
+        .technical-grid {                    /* (no change on phones) */
+        display: grid;
+        gap: 2.5rem;
+        }
+
+        @media (min-width: 768px) {          /* ≥ tablet */
         .technical-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(2, 1fr);   /* ▲ CHANGED: force 2 columns   */
+            max-width: 900px;                         /* ▶ NEW: keep block centred    */
+            margin: 0 auto;                           /* ▶ NEW: …and centred          */
+            justify-content: center; /* centres the two columns in the larger frame */
+
+        }
+        .tech-card i   { font-size: 3rem;   margin-bottom: 1rem; }
+        .tech-card h3  { font-size: 1.25rem; }
         }
 
+        /* ───────── Card ───────── */
         .tech-card {
-            background: var(--light-bg);
-            padding: 2rem;
-            border-radius: 10px;
-            text-align: left;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
+        background: var(--light-bg);
+        padding: 2rem 1.75rem;           /* ▲ CHANGED: slightly tighter */
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,.08);
+        text-align: center;
+        transition: transform .25s, box-shadow .25s;
+        font-size: 1.0rem;         /* base copy a hair larger */
         }
-
         .tech-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        transform: translateY(-6px);
+        box-shadow: 0 8px 14px rgba(0,0,0,.12);
         }
 
+        /* ───────── Icon ───────── */
         .tech-card i {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            display: block;
-            text-align: center;
+        font-size: 2rem;                   /* ▲ CHANGED: was 2.25 / 2.5 rem */
+        margin-bottom: .5rem;              /* ▲ CHANGED: was .75 rem        */
+        display: block;
+        }
+        @media (max-width: 425px) {
+        .tech-card i { font-size: 2rem; }/* ▲ CHANGED: keep icon in scale */
         }
 
-        .tech-card h3 {
-            margin-bottom: 1rem;
-            color: var(--primary-color);
-            text-align: center;
-        }
-
-        .tech-card p {
-            color: var(--text-color);
-            line-height: 1.5;
-            text-align: left;
-        }
-
+        /* ───────── Colours, headings, body copy (unchanged) ───────── */
         .tech-card:nth-child(1) i { color: var(--accent-color); }
         .tech-card:nth-child(2) i { color: var(--secondary-color); }
         .tech-card:nth-child(3) i { color: var(--highlight-color); }
         .tech-card:nth-child(4) i { color: var(--success-color); }
+
+        .tech-card h3 {
+        margin-bottom: .75rem;
+        color: var(--primary-color);
+        font-weight: 600;
+        font-size: 1.1rem;
+        }
+
+        .tech-card p,
+        .tech-card ul {
+        color: var(--text-color);
+        font-size: .92rem;
+        line-height: 1.45;
+        margin: 0 auto;
+        max-width: 32rem;
+        text-align: left;
+        }
+        .tech-card ul { padding-left: 1.1rem; }
+        .tech-card strong { font-weight: 600; }
 
         /* Contact Section */
         .contact-section {
@@ -733,9 +778,11 @@
                 </a>
             </div>
             <div class="nav-links">
+                <a href="index.html" class="active">Home</a>
                 <a href="#demo">Demo</a>
-                <a href="architecture.html">Architecture</a>
-                <a href="#technical">Technical</a>
+                <a href="architecture.html">Technical Details</a>
+                <a href="#paper">Paper</a>
+                <a href="#features">Key Features</a>
                 <a href="#contact">Contact</a>
                 <a href="#" class="cta-button">arXiv</a>
             </div>
@@ -984,35 +1031,54 @@
         </div>
     </div>
 
-    <!-- Technical Overview -->
-    <section id="technical" class="technical-section">
-        <h2>Technical Overview</h2>
-        <div class="technical-grid">
-            <div class="tech-card">
-                <i class="fas fa-cogs"></i>
-                <h3>Hybrid Pipeline</h3>
-                <p>Combines simulation (CARLA), diffusion (Stable Diffusion/ALDM), and GAN-based adaptation for cost-effective adverse condition generation</p>
-            </div>
-            <div class="tech-card">
-                <i class="fas fa-brain"></i>
-                <h3>Enhanced DA-UNIT</h3>
-                <p>Extended architecture supporting depth, semantic, and instance data for improved object preservation and label alignment</p>
-            </div>
-            <div class="tech-card">
-                <i class="fas fa-magic"></i>
-                <h3>Blending Technique</h3>
-                <p>Novel approach to correct diffusion artifacts while preserving photorealistic enhancements</p>
-            </div>
-            <div class="tech-card">
-                <i class="fas fa-chart-line"></i>
-                <h3>Performance Gains</h3>
-                <p>78.57 % mIoU on ACDC‑adverse test split — achieved with zero adverse‑weather images in training.<br>
-                +1.85 % mIoU overall on ACDC val split (clear + adverse).<br>
-                Rain: +3.7 % mIoU (val).<br>
-                Night: +4.62 % mIoU (val).</p>
-            </div>
-        </div>
-    </section>
+ <!-- ────────────────────────────  Technical Overview  ──────────────────────────── -->
+<section id="features" class="technical-section bg-sky-50 py-6">
+    <div class="container mx-auto max-w-4xl">
+      <h2 class="section-title text-center mb-8">Key Features</h2>
+  
+      <!-- 2 × 2 grid on ≥768 px, single‑column on mobile -->
+      <div class="technical-grid">
+        <!-- Hybrid Pipeline -->
+        <article class="tech-card">
+          <i class="fas fa-code-branch tech-icon" aria-hidden="true"></i>
+          <h3 class="tech-heading">Hybrid&nbsp;Pipeline</h3>
+          <p class="tech-copy">
+            Combines <strong>diffusion</strong> with <strong>GAN&nbsp;domain adaptation</strong> for robust adverse‑weather rendering.
+          </p>
+        </article>
+  
+        <!-- Enhanced DA‑UNIT -->
+        <article class="tech-card">
+          <i class="fas fa-brain tech-icon" aria-hidden="true"></i>
+          <h3 class="tech-heading">Enhanced&nbsp;DA‑UNIT</h3>
+          <p class="tech-copy">
+            Extended architecture supporting <strong>depth, semantics, and instances</strong> for better object preservation and label alignment.
+          </p>
+        </article>
+  
+        <!-- Blending Technique -->
+        <article class="tech-card">
+          <i class="fas fa-magic tech-icon" aria-hidden="true"></i>
+          <h3 class="tech-heading">Blending&nbsp;Technique</h3>
+          <p class="tech-copy">
+            Novel approach that removes diffusion artefacts while retaining photorealistic enhancements.
+          </p>
+        </article>
+  
+        <!-- Performance Gains -->
+        <article class="tech-card md:col-span-2">
+          <i class="fas fa-chart-line tech-icon" aria-hidden="true"></i>
+          <h3 class="tech-heading">Performance Gains</h3>
+          <ul class="tech-metrics">
+            <li><strong>78.57 % mIoU</strong> on ACDC‑adverse <em>test</em> split (trained with 0 adverse images).</li>
+            <li><strong>+1.85 % mIoU</strong> overall on ACDC <em>val</em> split (clear + adverse).</li>
+            <li>Rain: <strong>+3.7 % mIoU</strong> (val).</li>
+            <li>Night: <strong>+4.62 % mIoU</strong> (val).</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
 
     <!-- Contact Section -->
     <section id="contact" class="contact-section">
@@ -1055,6 +1121,72 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Active section tracking for navigation
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+            
+            // Set initial active state based on URL hash or scroll position
+            function setInitialActive() {
+                const hash = window.location.hash;
+                if (hash) {
+                    const sectionLink = document.querySelector(`.nav-links a[href="${hash}"]`);
+                    if (sectionLink) {
+                        navLinks.forEach(link => link.classList.remove('active'));
+                        sectionLink.classList.add('active');
+                    }
+                } else {
+                    // If at the top of the page, highlight Home
+                    if (window.scrollY < 100) {
+                        navLinks.forEach(link => link.classList.remove('active'));
+                        document.querySelector('.nav-links a[href="index.html"]').classList.add('active');
+                    } else {
+                        // Call updateActiveLink to set based on scroll position
+                        updateActiveLink();
+                    }
+                }
+            }
+            
+            // Update active nav link based on scroll position
+            function updateActiveLink() {
+                let currentSectionId = '';
+                let isAtTop = window.scrollY < 100; // Check if at the top of the page
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - 100;
+                    const sectionHeight = section.offsetHeight;
+                    if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+                        currentSectionId = '#' + section.getAttribute('id');
+                    }
+                });
+                
+                // First remove active class from all links
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                });
+                
+                const homeLink = document.querySelector('.nav-links a[href="index.html"]');
+                
+                // If we're at a specific section, highlight that section's link
+                if (currentSectionId) {
+                    const sectionLink = document.querySelector(`.nav-links a[href="${currentSectionId}"]`);
+                    if (sectionLink) {
+                        sectionLink.classList.add('active');
+                        // Make sure Home is not active when a section is active
+                        if (homeLink) homeLink.classList.remove('active');
+                    }
+                } 
+                // Otherwise, if we're at the top of the page, highlight Home
+                else if (isAtTop) {
+                    if (homeLink) homeLink.classList.add('active');
+                }
+            }
+            
+            // Initialize active state
+            setInitialActive();
+            
+            // Listen for scroll events to update active state
+            window.addEventListener('scroll', updateActiveLink);
+            
             const carousels = document.querySelectorAll('.carousel');
             const fullscreenOverlay = document.getElementById('fullscreen');
             const fullscreenContainer = fullscreenOverlay.querySelector('.fullscreen-container');
