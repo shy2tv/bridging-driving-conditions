@@ -643,10 +643,14 @@
                 <h3>Performance Results</h3>
                 <p>Performance highlights (ACDC):</p>
                 <ul class="key-points">
-                    <li><strong>78.57 %</strong> mIoU on the ACDC‑adverse test split — achieved with zero adverse‑weather images in training.</li>
-                    <li><strong>+1.85 %</strong> mIoU overall on the ACDC val split (clear + adverse).</li>
-                    <li><strong>Night:</strong> +4.62 % mIoU (val).</li>
-                </ul>
+                    <li><strong>78.57 %</strong> mIoU on <em>ACDC-Adverse (test)</em> — obtained with <u>zero</u> adverse-weather images in training.</li>
+                  
+                    <li><strong>+1.85 %</strong> mIoU on <em>ACDC (val)</em> overall, versus the baseline  
+                        <span class="baseline-note">(REIN pre-trained on Cityscapes → finetuned on ACDC-Clear)</span>.</li>
+                  
+                    <li><strong>Night subset:</strong> +4.62 % mIoU on <em>ACDC-Night (val)</em> over the same baseline.</li>
+                  </ul>
+                  
             </div>
         </section>
 
