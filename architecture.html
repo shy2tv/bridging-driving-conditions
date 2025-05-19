@@ -7,7 +7,7 @@
     <!-- OpenGraph meta tags for social media previews -->
     <meta property="og:title" content="Technical Details & Model Architecture">
     <meta property="og:description" content="Detailed overview of our hybrid pipeline combining simulation, diffusion, and GANs for adverse-condition driving data.">
-    <meta property="og:image" content="daunit-min.png">
+    <meta property="og:image" content="images/daunit-min.png">
     <meta property="og:url" content="https://example.com/architecture.html">
     <meta property="og:type" content="website">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -139,7 +139,7 @@
 
         /* Hero Section */
         .hero-section {
-            background-image: linear-gradient(rgba(26, 44, 83, 0.8), rgba(0, 0, 0, 0.7)), url('Bosch-Cover.jpg');
+            background-image: linear-gradient(rgba(26, 44, 83, 0.8), rgba(0, 0, 0, 0.7)), url('images/Bosch-Cover.jpg');
             background-size: cover;
             background-position: center;
             color: white;
@@ -411,6 +411,129 @@
                 font-size: 0.8rem;
             }
         }
+
+        /* Contact Section */
+        .contact-section {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .contact-card {
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            transition: transform 0.3s;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+            border: 3px solid var(--secondary-color);
+        }
+
+        .contact-card h3 {
+            margin-bottom: 0.5rem;
+            color: var(--secondary-color);
+        }
+
+        .contact-card p {
+            margin-bottom: 0.5rem;
+            color: #f0f0f0;
+        }
+
+        .contact-card > a {
+            color: #a8d5ff;
+            text-decoration: none;
+            transition: color 0.3s;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .contact-card > a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        .contact-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-links a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .contact-links a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        .contact-links i {
+            font-size: 1.2rem;
+        }
+
+        .acknowledgement {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .acknowledgement p {
+            margin-bottom: 1rem;
+            color: #f0f0f0;
+        }
+
+        .acknowledgement-logo {
+            height: 40px;
+            width: auto;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .acknowledgement-logo:hover {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+            }
+
+            .profile-image {
+                width: 120px;
+                height: 120px;
+            }
+
+            .contact-card {
+                padding: 1.5rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -432,7 +555,7 @@
                 <a href="#" class="cta-button">arXiv</a>
             </div>
             <div class="logo-container">
-                <img src="Bosch-Logo.png" alt="Bosch Logo">
+                <img src="images/Bosch-Logo.png" alt="Bosch Logo">
             </div>
         </div>
     </nav>
@@ -450,22 +573,32 @@
         <!-- Pipeline Overview -->
         <section id="pipeline" class="section">
             <h2>Hybrid Pipeline Overview</h2>
-            <div class="paper-summary">
-                <h3>Three-Stage Generation Process</h3>
-                <p>Our hybrid pipeline combines three key components to create realistic adverse-condition training data:</p>
-                <ul class="key-points">
-                    <li><strong>Simulation (S):</strong> Uses CARLA to generate perfectly paired sequences in clear vs. adverse conditions</li>
-                    <li><strong>Diffusion (D):</strong> Applies Stable Diffusion/ALDM guided by segmentation labels to enhance realism</li>
-                    <li><strong>GAN-Based Adaptation (G):</strong> Trains an enhanced DA-UNIT model on synthetic and real images</li>
-                </ul>
-            </div>
-        </section>
+          
+              
+                <div class="paper-summary">
+                  <h3>Three-Stage Generation Process&nbsp;(S&nbsp;→&nbsp;D&nbsp;→&nbsp;G)</h3>
+                  <p>We sculpt high-fidelity synthetic data first, then use it to translate <em>real-world</em> clear frames into adverse conditions:</p>
+              
+                  <ul class="key-points">
+                    <li><strong>S - Simulation:</strong> CARLA renders pixel-perfect clear&nbsp;/ adverse pairs with full annotations.</li>
+              
+                    <li><strong>D - Diffusion:</strong> Stable Diffusion&nbsp;/ ALDM boosts realism, guided by segmentation masks.</li>
+              
+                    <li><strong>G - GAN Adaptation:</strong> 
+                        DA-UNIT, our domain-adaptive UNIT GAN, learns on the curated <em>S + D</em> pairs <u>plus</u> a 10% mix of real ACDC-Clear frames.  
+                        <br><strong>Inference:</strong> Feed any clear ACDC frame → DA-UNIT returns a photorealistic fog, rain, or night image with labels preserved 1-for-1.
+                    </li>
+                  </ul>
+                </div>
+              </section>
+              
+          
 
         <!-- Architecture Section -->
         <section id="architecture" class="section">
             <h2>Enhanced DA-UNIT Architecture</h2>
             <div class="architecture-image-container">
-                <img src="daunit-min.png" alt="DA-UNIT model architecture diagram showing the enhanced GAN pipeline" class="architecture-image">
+                <img src="images/daunit-min.png" alt="DA-UNIT model architecture diagram showing the enhanced GAN pipeline" class="architecture-image">
                 <div class="zoom-icon"><i class="fas fa-expand"></i></div>
             </div>
             <div class="paper-summary">
@@ -483,7 +616,7 @@
         <div id="architecture-fullscreen" class="fullscreen-overlay">
             <div class="fullscreen-container">
                 <button class="close-fullscreen">&times;</button>
-                <img src="daunit-min.png" alt="Full-size DA-UNIT model architecture diagram showing encoder-decoder structure">
+                <img src="images/daunit-min.png" alt="Full-size DA-UNIT model architecture diagram showing encoder-decoder structure">
             </div>
         </div>
 
@@ -512,7 +645,6 @@
                 <ul class="key-points">
                     <li><strong>78.57 %</strong> mIoU on the ACDC‑adverse test split — achieved with zero adverse‑weather images in training.</li>
                     <li><strong>+1.85 %</strong> mIoU overall on the ACDC val split (clear + adverse).</li>
-                    <li><strong>Rain:</strong> +3.7 % mIoU (val).</li>
                     <li><strong>Night:</strong> +4.62 % mIoU (val).</li>
                 </ul>
             </div>
@@ -532,6 +664,47 @@
             </div>
         </section>
     </div>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <h2>Our Team</h2>
+        <div class="contact-grid">
+            <div class="contact-card">
+                <img src="images/profile_yoel.jpeg" alt="Yoel Shapiro" class="profile-image">
+                <h3>Shapiro Yoel</h3>
+                <p>Research Engineer</p>
+                <a href="mailto:Yoel.Shapiro@il.bosch.com">Yoel.Shapiro@il.bosch.com</a>
+                <div class="contact-links">
+                    <a href="https://www.linkedin.com/in/yoel-shapiro-142abb21/" target="_blank"><i class="fab fa-linkedin"></i>LinkedIn</a>
+                    <a href="https://scholar.google.com/citations?user=Ry_iQqEAAAAJ&hl=en" target="_blank"><i class="fas fa-graduation-cap"></i>Scholar</a>
+                </div>
+            </div>
+            <div class="contact-card">
+                <img src="images/profile_yahia_2_cropped.jpg" alt="Yahia Showgan" class="profile-image">
+                <h3>Yahia Showgan</h3>
+                <p>Computer Vision Researcher</p>
+                <a href="mailto:YahiaShowgan@gmail.com">YahiaShowgan@gmail.com</a>
+                <div class="contact-links">
+                    <a href="https://www.linkedin.com/in/yahia-showgan/" target="_blank"><i class="fab fa-linkedin"></i>LinkedIn</a>
+                    <a href="https://scholar.google.com/citations?user=Ry_iQqEAAAAJ&hl=en" target="_blank"><i class="fas fa-graduation-cap"></i>Scholar</a>
+                </div>
+            </div>
+            <div class="contact-card">
+                <img src="images/profile_koustav.png" alt="Koustav Mullick" class="profile-image">
+                <h3>Mullick Koustav</h3>
+                <p>Computer Vision Researcher</p>
+                <a href="mailto:Koustav.Mullick@in.bosch.com">Koustav.Mullick@in.bosch.com</a>
+                <div class="contact-links">
+                    <a href="https://www.linkedin.com/in/kmul00/" target="_blank"><i class="fab fa-linkedin"></i>LinkedIn</a>
+                    <a href="https://scholar.google.com/citations?user=lP2FUZ0AAAAJ&hl=en" target="_blank"><i class="fas fa-graduation-cap"></i>Scholar</a>
+                </div>
+            </div>
+        </div>
+        <div class="acknowledgement">
+            <p>This research is supported by Bosch Research and Technology Center.</p>
+            <img src="images/Bosch-Logo.png" alt="Bosch Logo" class="acknowledgement-logo">
+        </div>
+    </section>
 
     <!-- Footer -->
     <footer>
