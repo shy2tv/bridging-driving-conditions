@@ -65,12 +65,12 @@
         .nav-links {
             display: flex;
             align-items: center;
-            margin-left: auto;
+            margin-left: auto; /* Push nav links to the right on desktop */
         }
 
         .logo-container {
             position: relative;
-            margin-left: 2rem;
+            margin-left: 2rem; /* Default margin for logo */
             display: flex;
             align-items: center;
         }
@@ -404,9 +404,9 @@
             font-size: 1.2rem;
         }
 
+
        /* ─────────────────────────  Technical Overview  ───────────────────────── */
 
-/* Wrapper */
         .technical-section {
         padding: 4rem 1.5rem;   /* a bit narrower side‑padding */
         max-width: 1200px;
@@ -522,7 +522,7 @@
             border-radius: 50%;
             object-fit: cover;
             margin-bottom: 1rem;
-            border: 3px solid var(--accent-color);
+            border: 3.5px solid #a0040d;
         }
         
         
@@ -612,9 +612,9 @@
 
         .carousel-control {
             position: absolute;
-            top: 50%;
+            top: 55%;
             transform: translateY(-50%);
-            background: rgba(193, 5, 16, 0.8); /* Darker Bosch red with transparency */
+            background: rgba(193, 5, 16, 0.5); /* Darker Bosch red with transparency */
             color: white;
             border: none;
             padding: 1rem;
@@ -654,6 +654,33 @@
             .hero-section {
                 margin-top: calc(2rem + 50px); /* Add margin only on desktop */
             }
+
+            .nav-rail {
+                margin-left: auto; /* Push the nav-rail container to the right */
+                margin-right: 2rem; /* Add space before the logo */
+                flex-grow: 0; /* Prevent nav-rail from growing */
+                flex-shrink: 0; /* Prevent nav-rail from shrinking */
+                flex-basis: auto; /* Allow content size to determine basis */
+            }
+
+            .nav-links {
+                /* Ensure no conflicting margins on nav-links within nav-rail */
+                margin-left: 0;
+                margin-right: 0;
+            }
+
+            .logo-container {
+                margin-left: 0; /* Remove default left margin on desktop */
+            }
+
+            /* Fullscreen arrows on desktop - remove background */
+            .fullscreen-overlay .fullscreen-control {
+                background: transparent; /* Remove black circle background */
+            }
+
+             .fullscreen-overlay .fullscreen-control:hover {
+                background: rgba(0, 0, 0, 0.1); /* Subtle hover effect */
+            }
         }
         
         /* Mobile styles */
@@ -662,70 +689,6 @@
                 padding: 0.5rem 0;
                 position: static;
                 height: auto;
-            }
-            
-            .hero-section {
-                height: auto;
-                min-height: 200px;
-                margin-top: 0;
-                padding: 2rem 1rem;
-            }
-            
-            .hero-section h1 {
-                font-size: 1.4rem;
-                line-height: 1.4;
-            }
-            
-            /* Fullscreen Controls Fix */
-            .fullscreen-overlay .fullscreen-control {
-                position: fixed;
-                top: 50%;
-                transform: translateY(-50%);
-                width: 70px;
-                height: 70px;
-                font-size: 2rem;
-                opacity: 0.9;
-                background-color: rgba(193, 5, 16, 0.85);
-                z-index: 10001;
-            }
-            
-            .fullscreen-overlay .fullscreen-control.prev {
-                left: 10px;
-            }
-            
-            .fullscreen-overlay .fullscreen-control.next {
-                right: 10px;
-            }
-            
-            .fullscreen-overlay .hist-toggle {
-                position: fixed;
-                top: 20px;
-                left: 20px;
-                width: 60px;
-                height: 60px;
-                font-size: 1.8rem;
-                z-index: 10001;
-            }
-            
-            .fullscreen-overlay .close-fullscreen {
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                font-size: 2.5rem;
-                z-index: 10001;
-            }
-            
-            .hero-section p {
-                font-size: 0.9rem;
-                margin-bottom: 1.5rem;
-            }
-            
-            .hero-content .cta-button {
-                padding: 0.6rem 1.2rem;
-                font-size: 0.9rem;
-                margin-right: 0.5rem;
-                margin-bottom: 0.5rem;
-                display: inline-block;
             }
             
             .navbar-content {
@@ -737,10 +700,16 @@
                 font-size: 1.2rem;
             }
 
+            .nav-rail {
+                 flex: 1; /* Allow nav-rail to take space on mobile landscape */
+            }
+
             .nav-links {
                 margin-top: 0.5rem;
                 flex-wrap: wrap;
-                justify-content: center;
+                justify-content: center; /* Center nav links on mobile */
+                margin-left: 0; /* Reset auto margin for mobile */
+                margin-right: 0; /* Reset margin */
             }
 
             .nav-links a {
@@ -748,137 +717,370 @@
                 font-size: 0.9rem;
             }
 
-            .logo-container img {
-                height: 40px;
-            }
-            
-            .carousel {
-                width: 100%;
-                margin: 1rem 0 3rem;
-            }
-            
-            .carousel h3 {
-                font-size: 1.2rem;
-                margin-bottom: 0.5rem;
-            }
-            
-            .carousel-slide {
-                height: auto;
-                min-height: 150px;
-            }
-            
-            .demo-instructions {
-                font-size: 0.8rem;
-                padding: 0.8rem;
-                margin: 1rem auto;
-            }
-            
-            .demo-instructions p {
-                margin-bottom: 0.5rem;
-            }
-            
-            .section-title {
-                font-size: 1.5rem;
-                margin-bottom: 1rem;
-            }
-            
-            .tech-card {
-                padding: 1rem;
-            }
-            
-            .tech-card h3 {
-                font-size: 1.2rem;
-            }
-            
-            .tech-card p {
-                font-size: 0.9rem;
-            }
-            
-            .contact-container {
-                flex-direction: column;
-            }
-            
-            /* Carousel controls */
-            .carousel-control {
-                position: absolute;
-                top: 55%;
-                transform: translateY(-50%);
-                width: 45px;
-                height: 45px;
-                font-size: 1.2rem;
-                opacity: 0.9;
-                z-index: 10;
+            .logo-container {
+                margin-left: 2rem; /* Keep original margin for mobile */
             }
 
-            
-            .carousel-control.prev {
-                left: 5px;
-            }
-            
-            .carousel-control.next {
-                right: 5px;
-            }
-            .contact-grid {
-                grid-template-columns: 1fr;
-                max-width: 400px;
-            }
+             /* Restore removed mobile portrait styles */
+                .hero-section {
+                    height: auto;
+                    min-height: 200px;
+                    margin-top: 0;
+                    padding: 2rem 1rem;
+                }
+                
+                .hero-section h1 {
+                    font-size: 1.4rem;
+                    line-height: 1.4;
+                }
+                
+                /* Fullscreen Controls Fix */
+                .fullscreen-overlay .fullscreen-control {
+                    position: fixed;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    width: 70px;
+                    height: 70px;
+                    font-size: 2rem;
+                    opacity: 0.9;
+                    background-color: rgba(193, 5, 16, 0.85); /* Restore mobile background */
+                    z-index: 10001;
+                }
+                 .fullscreen-overlay .fullscreen-control:hover {
+                     background-color: rgba(193, 5, 16, 1); /* Restore mobile hover */
+                 }
+                
+                .fullscreen-overlay .fullscreen-control.prev {
+                    left: 10px;
+                }
+                
+                .fullscreen-overlay .fullscreen-control.next {
+                    right: 10px;
+                }
+                
+                .fullscreen-overlay .hist-toggle {
+                    position: fixed;
+                    top: 20px;
+                    left: 3%; /* Adjust left position */
+                    width: 60px;
+                    height: 60px;
+                    font-size: 1.8rem;
+                    z-index: 10001;
+                    padding: 20px; /* Retaining padding */
+                    box-sizing: border-box;
+                }
+                 .fullscreen-overlay .hist-toggle:hover {
+                     background: rgba(0, 0, 0, 0.9); /* Restore mobile hover */
+                 }
+                
+                .fullscreen-overlay .close-fullscreen {
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    font-size: 2.5rem;
+                    z-index: 10001;
+                }
+                
+                .hero-section p {
+                    font-size: 0.9rem;
+                    margin-bottom: 1.5rem;
+                }
+                
+                .hero-content .cta-button {
+                    padding: 0.6rem 1.2rem;
+                    font-size: 0.9rem;
+                    margin-right: 0.5rem;
+                    margin-bottom: 0.5rem;
+                    display: inline-block;
+                }
+                
+                .carousel {
+                    width: 100%;
+                    margin: 1rem 0 3rem;
+                }
+                
+                .carousel h3 {
+                    font-size: 1.2rem;
+                    margin-bottom: 0.5rem;
+                }
+                
+                .carousel-slide {
+                    height: auto;
+                    min-height: 150px;
+                }
+                
+                .demo-instructions {
+                    font-size: 0.8rem;
+                    padding: 0.8rem;
+                    margin: 1rem auto;
+                }
+                
+                .demo-instructions p {
+                    margin-bottom: 0.5rem;
+                }
+                
+                .section-title {
+                    font-size: 1.5rem;
+                    margin-bottom: 1rem;
+                }
+                
+                .tech-card {
+                    padding: 1rem;
+                }
+                
+                .tech-card h3 {
+                    font-size: 1.2rem;
+                }
+                
+                .tech-card p {
+                    font-size: 0.9rem;
+                }
+                
+                .contact-container {
+                    flex-direction: column;
+                }
+                
+                /* Carousel controls - Mobile specific overrides */
+                .carousel-control {
+                    position: absolute;
+                    top: 55%;
+                    transform: translateY(-50%);
+                    width: 45px;
+                    height: 45px;
+                    font-size: 1.2rem;
+                    opacity: 0.9;
+                    z-index: 10;
+                     background: rgba(193, 5, 16, 0.8); /* Restore mobile background */
+                }
+                 .carousel-control:hover {
+                     background: #c10510; /* Restore mobile hover */
+                 }
 
-            .profile-image {
-                width: 120px;
-                height: 120px;
-            }
+                
+                .carousel-control.prev {
+                    left: 5px;
+                }
+                
+                .carousel-control.next {
+                    right: 5px;
+                }
+                .contact-grid {
+                    grid-template-columns: 1fr;
+                    max-width: 400px;
+                }
 
-            .contact-card {
-                padding: 1.5rem;
-            }
+                .profile-image {
+                    width: 120px;
+                    height: 120px;
+                }
 
-                        /* 1. Arrows (prev / next)  ─────────────────────── */
-            .carousel-control {
-                width: 40px;        /* ↓ from 45 px */
-                height: 40px;
-                font-size: 1.5rem;    /* ↓ icon size  */
-                top: 60%;           /* keep centered */
-                background: rgba(193, 5, 16, .0);  /* subtler circle */
-                border-radius: 50%;
-            }
-
-            .carousel-control:hover {
-            background: rgba(193, 5, 16, 0.0);
-            }
-
-            /* 2. Zoom & histogram toggles  ─────────────────── */
-            .carousel-slide .zoom-icon,
-            .carousel-slide .hist-toggle {
-                width: 26px;        /* ↓ from 30 px */
-                height: 26px;
-                font-size: .9rem;
-                top: 6px;           /* pull closer to edge */
-            }
-            .carousel-slide .hist-toggle { left: 6px; }
-            .carousel-slide .zoom-icon  { right: 6px; }
-
-            /* 3. Caption bar  ──────────────────────────────── */
-            .carousel-caption {
-                font-size: .9rem;   /* slightly smaller text */
-                padding: .5rem .75rem;
-                bottom: 4px;        /* lift up from edge */
-            }
-
-            /* 4. Optional: shrink carousel height */
-            .carousel-container { height: 25vh; }  /* was 30vh */
-
-              /* Main left / right arrows in full-screen */
-            .fullscreen-overlay .fullscreen-control {
-                top: 55%;
-                width: 50px;          /* ↓ from 70 px */
-                height: 50px;
-                font-size: 1.2rem;    /* ↓ icon size  */
-                background-color: rgba(193, 5, 16, 0.0);
-            }
+                .contact-card {
+                    padding: 1.5rem;
+                }
 
 
 
+                /* 2. Zoom & histogram toggles  ─────────────────── */
+                .carousel-slide .zoom-icon,
+                .carousel-slide .hist-toggle {
+                    width: 26px;        /* ↓ from 30 px */
+                    height: 26px;
+                    font-size: .9rem;
+                    top: 6px;           /* pull closer to edge */
+                }
+                .carousel-slide .hist-toggle { left: 6px; }
+                .carousel-slide .zoom-icon  { right: 6px; }
+
+                /* 3. Caption bar  ──────────────────────────────── */
+                .carousel-caption {
+                    font-size: .9rem;   /* slightly smaller text */
+                    padding: .5rem .75rem;
+                    bottom: 4px;        /* lift up from edge */
+                }
+
+                /* 4. Optional: shrink carousel height */
+                .carousel-container { height: 25vh; }  /* was 30vh */
+
+                  /* Main left / right arrows in full-screen - Mobile specific overrides */
+                .fullscreen-overlay .fullscreen-control {
+                    top: 55%;
+                    width: 50px;          /* ↓ from 70 px */
+                    height: 50px;
+                    font-size: 1.2rem;    /* ↓ icon size  */
+                    background-color: rgba(193, 5, 16, 0.0); /* Ensure transparent background on mobile fullscreen */
+                }
+
+
+
+
+
+
+}
+
+/* ════════════════════════════════════════════════
+Landscape phones  (height ≤ 500 px)
+══════════════════════════════════════════════════ */
+@media (orientation: landscape) and (max-height: 500px) {
+
+/* ── Navbar ── */
+.navbar          { position: relative; padding: .25rem 0; }
+.navbar-content  { flex-direction: row; padding: .25rem .75rem; }
+.navbar-brand h2 { font-size: 1rem; margin-right: .75rem; white-space: nowrap; }
+
+/* 1 — the fixed rail */
+.nav-rail{
+position:relative;               /* anchor for arrows            */
+flex:1;                          /* share remaining width        */
+overflow:hidden;                 /* hide scrolled-off buttons    */
+}
+
+/* 2 — the scrollable row */
+.nav-links{
+overflow-x:auto;                 /* same as before               */
+-webkit-overflow-scrolling:touch;
+flex-wrap:nowrap;
+gap:.8rem;
+padding:0 2.5rem;                /* leave space for arrows       */
+scrollbar-width:none;
+}
+.nav-links::-webkit-scrollbar{display:none;}
+
+/* Corrected static arrows CSS */
+
+/* 3 — Base styles for both arrows */
+.nav-rail::before,
+.nav-rail::after {
+content: '';
+position: absolute;
+top: 0;
+height: 100%;
+width: 2.5rem;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 1rem;
+color: rgba(255,255,255,.85);
+pointer-events: none;
+transition: opacity 0.3s ease;
+}
+
+/* Left arrow - correct character and gradient */
+.nav-rail::before {
+content: '❮';  /* Left-pointing character */
+left: 0;
+padding-left: .35rem;
+background: linear-gradient(to left,
+            rgba(26,44,83,0) 0%, rgba(26,44,83,1) 70%);
+}
+
+/* Right arrow - correct character and gradient */
+.nav-rail::after {
+content: '❯';  /* RIGHT-pointing character (was incorrect) */
+right: 0;
+padding-right: .35rem;
+background: linear-gradient(to right,
+            rgba(26,44,83,0) 0%, rgba(26,44,83,1) 70%);
+}
+
+/* Dimming when at edges */
+.nav-rail.at-start::before {
+opacity: 0.2;
+}
+
+.nav-rail.at-end::after {
+opacity: 0.2;
+
+.navbar .nav-rail.at-start::before {
+    opacity: 0.2 !important;
+}
+
+.navbar .nav-rail.at-end::after {
+    opacity: 0.2 !important;
+}
+}
+
+/* More specific selector for right arrow */
+html body .navbar .navbar-content .nav-rail.at-end::after {
+opacity: 0.2 !important;
+}
+
+/* dim arrow when you're at the edge — classes set in JS */
+.nav-rail.at-start::before{ opacity:.2; }
+.nav-rail.at-end  ::after { opacity:.2; }
+
+@keyframes fadeHint { to { opacity: 0; } }
+
+/* ── Hero gap fix ── */
+.hero-section { margin-top: 0rem; padding-top: 0; padding-bottom: 0rem; }
+.hero-section h1 {
+        font-size: 1.5rem;
+        line-height: 1.4;
+    }
+.hero-section p {
+        font-size: 1rem;
+        line-height: 1.4;
+    }
+
+                    /* Carousel arrows */
+        .carousel-control {
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
+        top: 60%;
+        background: transparent;
         }
+        .carousel-control:hover { background: transparent; }
+        }
+
+
+
+
+        
+        /* ———————————————————————————
+        Portrait phones ≤768 px
+        ———————————————————————————— */
+        @media (max-width: 768px) and (orientation: portrait) {
+
+        /* Carousel arrows */
+        .carousel-control {
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
+        top: 60%;
+        background: transparent;
+        }
+        .carousel-control:hover { background: transparent; }
+
+        /* Zoom / histogram icons */
+        .carousel-slide .zoom-icon,
+        .carousel-slide .hist-toggle {
+        top: 6px;
+        width: 26px;
+        height: 26px;
+        font-size: .9rem;
+        }
+        .carousel-slide .hist-toggle { left: 6px; }
+        .carousel-slide .zoom-icon  { right: 6px; }
+
+        /* Caption */
+        .carousel-caption { font-size: .9rem; bottom: 4px; }
+
+        /* Carousel height */
+        .carousel-container { height: 25vh; }
+
+        /* Full-screen arrows */
+        .fullscreen-overlay .fullscreen-control {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+        top: 55%;
+        background: transparent;
+        }
+        }
+
+
+
+
 
         
 
@@ -893,15 +1095,17 @@
                     <h2>Bridging Clear and Adverse Driving</h2>
                 </a>
             </div>
-            <div class="nav-links">
-                <a href="index.html" class="active">Home</a>
-                <a href="#demo">Demo</a>
-                <a href="architecture.html">Technical Details</a>
-                <a href="#paper">Paper</a>
-                <a href="#features">Key Features</a>
-                <a href="#contact">Contact</a>
-                <a href="#" class="cta-button">arXiv</a>
-            </div>
+            <div class="nav-rail">
+                <div class="nav-links">
+                    <a href="index.html" class="active">Home</a>
+                    <a href="#demo">Demo</a>
+                    <a href="architecture.html">Technical Details</a>
+                    <a href="#paper">Paper</a>
+                    <a href="#features">Key Features</a>
+                    <a href="#contact">Contact</a>
+                    <a href="#" class="cta-button">arXiv</a>
+                </div>
+                </div>
             <div class="logo-container">
                 <img src="images/Bosch-Logo.png" alt="Bosch Logo">
             </div>
@@ -1243,6 +1447,7 @@
         <p>&copy; 2025 Bridging Clear and Adverse Driving Research Team. All rights reserved.</p>
     </footer>
 
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Active section tracking for navigation
@@ -1321,9 +1526,7 @@
             setInitialActive();
             
             // Listen for scroll events to update active state
-            window.addEventListener('scroll', updateActiveLink);
-            
-            const carousels = document.querySelectorAll('.carousel');
+           const carousels = document.querySelectorAll('.carousel');
             const fullscreenOverlay = document.getElementById('fullscreen');
             const fullscreenContainer = fullscreenOverlay.querySelector('.fullscreen-container');
             const fullscreenImg = fullscreenOverlay.querySelector('img');
@@ -1592,8 +1795,65 @@
                 });
                  // Initialize first slide view
                 goToSlide(0);
-            });
+                });
         });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            /*
+            * This is a complete rewrite of the arrow detection code
+            * that works with the most basic approach possible
+            */
+            
+            // Get elements
+            const navRail = document.querySelector('.nav-rail');
+            const navLinks = document.querySelector('.nav-links');
+            
+            // Exit if elements don't exist
+            if (!navRail || !navLinks) {
+                console.warn('Navigation elements not found');
+                return;
+            }
+            
+            // Very simple function to update arrow classes
+            function updateArrowVisibility() {
+                // Check start position (with 5px margin for safety)
+                const isAtStart = navLinks.scrollLeft <= 5;
+                
+                // Check end position (with 10px margin for safety)
+                const isNearEnd = navLinks.scrollLeft + navLinks.clientWidth+10  >= navLinks.scrollWidth;
+                
+                // Update classes directly
+                if (isAtStart) {
+                navRail.classList.add('at-start');
+                } else {
+                navRail.classList.remove('at-start');
+                }
+                
+                if (isNearEnd) {
+                navRail.classList.add('at-end');
+                } else {
+                navRail.classList.remove('at-end');
+                }
+                
+
+                // Check if we're at the bottom of the page
+            }
+
+            
+            // Add main event listeners
+            navLinks.addEventListener('scroll', updateArrowVisibility);
+            window.addEventListener('resize', updateArrowVisibility);
+            
+            // Run on page load
+            updateArrowVisibility();
+            
+            // Run again after a delay to make sure layout is complete
+            setTimeout(updateArrowVisibility, 300);
+            setTimeout(updateArrowVisibility, 1000);
+            });
     </script>
+
+
+
 </body>
 </html>
