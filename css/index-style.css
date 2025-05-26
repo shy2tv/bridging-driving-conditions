@@ -698,19 +698,36 @@ video[controls] {
     bottom: 10px;
     font-size: 0.9rem;
     opacity: 0;
-    transform: translateY(100%);
+    transform: translate(0, 100%);
     transition: all 0.5s ease;
+    background: rgba(0, 0, 0, 0.5);
   }
 
   .fullscreen-overlay .fullscreen-caption.show-initial {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate(-50%, 0);
   }
 
   .fullscreen-overlay:hover .fullscreen-caption,
   .fullscreen-overlay:focus-within .fullscreen-caption {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate(-50%, 0);
+  }
+
+  .fullscreen-overlay .close-fullscreen {
+    background-color: rgba(0, 0, 0, 0.3);
+    height: 45px;
+    width: 45px;
+  }
+
+  .fullscreen-overlay .hist-toggle {
+    background-color: rgba(0, 0, 0, 0.3);
+    height: 45px;
+    width: 45px;
+  }
+
+  .fullscreen-overlay .fullscreen-control {
+    background: rgba(193, 5, 16, 0);
   }
 
   /* Caption for carousel in landscape */
