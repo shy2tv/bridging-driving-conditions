@@ -1,0 +1,541 @@
+:root {
+  --primary-color: #1a2c53; /* Darker blue from Bosch branding */
+  --secondary-color: #0076ce; /* Brighter Bosch blue */
+  --accent-color: #e30613; /* Bosch signature red */
+  --highlight-color: #42b4e6; /* Light blue accent */
+  --success-color: #5dac50; /* Green for success elements */
+  --text-color: #333;
+  --light-bg: #ebf3fa; /* Light blue tint for backgrounds */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: var(--text-color);
+}
+
+/* Navigation */
+.navbar {
+  background-color: var(--primary-color);
+  padding: 1rem 0;
+  position: static; /* Change to static by default */
+  width: 100%;
+  z-index: 1000;
+  box-shadow: none;
+  border: none;
+  margin: 0;
+}
+
+.navbar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+  position: relative;
+  min-height: 80px; /* Ensure minimum height */
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-right: 2rem;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  margin-left: auto; /* Push nav links to the right on desktop */
+}
+
+.logo-container {
+  position: relative;
+  margin-left: 2rem; /* Default margin for logo */
+  display: flex;
+  align-items: center;
+}
+
+.logo-container img {
+  height: 50px;
+  width: auto;
+}
+
+.navbar-content h2 {
+  color: white;
+  font-size: 1.8rem;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  margin-left: 2rem;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+  color: var(--secondary-color);
+}
+
+/* Active state for navigation links */
+.nav-links a.active {
+  color: var(--accent-color);
+  font-weight: bold;
+  position: relative;
+}
+.nav-links a.active::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: var(--accent-color);
+  border-radius: 2px;
+}
+
+/* Hero Section */
+.hero-section {
+  background-image: linear-gradient(rgba(26, 44, 83, 0.8), rgba(0, 0, 0, 0.7)),
+    url("../images/Bosch-Cover.jpg");
+  background-size: cover;
+  background-position: center;
+  color: white;
+  text-align: center;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+  margin-top: 0; /* No margin by default */
+  border: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: 0 2rem;
+}
+
+.hero-section h1 {
+  font-size: 2.8rem;
+  margin-bottom: 1rem;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  line-height: 1.3;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero-section p {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  color: #f0f0f0;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.cta-button {
+  display: inline-block;
+  padding: 1rem 2rem;
+  background-color: #c10510; /* Darker Bosch red */
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: all 0.3s;
+  margin: 0.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.cta-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  background-color: #a0040d; /* Even darker on hover */
+}
+
+.cta-button.secondary {
+  background-color: #00558f; /* Darker Bosch blue */
+}
+.cta-button.secondary:hover {
+  background-color: #004575; /* Even darker blue on hover */
+}
+
+/* Contact Section */
+.contact-section {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.contact-card {
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  transition: transform 0.3s;
+}
+
+.contact-card:hover {
+  transform: translateY(-5px);
+}
+
+.profile-image {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1rem;
+  border: 3.5px solid #a0040d;
+}
+
+.contact-card h3 {
+  margin-bottom: 0.5rem;
+  color: var(--secondary-color);
+}
+
+.contact-card p {
+  margin-bottom: 0.5rem;
+  color: #f0f0f0;
+}
+
+.contact-card > a {
+  color: #a8d5ff;
+  text-decoration: none;
+  transition: color 0.3s;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.contact-card > a:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+.contact-links {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.contact-links a {
+  color: var(--secondary-color);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s;
+}
+
+.contact-links a:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+.contact-links i {
+  font-size: 1.2rem;
+}
+
+.acknowledgement {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.acknowledgement p {
+  margin-bottom: 1rem;
+  color: #f0f0f0;
+}
+
+.acknowledgement-logo {
+  height: 90px;
+  width: auto;
+  opacity: 0.8;
+  transition: opacity 0.3s;
+}
+
+.acknowledgement-logo:hover {
+  opacity: 1;
+}
+
+/* Footer */
+footer {
+  background-color: #1a252f;
+  color: white;
+  text-align: center;
+  padding: 2rem;
+}
+
+/* Desktop styles */
+@media (min-width: 769px) {
+  .navbar {
+    position: fixed;
+    top: 0;
+  }
+
+  .hero-section {
+    margin-top: calc(2rem + 50px); /* Add margin only on desktop */
+  }
+
+  .nav-rail {
+    margin-left: auto; /* Push the nav-rail container to the right */
+    margin-right: 2rem; /* Add space before the logo */
+    flex-grow: 0; /* Prevent nav-rail from growing */
+    flex-shrink: 0; /* Prevent nav-rail from shrinking */
+    flex-basis: auto; /* Allow content size to determine basis */
+  }
+
+  .nav-links {
+    /* Ensure no conflicting margins on nav-links within nav-rail */
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .logo-container {
+    margin-left: 0; /* Remove default left margin on desktop */
+  }
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0.5rem 0;
+    position: static;
+    height: auto;
+  }
+
+  .navbar-content {
+    flex-direction: column;
+    padding: 0.5rem;
+  }
+
+  .navbar-brand h2 {
+    font-size: 1.2rem;
+  }
+
+  .nav-rail {
+    flex: 1; /* Allow nav-rail to take space on mobile landscape */
+  }
+
+  .nav-links {
+    margin-top: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center; /* Center nav links on mobile */
+    margin-left: 0; /* Reset auto margin for mobile */
+    margin-right: 0; /* Reset margin */
+  }
+
+  .nav-links a {
+    margin: 0.3rem 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .logo-container {
+    margin-left: 2rem; /* Keep original margin for mobile */
+  }
+
+  /* Restore removed mobile portrait styles */
+  .hero-section {
+    height: auto;
+    min-height: 200px;
+    margin-top: 0;
+    padding: 2rem 1rem;
+  }
+
+  .hero-section h1 {
+    font-size: 1.4rem;
+    line-height: 1.4;
+  }
+
+  .hero-section p {
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-content .cta-button {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    display: inline-block;
+  }
+
+  .contact-container {
+    flex-direction: column;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+  }
+
+  .profile-image {
+    width: 120px;
+    height: 120px;
+  }
+
+  .contact-card {
+    padding: 1.5rem;
+  }
+}
+
+/* ════════════════════════════════════════════════
+Landscape phones  (height ≤ 500 px)
+══════════════════════════════════════════════════ */
+@media (orientation: landscape) and (max-height: 500px) {
+  /* ── Navbar ── */
+  .navbar {
+    position: relative;
+    padding: 0.25rem 0;
+  }
+  .navbar-content {
+    flex-direction: row;
+    padding: 0.25rem 0.75rem;
+  }
+  .navbar-brand h2 {
+    font-size: 1rem;
+    margin-right: 0.75rem;
+    white-space: nowrap;
+  }
+
+  /* 1 — the fixed rail */
+  .nav-rail {
+    position: relative; /* anchor for arrows            */
+    flex: 1; /* share remaining width        */
+    overflow: hidden; /* hide scrolled-off buttons    */
+  }
+
+  /* 2 — the scrollable row */
+  .nav-links {
+    overflow-x: auto; /* same as before               */
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap;
+    gap: 0.8rem;
+    padding: 0 2.5rem; /* leave space for arrows       */
+    scrollbar-width: none;
+  }
+  .nav-links::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Corrected static arrows CSS */
+
+  /* 3 — Base styles for both arrows */
+  .nav-rail::before,
+  .nav-rail::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.85);
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  /* Left arrow - correct character and gradient */
+  .nav-rail::before {
+    content: "❮"; /* Left-pointing character */
+    left: 0;
+    padding-left: 0.35rem;
+    background: linear-gradient(
+      to left,
+      rgba(26, 44, 83, 0) 0%,
+      rgba(26, 44, 83, 1) 70%
+    );
+  }
+
+  /* Right arrow - correct character and gradient */
+  .nav-rail::after {
+    content: "❯"; /* RIGHT-pointing character (was incorrect) */
+    right: 0;
+    padding-right: 0.35rem;
+    background: linear-gradient(
+      to right,
+      rgba(26, 44, 83, 0) 0%,
+      rgba(26, 44, 83, 1) 70%
+    );
+  }
+
+  /* Dimming when at edges */
+  .nav-rail.at-start::before {
+    opacity: 0.2;
+  }
+
+  .nav-rail.at-end::after {
+    opacity: 0.2;
+
+    .navbar .nav-rail.at-start::before {
+      opacity: 0.2 !important;
+    }
+
+    .navbar .nav-rail.at-end::after {
+      opacity: 0.2 !important;
+    }
+  }
+
+  /* More specific selector for right arrow */
+  html body .navbar .navbar-content .nav-rail.at-end::after {
+    opacity: 0.2 !important;
+  }
+
+  /* dim arrow when you're at the edge — classes set in JS */
+  .nav-rail.at-start::before {
+    opacity: 0.2;
+  }
+  .nav-rail.at-end ::after {
+    opacity: 0.2;
+  }
+
+  @keyframes fadeHint {
+    to {
+      opacity: 0;
+    }
+  }
+
+  /* ── Hero gap fix ── */
+  .hero-section {
+    margin-top: 0rem;
+    padding-top: 0;
+    padding-bottom: 0rem;
+  }
+  .hero-section h1 {
+    font-size: 1.5rem;
+    line-height: 1.4;
+  }
+  .hero-section p {
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+
+  /* Carousel arrows */
+  .carousel-control {
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+    top: 60%;
+    background: transparent;
+  }
+  .carousel-control:hover {
+    background: transparent;
+  }
+}
