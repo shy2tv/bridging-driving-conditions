@@ -680,8 +680,13 @@ video[controls] {
 
 /* ===== LANDSCAPE MOBILE ===== */
 @media (max-width: 896px) and (orientation: landscape) and (max-height: 600px) {
+  .carousel-slide .zoom-icon,
+  .carousel-slide .hist-toggle {
+    top: 0px;
+  }
+
   .carousel-container {
-    height: 80vh;
+    height: 90vh;
   }
 
   /* Carousel controls transparent in landscape */
@@ -698,7 +703,7 @@ video[controls] {
     bottom: 10px;
     font-size: 0.9rem;
     opacity: 0;
-    transform: translate(0, 100%);
+    transform: translate(-50%, 100%);
     transition: all 0.5s ease;
     background: rgba(0, 0, 0, 0.5);
   }
