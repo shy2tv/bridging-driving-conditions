@@ -10,6 +10,80 @@ body {
   color: var(--text-color);
 }
 
+:root {
+  --font-base: 1rem;
+  --font-lg: 1.25rem;
+  --font-xl: 1.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", sans-serif;
+  font-size: var(--font-base);
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 var(--space-md);
+}
+
+.section {
+  margin-bottom: var(--space-lg);
+}
+
+.section h2 {
+  font-size: var(--font-xl);
+  color: var(--primary-color);
+  display: inline-block;
+  padding-bottom: var(--space-sm);
+  border-bottom: 2px solid var(--secondary-color);
+  text-align: center;
+  width: 100%;
+}
+
+.section h3 {
+  font-size: var(--font-lg);
+  text-align: left;
+  margin-bottom: var(--space-sm);
+}
+
+p {
+  font-size: var(--font-base);
+  margin-bottom: var(--space-sm);
+}
+
+.paper-summary {
+  background: rgba(52, 152, 219, 0.05);
+  border-radius: 12px;
+  padding: var(--space-lg);
+  margin: var(--space-lg) auto;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 var(--space-sm);
+  }
+  .section h2 {
+    font-size: 1.25rem;
+    border-bottom: none;
+  }
+  .section h3 {
+    font-size: 1rem;
+  }
+  p {
+    font-size: 0.9rem;
+  }
+}
+
 /* Main Content */
 .main-content {
   max-width: 1200px;
@@ -29,6 +103,11 @@ body {
   margin-bottom: 2rem;
   padding-bottom: 1rem;
   border-bottom: 2px solid var(--secondary-color);
+  text-align: center;
+}
+
+.section h3 {
+  text-align: center;
 } */
 
 .architecture-image-container {
@@ -106,10 +185,13 @@ body {
 }
 
 .paper-summary {
+  max-width: 800px;
+  width: 100%; /* so it’ll shrink on small screens */
+  margin: 2rem auto; /* top/bottom 2rem, left/right auto → true centering */
   background: var(--light-bg);
   padding: 2rem;
   border-radius: 10px;
-  margin: 2rem 0;
+  /* margin: 2rem 0; */
 }
 
 .paper-summary h3 {
@@ -160,10 +242,10 @@ body {
     padding: 1rem;
   }
 
-  .paper-summary h3 {
+  /* .paper-summary h3 {
     font-size: 1.2rem;
     margin-bottom: 0.8rem;
-  }
+  } */
 
   .key-points li {
     margin-bottom: 0.8rem;

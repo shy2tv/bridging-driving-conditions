@@ -1,32 +1,428 @@
-<section class="key-insights">
-    <h2>Key Research Insights</h2>
-    <p class="section-intro">Our paper contains several interesting findings that provide deeper understanding of domain adaptation for adverse driving conditions:</p>
-    
-    <div class="insights-grid">
-        <!-- Auxiliary Input Insight -->
-        <div class="insight-card">
-            <img src="images/aux_input_teaser.jpg" alt="Auxiliary input comparison" class="insight-image">
-            <h3>Auxiliary Inputs Matter</h3>
-            <p>Depth and semantic maps significantly improve object preservation during domain adaptation. Different configurations have distinctive effects on the generated images.</p>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Key Insights | Bridging Clear and Adverse Driving Conditions</title>
+    <!-- OpenGraph meta tags for social media previews -->
+    <meta
+      property="og:title"
+      content="Key Insights - Bridging Clear and Adverse Driving Conditions"
+    />
+    <meta
+      property="og:description"
+      content="Key insights and findings from our research on domain adaptation for adverse driving conditions."
+    />
+    <meta property="og:image" content="images/Bosch-Cover.jpg" />
+    <meta property="og:url" content="https://example.com/key-insights.html" />
+    <meta property="og:type" content="website" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/key-insights.css" />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="navbar-content">
+        <div class="navbar-brand">
+          <a href="index.html" style="text-decoration: none; color: white">
+            <h2>Bridging Clear and Adverse Driving</h2>
+          </a>
         </div>
-        
-        <!-- Weather Transfer Insight -->
-        <div class="insight-card">
-            <img src="images/weather_transfer_teaser.jpg" alt="Cross-weather transfer visualization" class="insight-image">
-            <h3>Cross-Weather Transfer</h3>
-            <p>Training on certain weather conditions provides unexpected benefits for others, suggesting shared underlying features across different adverse conditions.</p>
+        <div class="nav-rail">
+          <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="index.html#demo">Demo</a>
+            <a href="technical-details.html">Technical Details</a>
+            <a href="key-insights.html" class="active">Key Insights</a>
+            <a href="#paper">Paper</a>
+            <a href="index.html#features">Key Features</a>
+            <a href="index.html#contact">Contact</a>
+            <a href="#" class="cta-button">arXiv</a>
+          </div>
         </div>
-        
-        <!-- Object Size Insight -->
+        <div class="logo-container">
+          <img src="images/Bosch-Logo.png" alt="Bosch Logo" />
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="hero-content">
+        <h1>Key Insights</h1>
+        <p>Discover the most important findings from our research</p>
+      </div>
+    </section>
+
+    <!-- Main Content -->
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Key Insights Overview -->
+      <section id="overview" class="section">
+        <h2>Research Insights</h2>
+        <div class="paper-summary">
+          <h3>Major Findings</h3>
+          <ul class="key-points">
+            <li>
+              <strong>Zero-Shot Performance:</strong> Our model achieves 78.57%
+              mIoU on ACDC-Adverse test set without using any real
+              adverse-weather images in training.
+            </li>
+            <li>
+              <strong>Simulation-to-Real Gap:</strong> The combination of
+              simulation and diffusion models effectively bridges the domain gap
+              between synthetic and real-world data.
+            </li>
+            <li>
+              <strong>Label Preservation:</strong> Our enhanced DA-UNIT
+              architecture maintains pixel-perfect label alignment while
+              generating photorealistic adverse conditions.
+            </li>
+            <li>
+              <strong>Cost Efficiency:</strong> The pipeline reduces the need
+              for expensive real-world data collection in adverse conditions by
+              up to 90%.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Key Research Findings with Images -->
+      <section id="key-findings" class="section">
+        <h2>Key Research Discoveries</h2>
+
+        <!-- Object Size Distribution Finding -->
         <div class="insight-card">
-            <img src="images/size_distribution_teaser.jpg" alt="Object size distribution" class="insight-image">
+          <div class="insight-content">
             <h3>Size Distribution Challenges</h3>
-            <p>Clear weather scenes often contain smaller, more difficult objects - a counterintuitive finding that explains certain performance patterns.</p>
+            <p>
+              Our analysis revealed a counterintuitive pattern: clear weather
+              scenes in ACDC contain a higher proportion of small objects
+              compared to adverse conditions. This explains why detection
+              performance can sometimes be lower on clear images despite better
+              visibility.
+            </p>
+            <p>
+              This insight helped us optimize our pipeline to better handle the
+              full range of object sizes, improving overall robustness across
+              all weather conditions.
+            </p>
+          </div>
+          <div class="insight-image">
+            <img
+              src="images/object_size_distribution.jpg"
+              alt="Object size distribution across weather conditions"
+              class="insight-img"
+            />
+            <p class="image-caption">
+              Figure: Object size distribution across different weather
+              conditions. Clear weather (yellow) has significantly more small
+              objects than adverse conditions.
+            </p>
+          </div>
         </div>
+
+        <!-- Object Category Distribution Finding -->
+        <div class="insight-card">
+          <div class="insight-content">
+            <h3>Cross-Weather Transfer</h3>
+            <p>
+              Our studies revealed that training on one adverse condition can
+              unexpectedly improve performance in others. For instance, models
+              trained on rain data showed surprising benefits for foggy
+              conditions.
+            </p>
+            <p>
+              This finding suggests shared underlying features across different
+              adverse conditions, allowing for more efficient training
+              strategies that don't require extensive data for every weather
+              type.
+            </p>
+          </div>
+          <div class="insight-image">
+            <img
+              src="images/object_category_dist.png"
+              alt="Object category distribution across weather conditions"
+              class="insight-img"
+            />
+            <p class="image-caption">
+              Figure: Object category distribution varies significantly across
+              weather conditions, with clear and nighttime containing more
+              difficult objects (e.g., bicycles, motorcycles).
+            </p>
+          </div>
+        </div>
+
+        <!-- Auxiliary Input Types Comparison Finding -->
+        <div class="insight-card">
+          <div class="insight-content">
+            <h3>Auxiliary Inputs Matter</h3>
+            <p>
+              Our enhanced DA-UNIT architecture accepts depth maps, semantic
+              segmentation, and instance segmentation as auxiliary inputs. These
+              inputs significantly improve object preservation during domain
+              adaptation.
+            </p>
+            <p>
+              Different configurations of auxiliary inputs have distinctive
+              effects on the generated images, with depth maps at the encoder
+              stage providing the best balance of realism and object integrity.
+            </p>
+          </div>
+          <div class="insight-image">
+            <img
+              src="images/aux_input_types_comparison.png"
+              alt="Comparison of different auxiliary input types"
+              class="insight-img"
+            />
+            <p class="image-caption">
+              Figure: Comparison of generation results with different auxiliary
+              input types. Left column shows clear input, right columns show
+              outputs with different auxiliary inputs.
+            </p>
+          </div>
+        </div>
+
+        <!-- ControlNet Blending Finding -->
+        <div class="insight-card">
+          <div class="insight-content">
+            <h3>Adaptive Blending Technique</h3>
+            <p>
+              Our novel blending approach addresses hallucinations and artifacts
+              in diffusion outputs by adaptively combining the best parts of
+              CARLA simulations with diffusion-enhanced regions.
+            </p>
+            <p>
+              We discovered that different object categories benefit from
+              different blending weights: vehicles and traffic lights work best
+              with low diffusion influence (0.1), while static background
+              elements like roads benefit from higher diffusion influence (0.8).
+            </p>
+          </div>
+          <div class="insight-image">
+            <img
+              src="images/controlnet_blending.png"
+              alt="ControlNet blending technique visualization"
+              class="insight-img"
+            />
+            <p class="image-caption">
+              Figure: Our blending technique removes artifacts while preserving
+              photorealism. Left to right: semantic segmentation, CARLA
+              simulation, diffusion output, and final blended result.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Impact Section -->
+      <section id="impact" class="section">
+        <h2>Research Impact</h2>
+        <div class="paper-summary">
+          <h3>Practical Applications</h3>
+          <ul class="key-points">
+            <li>
+              <strong>Autonomous Driving:</strong> Improved perception system
+              robustness in adverse weather conditions.
+            </li>
+            <li>
+              <strong>Data Generation:</strong> Cost-effective method for
+              generating diverse adverse-condition training data.
+            </li>
+            <li>
+              <strong>Model Training:</strong> Novel approach to domain
+              adaptation that preserves semantic information.
+            </li>
+            <li>
+              <strong>Industry Adoption:</strong> Scalable solution that can be
+              integrated into existing autonomous driving pipelines.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Future Directions -->
+      <section id="future" class="section">
+        <h2>Future Directions</h2>
+        <div class="paper-summary">
+          <h3>Research Opportunities</h3>
+          <ul class="key-points">
+            <li>
+              <strong>Multi-Modal Integration:</strong> Exploring the
+              incorporation of additional sensor data (LiDAR, radar) for
+              enhanced robustness.
+            </li>
+            <li>
+              <strong>Dynamic Weather Conditions:</strong> Extending the model
+              to handle time-varying weather conditions and transitions.
+            </li>
+            <li>
+              <strong>Real-Time Adaptation:</strong> Developing methods for
+              on-the-fly domain adaptation in changing weather conditions.
+            </li>
+            <li>
+              <strong>Cross-Dataset Generalization:</strong> Investigating the
+              model's performance across different driving datasets and
+              scenarios.
+            </li>
+          </ul>
+        </div>
+      </section>
     </div>
-    
-    <div class="paper-cta">
-        <p>Explore these findings and more in our full paper:</p>
-        <a href="#paper-link" class="button primary-button">Read the Full Paper</a>
-    </div>
-</section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+      <h2>Our Team</h2>
+      <div class="contact-grid">
+        <div class="contact-card">
+          <img
+            src="images/profile_yoel.jpeg"
+            alt="Yoel Shapiro"
+            class="profile-image"
+            loading="lazy"
+          />
+          <h3>Shapiro Yoel</h3>
+          <p>Research Engineer</p>
+          <a href="mailto:Yoel.Shapiro@il.bosch.com"
+            >Yoel.Shapiro@il.bosch.com</a
+          >
+          <div class="contact-links">
+            <a
+              href="https://www.linkedin.com/in/yoel-shapiro-142abb21/"
+              target="_blank"
+            >
+              <i class="fab fa-linkedin"></i>LinkedIn
+            </a>
+            <a
+              href="https://scholar.google.com/citations?user=Ry_iQqEAAAAJ&hl=en"
+              target="_blank"
+            >
+              <i class="fas fa-graduation-cap"></i>Scholar
+            </a>
+          </div>
+        </div>
+        <div class="contact-card">
+          <img
+            src="images/profile_yahia_2_cropped.jpg"
+            alt="Yahia Showgan"
+            class="profile-image"
+            loading="lazy"
+          />
+          <h3>Yahia Showgan</h3>
+          <p>Computer Vision Researcher</p>
+          <a href="mailto:YahiaShowgan@gmail.com">YahiaShowgan@gmail.com</a>
+          <div class="contact-links">
+            <a
+              href="https://www.linkedin.com/in/yahia-showgan/"
+              target="_blank"
+            >
+              <i class="fab fa-linkedin"></i>LinkedIn
+            </a>
+            <a
+              href="https://scholar.google.com/citations?user=Ry_iQqEAAAAJ&hl=en"
+              target="_blank"
+            >
+              <i class="fas fa-graduation-cap"></i>Scholar
+            </a>
+          </div>
+        </div>
+        <div class="contact-card">
+          <img
+            src="images/profile_koustav.png"
+            alt="Koustav Mullick"
+            class="profile-image"
+            loading="lazy"
+          />
+          <h3>Mullick Koustav</h3>
+          <p>Computer Vision Researcher</p>
+          <a href="mailto:Koustav.Mullick@in.bosch.com"
+            >Koustav.Mullick@in.bosch.com</a
+          >
+          <div class="contact-links">
+            <a href="https://www.linkedin.com/in/kmul00/" target="_blank">
+              <i class="fab fa-linkedin"></i>LinkedIn
+            </a>
+            <a
+              href="https://scholar.google.com/citations?user=lP2FUZ0AAAAJ&hl=en"
+              target="_blank"
+            >
+              <i class="fas fa-graduation-cap"></i>Scholar
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="acknowledgement">
+        <p>
+          This research is supported by Bosch Research and Technology Center.
+        </p>
+        <img
+          src="images/Bosch-Logo.png"
+          alt="Bosch Logo"
+          class="acknowledgement-logo"
+          loading="lazy"
+        />
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <p>
+        &copy; 2025 Bridging Clear and Adverse Driving Research Team. All rights
+        reserved.
+      </p>
+    </footer>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Always keep Key Insights highlighted on this page
+        const keyInsightsLink = document.querySelector(
+          '.nav-links a[href="key-insights.html"]'
+        );
+        if (keyInsightsLink) {
+          keyInsightsLink.classList.add("active");
+        }
+
+        // For section tracking - only affects other links, not Key Insights
+        const sections = document.querySelectorAll("section[id]");
+        const sectionLinks = document.querySelectorAll(
+          '.nav-links a[href^="#"]:not([href="#"])'
+        );
+
+        // Update active section link based on scroll position
+        function updateActiveSection() {
+          let currentSectionId = "";
+
+          sections.forEach((section) => {
+            const sectionTop = section.offsetTop - 100;
+            const sectionHeight = section.offsetHeight;
+            if (
+              window.scrollY >= sectionTop &&
+              window.scrollY < sectionTop + sectionHeight
+            ) {
+              currentSectionId = "#" + section.getAttribute("id");
+            }
+          });
+
+          // Update section links besides Key Insights
+          sectionLinks.forEach((link) => {
+            link.classList.toggle(
+              "active",
+              link.getAttribute("href") === currentSectionId
+            );
+          });
+
+          // Always keep Key Insights highlighted
+          if (keyInsightsLink) {
+            keyInsightsLink.classList.add("active");
+          }
+        }
+
+        // Listen for scroll events to update active section
+        window.addEventListener("scroll", updateActiveSection);
+      });
+    </script>
+  </body>
+</html>
