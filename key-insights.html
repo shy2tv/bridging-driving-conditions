@@ -118,6 +118,7 @@
               alt="Object size distribution across weather conditions"
               class="insight-img"
             />
+            <div class="zoom-icon"><i class="fas fa-expand"></i></div>
             <p class="image-caption">
               Figure: Object size distribution across different weather
               conditions. Clear weather (yellow) has significantly more small
@@ -375,6 +376,14 @@
       </p>
     </footer>
 
+    <!-- Fullscreen modal for images -->
+    <div id="image-fullscreen" class="fullscreen-overlay">
+      <div class="fullscreen-container">
+        <button class="close-fullscreen"><i class="fas fa-times"></i></button>
+        <img src="" alt="Full-size image" />
+      </div>
+    </div>
+
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         // Always keep Key Insights highlighted on this page
@@ -422,6 +431,52 @@
 
         // Listen for scroll events to update active section
         window.addEventListener("scroll", updateActiveSection);
+
+        // Image zoom functionality
+        const insightImages = document.querySelectorAll(".insight-img");
+        const zoomIcons = document.querySelectorAll(".zoom-icon");
+        const fullscreenOverlay = document.getElementById("image-fullscreen");
+        const fullscreenImg = fullscreenOverlay.querySelector("img");
+        const closeFullscreen =
+          fullscreenOverlay.querySelector(".close-fullscreen");
+
+        function openFullscreen(imgSrc) {
+          fullscreenImg.src = imgSrc;
+          fullscreenOverlay.style.display = "block";
+        }
+
+        function closeFullscreenHandler() {
+          fullscreenOverlay.style.display = "none";
+        }
+
+        insightImages.forEach((img) => {
+          img.addEventListener("click", () => openFullscreen(img.src));
+        });
+
+        zoomIcons.forEach((icon) => {
+          icon.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const imgSrc = icon.previousElementSibling.src;
+            openFullscreen(imgSrc);
+          });
+        });
+
+        closeFullscreen.addEventListener("click", closeFullscreenHandler);
+
+        fullscreenOverlay.addEventListener("click", function (e) {
+          if (
+            e.target === fullscreenOverlay ||
+            e.target.classList.contains("fullscreen-container")
+          ) {
+            closeFullscreenHandler();
+          }
+        });
+
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") {
+            closeFullscreenHandler();
+          }
+        });
       });
     </script>
   </body>
