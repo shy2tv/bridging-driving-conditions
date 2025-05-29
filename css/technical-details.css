@@ -10,14 +10,14 @@ body {
   color: var(--text-color);
 }
 
-:root {
+/* :root {
   --font-base: 1rem;
   --font-lg: 1.25rem;
   --font-xl: 1.5rem;
   --space-sm: 1rem;
   --space-md: 1.5rem;
   --space-lg: 2rem;
-}
+} */
 
 * {
   box-sizing: border-box;

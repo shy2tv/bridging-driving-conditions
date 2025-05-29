@@ -59,8 +59,8 @@
     </section>
 
     <!-- Main Content -->
-    <!-- Main Content -->
     <div class="main-content">
+      <!-- Key Insights Overview -->
       <!-- Key Insights Overview -->
       <section id="overview" class="section">
         <h2>Research Insights</h2>
@@ -68,24 +68,28 @@
           <h3>Major Findings</h3>
           <ul class="key-points">
             <li>
-              <strong>Zero-Shot Performance:</strong> Our model achieves 78.57%
-              mIoU on ACDC-Adverse test set without using any real
-              adverse-weather images in training.
+              <strong>Zero-Shot Performance:</strong> Our model achieves
+              <em>78.57% mIoU</em> on ACDC-Adverse without any real
+              adverse-weather training data.
             </li>
             <li>
-              <strong>Simulation-to-Real Gap:</strong> The combination of
-              simulation and diffusion models effectively bridges the domain gap
-              between synthetic and real-world data.
+              <strong>Simulation-to-Real Gap:</strong> Combining CARLA
+              simulation with diffusion models bridges the synthetic→real domain
+              gap.
             </li>
             <li>
-              <strong>Label Preservation:</strong> Our enhanced DA-UNIT
-              architecture maintains pixel-perfect label alignment while
-              generating photorealistic adverse conditions.
+              <strong>Label Preservation:</strong> Enhanced DA-UNIT preserves
+              pixel-perfect semantic labels while generating photorealistic fog,
+              rain, snow, and night.
             </li>
             <li>
-              <strong>Cost Efficiency:</strong> The pipeline reduces the need
-              for expensive real-world data collection in adverse conditions by
-              up to 90%.
+              <strong>Data Reusability:</strong> Generated adverse-condition
+              images are task-agnostic—use them for detection, depth,
+              segmentation, or any vision task.
+            </li>
+            <li>
+              <strong>Operational Efficiency:</strong> Our pipeline drastically
+              reduces costly real-world adverse-data collection and labeling.
             </li>
           </ul>
         </div>
@@ -127,21 +131,96 @@
           </div>
         </div>
 
-        <!-- Object Category Distribution Finding -->
+        <!-- ── Cross-Weather Transfer Insight ── -->
         <div class="insight-card">
           <div class="insight-content">
             <h3>Cross-Weather Transfer</h3>
             <p>
-              Our studies revealed that training on one adverse condition can
-              unexpectedly improve performance in others. For instance, models
-              trained on rain data showed surprising benefits for foggy
-              conditions.
+              We trained on a single adverse condition and evaluated across all
+              others. Below is our real-data credit-assignment table: the best
+              in each column is <strong>bolded</strong> and the row headers
+              highlight which split was used.
             </p>
+          </div>
+          <div class="insight-content table-container">
+            <table class="credit-assignment">
+              <thead>
+                <tr>
+                  <th>Trained On</th>
+                  <th>Fog</th>
+                  <th>Rain</th>
+                  <th>Night</th>
+                  <th>Snow</th>
+                  <th>Clear</th>
+                  <th>Adverse</th>
+                  <th>All</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><em>ACDC-clear + Fog</em></td>
+                  <td class="highlight">44.60</td>
+                  <td class="highlight">31.86</td>
+                  <td class="highlight">21.76</td>
+                  <td class="highlight">39.78</td>
+                  <td><strong>32.31</strong></td>
+                  <td>33.69</td>
+                  <td>33.28</td>
+                </tr>
+                <tr>
+                  <td><em>ACDC-clear + Rain</em></td>
+                  <td class="highlight">51.06</td>
+                  <td class="highlight"><strong>35.86</strong></td>
+                  <td class="highlight">21.53</td>
+                  <td class="highlight">40.96</td>
+                  <td>31.68</td>
+                  <td><strong>36.29</strong></td>
+                  <td><strong>34.61</strong></td>
+                </tr>
+                <tr>
+                  <td><em>ACDC-clear + Night</em></td>
+                  <td class="highlight">46.15</td>
+                  <td class="highlight">32.36</td>
+                  <td class="highlight"><strong>24.50</strong></td>
+                  <td class="highlight">37.44</td>
+                  <td>32.02</td>
+                  <td>34.09</td>
+                  <td>33.51</td>
+                </tr>
+                <tr>
+                  <td><em>ACDC-clear + Snow</em></td>
+                  <td class="highlight"><strong>51.35</strong></td>
+                  <td class="highlight">34.18</td>
+                  <td class="highlight">21.78</td>
+                  <td class="highlight"><strong>44.48</strong></td>
+                  <td>31.86</td>
+                  <td>35.33</td>
+                  <td>33.73</td>
+                </tr>
+                <tr>
+                  <td><em>ACDC-clear + All</em></td>
+                  <td>53.02</td>
+                  <td>36.14</td>
+                  <td>25.59</td>
+                  <td>47.02</td>
+                  <td>32.31</td>
+                  <td>39.05</td>
+                  <td>36.43</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ── Category Distribution (Pie) Insight ── -->
+        <div class="insight-card">
+          <div class="insight-content">
+            <h3>Object Category Distribution</h3>
             <p>
-              This finding suggests shared underlying features across different
-              adverse conditions, allowing for more efficient training
-              strategies that don't require extensive data for every weather
-              type.
+              Different weather conditions introduce different category biases—
+              here's a breakdown of how objects are distributed. Notice how
+              clear vs. nighttime scenes contain proportionally more small,
+              vulnerable categories (bicycles, motorcycles).
             </p>
           </div>
           <div class="insight-image">
@@ -150,6 +229,7 @@
               alt="Object category distribution across weather conditions"
               class="insight-img"
             />
+            <div class="zoom-icon"><i class="fas fa-expand"></i></div>
             <p class="image-caption">
               Figure: Object category distribution varies significantly across
               weather conditions, with clear and nighttime containing more
@@ -180,6 +260,7 @@
               alt="Comparison of different auxiliary input types"
               class="insight-img"
             />
+            <div class="zoom-icon"><i class="fas fa-expand"></i></div>
             <p class="image-caption">
               Figure: Comparison of generation results with different auxiliary
               input types. Left column shows clear input, right columns show
@@ -210,6 +291,7 @@
               alt="ControlNet blending technique visualization"
               class="insight-img"
             />
+            <div class="zoom-icon"><i class="fas fa-expand"></i></div>
             <p class="image-caption">
               Figure: Our blending technique removes artifacts while preserving
               photorealism. Left to right: semantic segmentation, CARLA
@@ -226,20 +308,23 @@
           <h3>Practical Applications</h3>
           <ul class="key-points">
             <li>
-              <strong>Autonomous Driving:</strong> Improved perception system
-              robustness in adverse weather conditions.
+              <strong>Autonomous Driving:</strong> Enhances perception-system
+              robustness across a wide range of adverse weather conditions.
             </li>
             <li>
-              <strong>Data Generation:</strong> Cost-effective method for
-              generating diverse adverse-condition training data.
+              <strong>Task-Agnostic Data:</strong> Generated adverse-condition
+              images can be reused for any downstream vision task (detection,
+              segmentation, depth, etc.), not just semantic segmentation.
             </li>
             <li>
-              <strong>Model Training:</strong> Novel approach to domain
-              adaptation that preserves semantic information.
+              <strong>Model Training:</strong> Introduces a domain-adaptation
+              strategy that preserves both semantic labels and fine-grained
+              details during style transfer.
             </li>
             <li>
-              <strong>Industry Adoption:</strong> Scalable solution that can be
-              integrated into existing autonomous driving pipelines.
+              <strong>Industry Integration:</strong> A modular, plugin-style
+              pipeline that can slot into existing autonomous-driving toolchains
+              with minimal retraining.
             </li>
           </ul>
         </div>
