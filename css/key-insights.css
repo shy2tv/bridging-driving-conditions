@@ -427,7 +427,7 @@ p {
 }
 
 .credit-assignment .highlight {
-  background: rgba(0, 0, 0, 0.05);
+  background: rgba(26, 44, 83, 0.3);
 }
 
 .credit-assignment strong {
@@ -441,4 +441,21 @@ p {
     padding: 0.5rem 0.75rem;
     font-size: 0.85rem;
   }
+}
+
+/* make the header row extra dark */
+table.credit-assignment thead th {
+  background-color: rgb(26, 44, 83); /* or whatever “darker” blue you like */
+  color: white;
+  text-align: center;
+}
+
+/* optionally darken all non-last body rows */
+table.credit-assignment tbody tr:not(:last-child) {
+  background-color: #e6ebf5; /* a bit darker than your light rows */
+}
+
+/* force the very last row (ACDC-All) to pure white */
+table.credit-assignment tbody tr:last-child {
+  background-color: white !important;
 }

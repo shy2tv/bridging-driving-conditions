@@ -144,16 +144,27 @@
           </div>
           <div class="insight-content table-container">
             <table class="credit-assignment">
+              <caption class="visually-hidden">
+                Real data credit assignment
+              </caption>
               <thead>
                 <tr>
-                  <th>Trained On</th>
-                  <th>Fog</th>
-                  <th>Rain</th>
-                  <th>Night</th>
-                  <th>Snow</th>
-                  <th>Clear</th>
-                  <th>Adverse</th>
-                  <th>All</th>
+                  <!-- empty corner cell -->
+                  <th scope="col"></th>
+                  <!-- group header over all test columns -->
+                  <th scope="colgroup" colspan="7" style="text-align: center">
+                    Tested On
+                  </th>
+                </tr>
+                <tr>
+                  <th scope="row" style="text-align: center">Trained On</th>
+                  <th scope="col">Fog</th>
+                  <th scope="col">Rain</th>
+                  <th scope="col">Night</th>
+                  <th scope="col">Snow</th>
+                  <th scope="col">Clear</th>
+                  <th scope="col">Adverse</th>
+                  <th scope="col">All</th>
                 </tr>
               </thead>
               <tbody>
