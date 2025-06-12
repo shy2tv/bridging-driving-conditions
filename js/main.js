@@ -1,91 +1,90 @@
-document.addEventListener("DOMContentLoaded", function () {
-  // Active section tracking for navigation
-  const sections = document.querySelectorAll("section[id]");
-  const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
-  const isHomePage =
-    window.location.pathname.endsWith("index.html") ||
-    window.location.pathname.endsWith("/");
+document.addEventListener("DOMContentLoaded", () => {
+  // ————————————————
+  // ACTIVE NAV LINK LOGIC
+  // ————————————————
+  const navLinksAll = Array.from(document.querySelectorAll(".nav-links a"));
+  const sections = Array.from(document.querySelectorAll("section[id]"));
 
-  // Set initial active state based on URL hash or scroll position
-  function setInitialActive() {
-    const hash = window.location.hash;
-    if (hash) {
-      const sectionLink = document.querySelector(
-        `.nav-links a[href="${hash}"]`
-      );
-      if (sectionLink) {
-        navLinks.forEach((link) => link.classList.remove("active"));
-        sectionLink.classList.add("active");
-      }
-    } else if (isHomePage) {
-      // Only highlight Home on the home page
-      if (window.scrollY < 100) {
-        navLinks.forEach((link) => link.classList.remove("active"));
-        document
-          .querySelector('.nav-links a[href="index.html"]')
-          .classList.add("active");
-      } else {
-        // Call updateActiveLink to set based on scroll position
-        updateActiveLink();
-      }
-    }
+  // Determine our "page" (filename or default to index.html)
+  let pagePath = window.location.pathname.split("/").pop();
+  if (!pagePath) pagePath = "index.html";
+
+  // Find special links
+  const homeLink = navLinksAll.find(
+    (a) => a.getAttribute("href") === "index.html"
+  );
+  const contactLink = navLinksAll.find(
+    (a) => a.getAttribute("href") === "#contact"
+  );
+  const pageLink = navLinksAll.find((a) =>
+    a.getAttribute("href").endsWith(pagePath)
+  );
+
+  // Map each section-id → its nav link (if any)
+  const sectionLinkMap = new Map();
+  sections.forEach((sec) => {
+    const sel = "#" + sec.id;
+    const link = navLinksAll.find((a) => {
+      const href = a.getAttribute("href");
+      return href === sel || href.endsWith(sel);
+    });
+    if (link) sectionLinkMap.set(sec.id, link);
+  });
+
+  // Utility to clear all actives
+  function clearActive() {
+    navLinksAll.forEach((a) => a.classList.remove("active"));
   }
 
-  // Update active nav link based on scroll position
+  // Core logic: choose exactly one link to highlight
   function updateActiveLink() {
-    let currentSectionId = "";
-    let isAtTop = window.scrollY < 100; // Check if at the top of the page
+    clearActive();
+    const scrollY = window.scrollY;
+    const offset = 80; // tweak to your navbar height
+    const atBottom =
+      window.innerHeight + scrollY >= document.body.scrollHeight - 20;
 
-    sections.forEach((section) => {
-      const sectionTop = section.offsetTop - 100;
-      const sectionHeight = section.offsetHeight;
-      if (
-        window.scrollY >= sectionTop &&
-        window.scrollY < sectionTop + sectionHeight
-      ) {
-        currentSectionId = "#" + section.getAttribute("id");
-      }
-    });
-
-    // First remove active class from all links
-    navLinks.forEach((link) => {
-      link.classList.remove("active");
-    });
-
-    const homeLink = document.querySelector('.nav-links a[href="index.html"]');
-
-    // If we're at a specific section, highlight that section's link
-    if (currentSectionId) {
-      const sectionLink = document.querySelector(
-        `.nav-links a[href="${currentSectionId}"]`
-      );
-      if (sectionLink) {
-        sectionLink.classList.add("active");
-        // Make sure Home is not active when a section is active
-        if (homeLink) homeLink.classList.remove("active");
-      }
-    }
-    // Otherwise, if we're at the top of the home page, highlight Home
-    else if (isAtTop && isHomePage) {
-      if (homeLink) homeLink.classList.add("active");
-    }
-
-    // --- NEW: force-activate #contact when scrolled to the end -------------
-    const contactLink = document.querySelector('.nav-links a[href="#contact"]');
-    const nearBottom =
-      window.innerHeight + window.scrollY >= document.body.offsetHeight - 20; // 20 px slack
-
-    if (nearBottom && contactLink) {
-      navLinks.forEach((link) => link.classList.remove("active"));
+    // 1) bottom of page → Contact
+    if (atBottom && contactLink) {
       contactLink.classList.add("active");
-      return; // nothing else to do
+      return;
+    }
+
+    // 2) section currently in view → that nav link
+    for (const sec of sections) {
+      const top = sec.offsetTop - offset;
+      const bottom = top + sec.offsetHeight;
+      if (scrollY >= top && scrollY < bottom) {
+        const link = sectionLinkMap.get(sec.id);
+        if (link) {
+          link.classList.add("active");
+          return;
+        }
+      }
+    }
+
+    // 3) at very top of index → Home
+    if ((pagePath === "index.html" || pagePath === "") && scrollY < offset) {
+      if (homeLink) {
+        homeLink.classList.add("active");
+        return;
+      }
+    }
+
+    // 4) fallback → current page link
+    if (pageLink) {
+      pageLink.classList.add("active");
     }
   }
 
-  // Initialize active state
-  setInitialActive();
+  // initialize + hook
+  updateActiveLink();
+  window.addEventListener("scroll", updateActiveLink);
+  window.addEventListener("hashchange", updateActiveLink);
 
-  // Listen for scroll events to update active state
+  // ————————————————
+  // FULLSCREEN DEMO LOGIC
+  // ————————————————
   const carousels = document.querySelectorAll(".carousel");
   const fullscreenOverlay = document.getElementById("fullscreen");
   const fullscreenContainer = fullscreenOverlay.querySelector(
@@ -107,54 +106,43 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let currentFullscreenSlideIndex = null;
   let currentCarouselSlides = null;
-  let currentHistState = false; // false = normal, true = hist
+  let currentHistState = false;
 
-  // --- Fullscreen Logic ---
-
-  function openFullscreen(imgElement, slideIndex, slides) {
-    const normalSrc = imgElement.dataset.normalSrc;
-    const histSrc = imgElement.dataset.histSrc;
-    const isToggleable = !!normalSrc; // Check if toggle attributes exist
-    const isHistActive = imgElement.dataset.histActive === "true";
+  function openFullscreen(imgEl, idx, slides) {
+    const normal = imgEl.dataset.normalSrc;
+    const hist = imgEl.dataset.histSrc;
+    const toggleable = !!normal;
+    const isHist = imgEl.dataset.histActive === "true";
 
     currentCarouselSlides = slides;
-    currentFullscreenSlideIndex = slideIndex;
-
-    // Set image source and data attributes for fullscreen
-    fullscreenImg.src = imgElement.src;
-    fullscreenImg.dataset.normalSrc = normalSrc || "";
-    fullscreenImg.dataset.histSrc = histSrc || "";
-    fullscreenImg.dataset.histActive = imgElement.dataset.histActive || "false";
+    currentFullscreenSlideIndex = idx;
+    fullscreenImg.src = imgEl.src;
+    fullscreenImg.dataset.normalSrc = normal || "";
+    fullscreenImg.dataset.histSrc = hist || "";
+    fullscreenImg.dataset.histActive = imgEl.dataset.histActive || "false";
     fullscreenImg.style.animationPlayState =
-      imgElement.style.animationPlayState || "running"; // Preserve state
-    fullscreenCaption.textContent = imgElement
+      imgEl.style.animationPlayState || "running";
+    fullscreenCaption.textContent = imgEl
       .closest(".carousel-slide")
       .querySelector(".carousel-caption").textContent;
 
-    // Show/hide and update histogram toggle in fullscreen
-    if (isToggleable) {
+    if (toggleable) {
       fullscreenHistToggle.style.display = "flex";
-      currentHistState = isHistActive;
-      fullscreenHistToggle.classList.toggle("active", currentHistState);
+      currentHistState = isHist;
+      fullscreenHistToggle.classList.toggle("active", isHist);
     } else {
       fullscreenHistToggle.style.display = "none";
-      currentHistState = false; // Reset for non-toggleable images
+      currentHistState = false;
     }
-
-    fullscreenOverlay.style.display = "flex"; // Use flex to center container
+    fullscreenOverlay.style.display = "flex";
   }
 
   function closeFullscreen() {
-    // Sync animation state back before closing
-    const originalSlide = currentCarouselSlides
-      ? currentCarouselSlides[currentFullscreenSlideIndex]
-      : null;
-    if (originalSlide) {
-      const originalImg = originalSlide.querySelector("img");
-      if (originalImg) {
-        originalImg.style.animationPlayState =
-          fullscreenImg.style.animationPlayState;
-      }
+    if (currentCarouselSlides) {
+      const orig =
+        currentCarouselSlides[currentFullscreenSlideIndex].querySelector("img");
+      if (orig)
+        orig.style.animationPlayState = fullscreenImg.style.animationPlayState;
     }
     fullscreenOverlay.style.display = "none";
     currentCarouselSlides = null;
@@ -163,39 +151,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function navigateFullscreen(direction) {
     if (!currentCarouselSlides) return;
+    let idx = currentFullscreenSlideIndex + direction;
+    if (idx < 0) idx = currentCarouselSlides.length - 1;
+    if (idx >= currentCarouselSlides.length) idx = 0;
 
-    let newIndex = currentFullscreenSlideIndex + direction;
-    if (newIndex >= currentCarouselSlides.length) newIndex = 0;
-    if (newIndex < 0) newIndex = currentCarouselSlides.length - 1;
+    const slide = currentCarouselSlides[idx];
+    const img = slide.querySelector("img");
+    if (!img) return;
 
-    const targetSlide = currentCarouselSlides[newIndex];
-    const targetImg = targetSlide.querySelector("img");
-    if (!targetImg) return;
+    const normal = img.dataset.normalSrc;
+    const hist = img.dataset.histSrc;
+    const target = normal ? (currentHistState ? hist : normal) : img.src;
 
-    const normalSrc = targetImg.dataset.normalSrc;
-    const histSrc = targetImg.dataset.histSrc;
-    const isToggleable = !!normalSrc;
-
-    // Maintain current histogram state if the next image is toggleable, otherwise use normal
-    const targetSrc = isToggleable
-      ? currentHistState
-        ? histSrc
-        : normalSrc
-      : targetImg.src;
-
-    fullscreenImg.src = targetSrc;
-    fullscreenImg.dataset.normalSrc = normalSrc || "";
-    fullscreenImg.dataset.histSrc = histSrc || "";
+    fullscreenImg.src = target;
+    fullscreenImg.dataset.normalSrc = normal || "";
+    fullscreenImg.dataset.histSrc = hist || "";
     fullscreenImg.style.animationPlayState =
-      targetImg.style.animationPlayState || "running";
+      img.style.animationPlayState || "running";
     fullscreenCaption.textContent =
-      targetSlide.querySelector(".carousel-caption").textContent;
-    currentFullscreenSlideIndex = newIndex;
+      slide.querySelector(".carousel-caption").textContent;
+    currentFullscreenSlideIndex = idx;
 
-    // Show/hide and update histogram toggle in fullscreen
-    if (isToggleable) {
+    if (normal) {
       fullscreenHistToggle.style.display = "flex";
-      // Update toggle state based on the *maintained* state (currentHistState)
       fullscreenHistToggle.classList.toggle("active", currentHistState);
     } else {
       fullscreenHistToggle.style.display = "none";
@@ -203,71 +181,53 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function toggleFullscreenHist() {
-    const normalSrc = fullscreenImg.dataset.normalSrc;
-    const histSrc = fullscreenImg.dataset.histSrc;
-    if (!normalSrc) return; // Not toggleable
+    const normal = fullscreenImg.dataset.normalSrc;
+    const hist = fullscreenImg.dataset.histSrc;
+    if (!normal) return;
 
-    // Use data attribute to determine state
-    const isHistActive = fullscreenImg.dataset.histActive === "true";
-
-    if (isHistActive) {
-      // Switch to normal
-      fullscreenImg.src = normalSrc;
+    const now = fullscreenImg.dataset.histActive === "true";
+    if (now) {
+      fullscreenImg.src = normal;
       fullscreenImg.dataset.histActive = "false";
       fullscreenHistToggle.classList.remove("active");
       currentHistState = false;
     } else {
-      // Switch to histogram
-      fullscreenImg.src = histSrc;
+      fullscreenImg.src = hist;
       fullscreenImg.dataset.histActive = "true";
       fullscreenHistToggle.classList.add("active");
       currentHistState = true;
     }
 
-    // Sync back to the corresponding carousel slide immediately
-    const originalSlide = currentCarouselSlides[currentFullscreenSlideIndex];
-    if (originalSlide) {
-      const originalImg = originalSlide.querySelector("img");
-      const originalToggle = originalSlide.querySelector(".hist-toggle");
-
-      if (originalImg) {
-        originalImg.src = fullscreenImg.src;
-        originalImg.dataset.histActive = fullscreenImg.dataset.histActive;
+    if (currentCarouselSlides) {
+      const origImg =
+        currentCarouselSlides[currentFullscreenSlideIndex].querySelector("img");
+      const origToggle =
+        currentCarouselSlides[currentFullscreenSlideIndex].querySelector(
+          ".hist-toggle"
+        );
+      if (origImg) {
+        origImg.src = fullscreenImg.src;
+        origImg.dataset.histActive = fullscreenImg.dataset.histActive;
       }
-
-      if (originalToggle) {
-        if (currentHistState) {
-          originalToggle.classList.add("active");
-        } else {
-          originalToggle.classList.remove("active");
-        }
+      if (origToggle) {
+        origToggle.classList.toggle("active", currentHistState);
       }
     }
   }
 
-  // Fullscreen Event Listeners
   document.addEventListener(
     "keydown",
     (e) => e.key === "Escape" && closeFullscreen()
   );
-
-  // Handle clicks on the overlay background only
   fullscreenContainer.addEventListener("click", (e) => {
-    if (e.target === fullscreenContainer) {
-      closeFullscreen();
-    }
+    if (e.target === fullscreenContainer) closeFullscreen();
   });
-
-  // Separate close button handler - using direct click like histogram toggle
-  const closeButton = fullscreenOverlay.querySelector(".close-fullscreen");
-  if (closeButton) {
-    closeButton.addEventListener("click", (e) => {
+  const closeBtn = fullscreenOverlay.querySelector(".close-fullscreen");
+  if (closeBtn)
+    closeBtn.addEventListener("click", (e) => {
       e.stopPropagation();
       closeFullscreen();
     });
-  }
-
-  // Use touch-friendly listeners for controls
   fullscreenPrev.addEventListener("click", (e) => {
     e.stopPropagation();
     navigateFullscreen(-1);
@@ -280,321 +240,185 @@ document.addEventListener("DOMContentLoaded", function () {
     e.stopPropagation();
     toggleFullscreenHist();
   });
-
-  // Fullscreen image click for play/pause
   fullscreenImg.addEventListener("click", function (e) {
     e.stopPropagation();
-    const newState =
+    const state =
       this.style.animationPlayState === "paused" ? "running" : "paused";
-    this.style.animationPlayState = newState;
-    // Sync state back immediately
-    const originalSlide = currentCarouselSlides
-      ? currentCarouselSlides[currentFullscreenSlideIndex]
-      : null;
-    if (originalSlide) {
-      const originalImg = originalSlide.querySelector("img");
-      if (originalImg) originalImg.style.animationPlayState = newState;
+    this.style.animationPlayState = state;
+    if (currentCarouselSlides) {
+      const orig =
+        currentCarouselSlides[currentFullscreenSlideIndex].querySelector("img");
+      if (orig) orig.style.animationPlayState = state;
     }
   });
 
-  // --- Carousel Logic ---
+  // ————————————————
+  // CAROUSEL LOGIC
+  // ————————————————
   carousels.forEach((carousel) => {
-    const slides = Array.from(carousel.querySelectorAll(".carousel-slide")); // Use Array.from for easier indexing
+    const slides = Array.from(carousel.querySelectorAll(".carousel-slide"));
     const prevBtn = carousel.querySelector(".prev");
     const nextBtn = carousel.querySelector(".next");
-    let currentSlideIndex = 0;
+    let current = 0;
 
-    // Initialize slides positioning for carousel effect
-    slides.forEach((slide, index) => {
-      slide.style.transform = `translateX(${index * 100}%)`; // Correctly escaped template literal
-      slide.style.position = "absolute"; // Ensure absolute positioning for translation
+    slides.forEach((slide, i) => {
+      slide.style.position = "absolute";
       slide.style.width = "100%";
       slide.style.height = "100%";
       slide.style.left = "0";
       slide.style.top = "0";
+      slide.style.transform = `translateX(${i * 100}%)`;
     });
 
-    function goToSlide(index) {
-      if (index < 0 || index >= slides.length) return; // Boundary check
-      slides.forEach((slide, i) => {
-        slide.style.transform = `translateX(${(i - index) * 100}%)`; // Correctly escaped template literal
+    function goTo(i) {
+      if (i < 0) i = slides.length - 1;
+      if (i >= slides.length) i = 0;
+      slides.forEach((s, idx) => {
+        s.style.transform = `translateX(${(idx - i) * 100}%)`;
       });
-      currentSlideIndex = index;
+      current = i;
     }
 
-    // Carousel Navigation
-    prevBtn.addEventListener("click", () =>
-      goToSlide(
-        currentSlideIndex - 1 < 0 ? slides.length - 1 : currentSlideIndex - 1
-      )
-    );
-    nextBtn.addEventListener("click", () =>
-      goToSlide((currentSlideIndex + 1) % slides.length)
-    );
+    prevBtn.addEventListener("click", () => goTo(current - 1));
+    nextBtn.addEventListener("click", () => goTo(current + 1));
 
-    // Individual Slide Interactions
-    slides.forEach((slide, index) => {
+    slides.forEach((slide, i) => {
       const img = slide.querySelector("img");
       const zoomIcon = slide.querySelector(".zoom-icon");
       const histToggle = slide.querySelector(".hist-toggle");
 
       if (img) {
-        // Play/Pause
-        img.addEventListener("click", function (e) {
-          // Prevent interfering with other clicks
+        img.addEventListener("click", (e) => {
           if (e.target !== img) return;
           const newState =
-            this.style.animationPlayState === "paused" ? "running" : "paused";
-          this.style.animationPlayState = newState;
-          // Sync if this image is currently in fullscreen
+            img.style.animationPlayState === "paused" ? "running" : "paused";
+          img.style.animationPlayState = newState;
           if (
             fullscreenOverlay.style.display === "flex" &&
-            fullscreenImg.src === this.src
+            fullscreenImg.src === img.src
           ) {
             fullscreenImg.style.animationPlayState = newState;
           }
         });
 
-        // Zoom Icon
         if (zoomIcon) {
           zoomIcon.addEventListener("click", (e) => {
             e.stopPropagation();
-            openFullscreen(img, index, slides);
+            openFullscreen(img, i, slides);
           });
         }
 
-        // Histogram Toggle
         if (histToggle) {
           histToggle.addEventListener("click", (e) => {
             e.stopPropagation();
-            const normalSrc = img.dataset.normalSrc;
-            const histSrc = img.dataset.histSrc;
-
-            // Add a data attribute to track if histogram is active
-            const isHistActive = img.dataset.histActive === "true";
-
-            if (isHistActive) {
-              // Switch to normal
-              img.src = normalSrc;
+            const n = img.dataset.normalSrc;
+            const h = img.dataset.histSrc;
+            const on = img.dataset.histActive === "true";
+            if (on) {
+              img.src = n;
               img.dataset.histActive = "false";
               histToggle.classList.remove("active");
             } else {
-              // Switch to histogram
-              img.src = histSrc;
+              img.src = h;
               img.dataset.histActive = "true";
               histToggle.classList.add("active");
             }
-
-            // Sync if this image is currently in fullscreen
             if (
               fullscreenOverlay.style.display === "flex" &&
               currentCarouselSlides === slides &&
-              currentFullscreenSlideIndex === index
+              currentFullscreenSlideIndex === i
             ) {
               fullscreenImg.src = img.src;
-              fullscreenImg.dataset.histActive = img.dataset.histActive;
+              fullscreenHistToggle.classList.toggle(
+                "active",
+                img.dataset.histActive === "true"
+              );
               currentHistState = img.dataset.histActive === "true";
-
-              if (currentHistState) {
-                fullscreenHistToggle.classList.add("active");
-              } else {
-                fullscreenHistToggle.classList.remove("active");
-              }
             }
           });
-
-          // Initialize histogram state attribute
           img.dataset.histActive = "false";
         }
-        // Initialize animation state
+
         img.style.animationPlayState = "running";
-
-        // Error/Load handlers (optional but good practice)
         img.onerror = () => console.error("Failed to load image:", img.src);
-        // img.onload = () => console.log('Loaded image:', img.src);
       }
     });
-    // Initialize first slide view
-    goToSlide(0);
+
+    goTo(0);
   });
-});
 
-document.addEventListener("DOMContentLoaded", function () {
-  /*
-   * This is a complete rewrite of the arrow detection code
-   * that works with the most basic approach possible
-   */
-
-  // Get elements
-  const navRail = document.querySelector(".nav-rail");
-  const navLinks = document.querySelector(".nav-links");
-
-  // Exit if elements don't exist
-  if (!navRail || !navLinks) {
-    console.warn("Navigation elements not found");
-    return;
-  }
-
-  // Very simple function to update arrow classes
-  function updateArrowVisibility() {
-    // Check start position (with 5px margin for safety)
-    const isAtStart = navLinks.scrollLeft <= 5;
-
-    // Check end position (with 10px margin for safety)
-    const isNearEnd =
-      navLinks.scrollLeft + navLinks.clientWidth + 10 >= navLinks.scrollWidth;
-
-    // Update classes directly
-    if (isAtStart) {
-      navRail.classList.add("at-start");
-    } else {
-      navRail.classList.remove("at-start");
+  // ————————————————
+  // ARROW DETECTION LOGIC
+  // ————————————————
+  (function () {
+    const rail = document.querySelector(".nav-rail");
+    const links = document.querySelector(".nav-links");
+    if (!rail || !links) return;
+    function upd() {
+      const start = links.scrollLeft <= 5;
+      const end =
+        links.scrollLeft + links.clientWidth + 10 >= links.scrollWidth;
+      rail.classList.toggle("at-start", start);
+      rail.classList.toggle("at-end", end);
     }
+    links.addEventListener("scroll", upd);
+    window.addEventListener("resize", upd);
+    upd();
+    setTimeout(upd, 300);
+    setTimeout(upd, 1000);
+  })();
 
-    if (isNearEnd) {
-      navRail.classList.add("at-end");
-    } else {
-      navRail.classList.remove("at-end");
-    }
+  // ————————————————
+  // TOOLTIP LOGIC (JS-ONLY FIX)
+  // ————————————————
+  (function () {
+    // for every container, bind its icon ↔ tooltip
+    document.querySelectorAll(".tooltip-container").forEach((container) => {
+      const icon = container.querySelector(".info-icon");
+      const tooltip = container.querySelector(".tooltip");
+      if (!icon || !tooltip) return;
 
-    // Check if we're at the bottom of the page
-  }
-
-  // Add main event listeners
-  navLinks.addEventListener("scroll", updateArrowVisibility);
-  window.addEventListener("resize", updateArrowVisibility);
-
-  // Run on page load
-  updateArrowVisibility();
-
-  // Run again after a delay to make sure layout is complete
-  setTimeout(updateArrowVisibility, 300);
-  setTimeout(updateArrowVisibility, 1000);
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-  // Get all navigation links
-  const navLinks = document.querySelectorAll(".nav-links a");
-  const homeLink = document.querySelector('.nav-links a[href="index.html"]');
-  const contactLink = document.querySelector('.nav-links a[href="#contact"]');
-
-  // Get current page filename (e.g., technical-details.html)
-  const currentPage = window.location.pathname.split("/").pop();
-  const currentHash = window.location.hash;
-
-  // Remove active class from all links
-  navLinks.forEach((link) => link.classList.remove("active"));
-
-  // If we have a hash in the URL, prioritize that
-  let activeSet = false;
-  if (currentHash && currentHash !== "#") {
-    const hashLink = document.querySelector(
-      `.nav-links a[href$="${currentHash}"]`
-    );
-    if (hashLink) {
-      hashLink.classList.add("active");
-      activeSet = true;
-    }
-  }
-
-  // If not set by hash, highlight the link matching the current page
-  if (!activeSet) {
-    navLinks.forEach((link) => {
-      const href = link.getAttribute("href");
-      // Only consider non-hash links
-      if (!href.startsWith("#")) {
-        const linkFile = href.split("/").pop();
-        if (linkFile === currentPage) {
-          link.classList.add("active");
-          activeSet = true;
-        }
-      }
-    });
-  }
-
-  // Special case: highlight Home if on index.html or root
-  if (!activeSet && (currentPage === "index.html" || currentPage === "")) {
-    if (homeLink) homeLink.classList.add("active");
-    activeSet = true;
-  }
-
-  // Section-based highlighting for pages with sections
-  const sections = document.querySelectorAll("section[id]");
-  if (sections.length > 0) {
-    function updateActiveOnScroll() {
-      let currentSectionId = "";
-      const scrollPosition = window.scrollY + 100; // Offset for navbar
-
-      // Find the current section
-      sections.forEach((section) => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.offsetHeight;
-        if (
-          scrollPosition >= sectionTop &&
-          scrollPosition < sectionTop + sectionHeight
-        ) {
-          currentSectionId = section.getAttribute("id");
-        }
+      // toggle on click (touch support)
+      icon.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        // close others
+        document
+          .querySelectorAll(".tooltip-container .tooltip.show")
+          .forEach((t) => t !== tooltip && t.classList.remove("show"));
+        tooltip.classList.toggle("show");
       });
 
-      // Special case for when scrolled to bottom of page
-      const nearBottom =
-        window.innerHeight + window.scrollY >= document.body.offsetHeight - 100;
-      if (nearBottom && sections.length > 0) {
-        currentSectionId = sections[sections.length - 1].getAttribute("id");
-      }
+      // show on hover
+      icon.addEventListener("mouseenter", () => {
+        // close others
+        document
+          .querySelectorAll(".tooltip-container .tooltip.show")
+          .forEach((t) => t !== tooltip && t.classList.remove("show"));
+        tooltip.classList.add("show");
+      });
 
-      // Remove active from all links
-      navLinks.forEach((link) => link.classList.remove("active"));
-
-      // If in contact section, highlight Contact
-      if (currentSectionId === "contact" && contactLink) {
-        contactLink.classList.add("active");
-        return;
-      }
-
-      // Otherwise, highlight the link for the current page
-      let pageLinkSet = false;
-      navLinks.forEach((link) => {
-        const href = link.getAttribute("href");
-        if (!href.startsWith("#")) {
-          const linkFile = href.split("/").pop();
-          if (linkFile === currentPage) {
-            link.classList.add("active");
-            pageLinkSet = true;
+      // hide when leaving the entire container (icon + tooltip)
+      container.addEventListener("mouseleave", () => {
+        setTimeout(() => {
+          // only hide if mouse isn’t over icon or tooltip
+          if (!icon.matches(":hover") && !tooltip.matches(":hover")) {
+            tooltip.classList.remove("show");
           }
-        }
+        }, 100);
       });
-      // If on home page and at top, highlight Home
-      if (
-        !pageLinkSet &&
-        (currentPage === "index.html" || currentPage === "")
-      ) {
-        if (homeLink) homeLink.classList.add("active");
-      }
-    }
-    window.addEventListener("scroll", updateActiveOnScroll);
-    updateActiveOnScroll();
-  }
-
-  // Smooth scrolling for section links
-  navLinks.forEach((link) => {
-    link.addEventListener("click", function (e) {
-      const href = this.getAttribute("href");
-      if (href && href.startsWith("#")) {
-        const targetId = href.substring(1);
-        const targetSection = document.getElementById(targetId);
-        if (targetSection) {
-          e.preventDefault();
-          window.scrollTo({
-            top: targetSection.offsetTop - 80,
-            behavior: "smooth",
-          });
-          navLinks.forEach((l) => l.classList.remove("active"));
-          this.classList.add("active");
-          history.pushState(null, null, href);
-        }
-      }
     });
-  });
+
+    // clicking anywhere else closes all
+    document.addEventListener("click", () => {
+      document
+        .querySelectorAll(".tooltip-container .tooltip.show")
+        .forEach((t) => t.classList.remove("show"));
+    });
+
+    // prevent inside-tooltip clicks from bubbling up
+    document
+      .querySelectorAll(".tooltip-container .tooltip")
+      .forEach((t) => t.addEventListener("click", (e) => e.stopPropagation()));
+  })();
 });

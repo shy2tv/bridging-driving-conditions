@@ -965,7 +965,7 @@ Landscape phones  (height ≤ 500 px)
     padding-top: calc(60px + 1rem); /* ~= navbar height + a bit */
   }
 
-  /* make sure the active link’s underline isn’t clipped */
+  /* make sure the active link's underline isn't clipped */
   .nav-links a.active::after {
     bottom: 0; /* was -4px */
   }
@@ -1073,4 +1073,14 @@ Landscape phones  (height ≤ 500 px)
     top: 1.5em; /* push a little further below the icon */
     width: 200px;
   }
+}
+
+.demo-section {
+  /* Add space above the section when scrolled to, to account for sticky header */
+  scroll-margin-top: 80px;
+}
+
+#features {
+  /* Add space above the section when scrolled to, to account for sticky header */
+  scroll-margin-top: 80px;
 }
