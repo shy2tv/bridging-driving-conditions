@@ -22,6 +22,30 @@
     />
     <link rel="stylesheet" href="css/styles.css" />
     <link rel="stylesheet" href="css/key-insights.css" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="images/favicons/16x16.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="images/favicons/32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="48x48"
+      href="images/favicons/48x48.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="64x64"
+      href="images/favicons/64x64.png"
+    />
   </head>
   <body>
     <!-- Navigation -->
@@ -36,11 +60,11 @@
           <div class="nav-links">
             <a href="index.html">Home</a>
             <a href="index.html#demo">Demo</a>
+            <a href="index.html#features">Key Features</a>
             <a href="technical-details.html">Technical Details</a>
             <a href="key-insights.html" class="active">Key Insights</a>
             <a href="#paper">Paper</a>
-            <a href="index.html#features">Key Features</a>
-            <a href="index.html#contact">Contact</a>
+            <a href="#contact">Contact</a>
             <a href="#" class="cta-button">arXiv</a>
           </div>
         </div>
@@ -571,6 +595,36 @@
         document.addEventListener("keydown", function (e) {
           if (e.key === "Escape") {
             closeFullscreenHandler();
+          }
+        });
+
+        // Section tracking
+        const scrollSections = document.querySelectorAll("section[id]");
+        const navLinks = document.querySelectorAll(".nav-links a");
+        const currentPageLink = document.querySelector(
+          '.nav-links a[href="key-insights.html"]'
+        );
+
+        window.addEventListener("scroll", () => {
+          let current = "";
+          scrollSections.forEach((section) => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            if (pageYOffset >= sectionTop - 60) {
+              current = section.getAttribute("id");
+            }
+          });
+
+          navLinks.forEach((link) => {
+            link.classList.remove("active");
+            if (link.getAttribute("href") === `#${current}`) {
+              link.classList.add("active");
+            }
+          });
+
+          // If contact section is not in view, ensure the current page link is active
+          if (current !== "contact" && currentPageLink) {
+            currentPageLink.classList.add("active");
           }
         });
       });

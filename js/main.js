@@ -2,6 +2,9 @@ document.addEventListener("DOMContentLoaded", function () {
   // Active section tracking for navigation
   const sections = document.querySelectorAll("section[id]");
   const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+  const isHomePage =
+    window.location.pathname.endsWith("index.html") ||
+    window.location.pathname.endsWith("/");
 
   // Set initial active state based on URL hash or scroll position
   function setInitialActive() {
@@ -14,8 +17,8 @@ document.addEventListener("DOMContentLoaded", function () {
         navLinks.forEach((link) => link.classList.remove("active"));
         sectionLink.classList.add("active");
       }
-    } else {
-      // If at the top of the page, highlight Home
+    } else if (isHomePage) {
+      // Only highlight Home on the home page
       if (window.scrollY < 100) {
         navLinks.forEach((link) => link.classList.remove("active"));
         document
@@ -62,8 +65,8 @@ document.addEventListener("DOMContentLoaded", function () {
         if (homeLink) homeLink.classList.remove("active");
       }
     }
-    // Otherwise, if we're at the top of the page, highlight Home
-    else if (isAtTop) {
+    // Otherwise, if we're at the top of the home page, highlight Home
+    else if (isAtTop && isHomePage) {
       if (homeLink) homeLink.classList.add("active");
     }
 
@@ -473,20 +476,18 @@ document.addEventListener("DOMContentLoaded", function () {
   // Get all navigation links
   const navLinks = document.querySelectorAll(".nav-links a");
   const homeLink = document.querySelector('.nav-links a[href="index.html"]');
+  const contactLink = document.querySelector('.nav-links a[href="#contact"]');
 
-  // Check if we're on a page that has sections to scroll to
-  const hasSections = document.querySelectorAll("section[id]").length > 0;
-
-  // First, handle page-level active state
-  const currentPage = window.location.pathname;
+  // Get current page filename (e.g., technical-details.html)
+  const currentPage = window.location.pathname.split("/").pop();
   const currentHash = window.location.hash;
 
-  // Initially remove active class from all links
+  // Remove active class from all links
   navLinks.forEach((link) => link.classList.remove("active"));
 
   // If we have a hash in the URL, prioritize that
   let activeSet = false;
-  if (currentHash) {
+  if (currentHash && currentHash !== "#") {
     const hashLink = document.querySelector(
       `.nav-links a[href$="${currentHash}"]`
     );
@@ -494,57 +495,40 @@ document.addEventListener("DOMContentLoaded", function () {
       hashLink.classList.add("active");
       activeSet = true;
     }
-  } else if (homeLink && window.scrollY < 100) {
-    // If at the top of the page and no hash, activate Home
-    homeLink.classList.add("active");
-    activeSet = true;
   }
 
-  // If no hash match or no hash, find the matching page
+  // If not set by hash, highlight the link matching the current page
   if (!activeSet) {
     navLinks.forEach((link) => {
       const href = link.getAttribute("href");
-
-      // Skip hash-only links for this check
-      if (href.startsWith("#")) return;
-
-      const linkPath = new URL(link.href, window.location.origin).pathname;
-
-      // Match the current page
-      if (
-        currentPage.endsWith(linkPath) ||
-        (currentPage.endsWith("/") && linkPath.endsWith("index.html"))
-      ) {
-        link.classList.add("active");
-        activeSet = true;
+      // Only consider non-hash links
+      if (!href.startsWith("#")) {
+        const linkFile = href.split("/").pop();
+        if (linkFile === currentPage) {
+          link.classList.add("active");
+          activeSet = true;
+        }
       }
     });
   }
 
-  // If we're on a page with sections, set up scroll tracking
-  if (hasSections) {
-    const sections = document.querySelectorAll("section[id]");
+  // Special case: highlight Home if on index.html or root
+  if (!activeSet && (currentPage === "index.html" || currentPage === "")) {
+    if (homeLink) homeLink.classList.add("active");
+    activeSet = true;
+  }
 
-    // Function to update active state based on scroll position
+  // Section-based highlighting for pages with sections
+  const sections = document.querySelectorAll("section[id]");
+  if (sections.length > 0) {
     function updateActiveOnScroll() {
-      // Check if we're at the top of the page
-      if (window.scrollY < 100) {
-        // At the top, highlight Home
-        if (homeLink) {
-          navLinks.forEach((link) => link.classList.remove("active"));
-          homeLink.classList.add("active");
-          return;
-        }
-      }
-
       let currentSectionId = "";
-      const scrollPosition = window.scrollY + 100; // Add offset for navbar
+      const scrollPosition = window.scrollY + 100; // Offset for navbar
 
       // Find the current section
       sections.forEach((section) => {
         const sectionTop = section.offsetTop;
         const sectionHeight = section.offsetHeight;
-
         if (
           scrollPosition >= sectionTop &&
           scrollPosition < sectionTop + sectionHeight
@@ -556,70 +540,58 @@ document.addEventListener("DOMContentLoaded", function () {
       // Special case for when scrolled to bottom of page
       const nearBottom =
         window.innerHeight + window.scrollY >= document.body.offsetHeight - 100;
-
-      if (nearBottom) {
-        // Find the last section with an ID
-        const lastSection = sections[sections.length - 1];
-        currentSectionId = lastSection.getAttribute("id");
+      if (nearBottom && sections.length > 0) {
+        currentSectionId = sections[sections.length - 1].getAttribute("id");
       }
 
-      // Only update if we found a section
-      if (currentSectionId) {
-        let sectionLinkFound = false;
+      // Remove active from all links
+      navLinks.forEach((link) => link.classList.remove("active"));
 
-        navLinks.forEach((link) => {
-          const href = link.getAttribute("href");
+      // If in contact section, highlight Contact
+      if (currentSectionId === "contact" && contactLink) {
+        contactLink.classList.add("active");
+        return;
+      }
 
-          // Check for both direct and page-prefixed section links
-          if (
-            href &&
-            (href === `#${currentSectionId}` ||
-              href.endsWith(`#${currentSectionId}`))
-          ) {
-            // Remove active from all links first
-            navLinks.forEach((l) => l.classList.remove("active"));
-            // Set this link as active
+      // Otherwise, highlight the link for the current page
+      let pageLinkSet = false;
+      navLinks.forEach((link) => {
+        const href = link.getAttribute("href");
+        if (!href.startsWith("#")) {
+          const linkFile = href.split("/").pop();
+          if (linkFile === currentPage) {
             link.classList.add("active");
-            sectionLinkFound = true;
+            pageLinkSet = true;
           }
-        });
-
-        // If no link was found for this section, do nothing
-        // This preserves the Home active state if no section matches
+        }
+      });
+      // If on home page and at top, highlight Home
+      if (
+        !pageLinkSet &&
+        (currentPage === "index.html" || currentPage === "")
+      ) {
+        if (homeLink) homeLink.classList.add("active");
       }
     }
-
-    // Listen for scroll events
     window.addEventListener("scroll", updateActiveOnScroll);
-
-    // Initialize active section on page load
     updateActiveOnScroll();
   }
 
-  // Add click handlers for smooth scrolling to sections
+  // Smooth scrolling for section links
   navLinks.forEach((link) => {
     link.addEventListener("click", function (e) {
       const href = this.getAttribute("href");
-
-      // Only handle same-page section links
       if (href && href.startsWith("#")) {
         const targetId = href.substring(1);
         const targetSection = document.getElementById(targetId);
-
         if (targetSection) {
           e.preventDefault();
-
-          // Smooth scroll to section
           window.scrollTo({
-            top: targetSection.offsetTop - 80, // Offset for navbar
+            top: targetSection.offsetTop - 80,
             behavior: "smooth",
           });
-
-          // Update active state manually
           navLinks.forEach((l) => l.classList.remove("active"));
           this.classList.add("active");
-
-          // Update the URL hash without triggering page jump
           history.pushState(null, null, href);
         }
       }

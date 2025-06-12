@@ -22,6 +22,10 @@
     />
     <link rel="stylesheet" href="css/styles.css" />
     <link rel="stylesheet" href="css/index-style.css" />
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicons/16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicons/32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="images/favicons/48x48.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="images/favicons/64x64.png">
   </head>
   <body>
     <!-- Navigation -->
@@ -36,10 +40,10 @@
           <div class="nav-links">
             <a href="index.html" class="active">Home</a>
             <a href="index.html#demo">Demo</a>
+            <a href="#features">Key Features</a>
             <a href="technical-details.html">Technical Details</a>
             <a href="key-insights.html">Key Insights</a>
             <a href="#paper">Paper</a>
-            <a href="#features">Key Features</a>
             <a href="#contact">Contact</a>
             <a href="#" class="cta-button">arXiv</a>
           </div>
@@ -58,9 +62,36 @@
           Simulation, Diffusion, and GANs
         </h1>
         <p>
-          A cost-effective pipeline using Simulation (CARLA), Diffusion (Stable
-          Diffusion), and GANs (DA-UNIT) for realistic adverse-condition data.
+          A cost-effective pipeline using 
+          <span class="nowrap">
+            Simulation 
+            <span class="tooltip-container">
+              (CARLA
+              <span class="info-icon">i</span>
+              <span class="tooltip">
+                <strong>CARLA:</strong> Open-source autonomous driving simulator providing synthetic data with perfect ground truth labels.<br>
+                <a href="https://carla.org/" target="_blank">Official Website →</a>
+              </span>
+              )
+            </span>
+          </span>, 
+          Diffusion (Stable Diffusion), and 
+          <span class="nowrap">
+            GANs 
+            <span class="tooltip-container">
+              (DA-UNIT
+              <span class="info-icon">i</span>
+              <span class="tooltip">
+                <strong>DA-UNIT:</strong> Domain Adaptation with Unsupervised Image-to-Image Translation Networks—a GAN-based architecture for cross-domain image translation.<br>
+                <a href="https://arxiv.org/abs/2302.04149" target="_blank">View Paper →</a>
+              </span>
+              )
+            </span>
+          </span>
+          for realistic adverse-condition data.
         </p>
+        
+        
         <a href="#demo" class="cta-button">View Demos</a>
         <a href="architecture.html" class="cta-button secondary"
           >Architecture Details</a
@@ -72,25 +103,61 @@
       <div class="abstract-content-wrapper">
         <h2>Abstract</h2>
         <p>
-          Autonomous driving systems perform poorly in adverse weather, yet
-          collecting such data is costly and dangerous. We propose
-          <b>SDG-DA</b>, a novel pipeline that uses
-          <b>simulation and diffusion models to generate training data</b> for a
-          GAN, which then transforms
-          <b>real clear-weather images into photorealistic adverse conditions</b
-          >. While trained primarily on synthetic pairs, our GAN
-          <b>operates on real images at inference time</b>, creating realistic
-          fog, rain, snow, and nighttime scenes. Our approach achieves
-          <b>78.57% mIoU on ACDC-Adverse</b> without using any real adverse data
-          in training, demonstrating a cost-effective solution for robust
-          perception.
+          Autonomous driving systems perform poorly in adverse weather, yet collecting such data is costly and dangerous. We propose
+          <strong>SDG-DA (Simulation-Diffusion-GAN Domain Adaptation)</strong>, a novel pipeline that uses
+          <strong>simulation and diffusion models</strong> to generate training data for a GAN, which then transforms
+          <strong>real clear-weather images into photorealistic adverse conditions</strong>. While trained primarily on synthetic pairs, our GAN
+          <strong>operates on real images at inference time</strong>, creating realistic fog, rain, snow, and nighttime scenes. Our approach achieves
+          <strong>78.57% mIoU</strong> on
+          <span class="tooltip-container">
+            <strong>ACDC-Adverse</strong><span class="info-icon">i</span>
+            <span class="tooltip">
+              <strong>ACDC-Adverse:</strong> The Adverse Conditions Dataset for semantic segmentation. Paired clear vs. fog/rain/snow/night images.  
+              <a href="https://acdc.vision.ee.ethz.ch/" target="_blank">Visit ACDC →</a>
+            </span>
+          </span>
+          without using any real adverse data in training, demonstrating a cost-effective solution for robust perception.
         </p>
       </div>
     </section>
+    
+    
+    
+
+
+
+    
+
 
     <!-- Demo Section -->
     <section id="demo" class="demo-section">
       <div class="demo-container">
+
+
+        <h2>Demo Overview</h2>
+        <section id="demo-intro" class="demo-intro">
+          <p>
+            You’re viewing <strong>SDG-DA</strong> (<em>Simulated-Diffusion-GAN Domain Adaptation</em>) in action. SDG-DA was trained on clear-weather images from <strong>ACDC Clear</strong> plus synthetic scenes from <strong>CARLA</strong>, then applied zero-shot to real-world
+            <span class="tooltip-container">
+              <strong>nuScenes</strong><span class="info-icon">i</span>
+              <span class="tooltip">
+                <strong>nuScenes:</strong> A large-scale autonomous driving dataset with 360° camera, lidar, and radar recordings across diverse urban scenarios.<br>
+                <a href="https://www.nuscenes.org" target="_blank">Visit nuScenes →</a>
+              </span>
+            </span>
+            frames under rain, fog, and nighttime conditions.
+          </p>
+          <ul>
+            <li><strong>Original</strong> nuScenes input</li>
+            <li><strong>SDG-DA</strong> enhanced output</li>
+            <li><strong>Baseline</strong> comparison (hover to overlay)</li>
+          </ul>
+        </section>
+        
+        
+        
+
+
         <h2>Interactive Demonstrations</h2>
         <div class="demo-instructions">
           <p>
@@ -638,9 +705,9 @@ controlsList="nodownload nofullscreen noremoteplayback""
     <!-- ────────────────────────────  Technical Overview  ──────────────────────────── -->
     <section id="features" class="technical-section bg-sky-50 py-6">
       <div class="container mx-auto max-w-4xl">
-        <h2 class="section-title text-center mb-8">Key Features</h2>
+        <h2 class="section-title text-center mb-8">Key Features</h2>
 
-        <!-- 2 × 2 grid on ≥768 px, single‑column on mobile -->
+        <!-- 2 ×2 grid on ≥768 px, single‑column on mobile -->
         <div class="technical-grid">
           <!-- Hybrid Pipeline -->
           <article class="tech-card">

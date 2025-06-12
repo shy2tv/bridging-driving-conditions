@@ -16,6 +16,179 @@
   color: var(--primary-color);
 }
 
+/* ===== DEMO INTRO STYLES (MATCH ABSTRACT) ===== */
+.demo-intro {
+  max-width: min(900px, 80%);
+  margin: 0 auto 3rem;
+  background-color: rgba(235, 245, 255, 0.5);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem 2rem;
+}
+
+.demo-intro p {
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  color: var(--text-color);
+  font-size: 1.2rem;
+}
+
+.demo-intro p:last-child {
+  margin-bottom: 0;
+  padding-left: 0;
+  border-left: none;
+}
+
+.demo-intro strong {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.demo-intro em {
+  color: var(--secondary-color);
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .demo-intro {
+    padding: 1rem;
+  }
+  .demo-intro p {
+    font-size: 1rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .demo-intro {
+    padding: 0.7rem;
+  }
+  .demo-intro p {
+    font-size: 0.95rem !important;
+  }
+}
+
+/* ===== DEMO INTRO "CARD" ===== */
+.demo-intro {
+  /* same card background + shadow as your other sections */
+  background-color: var(--light-bg);
+  box-shadow: var(--shadow-md);
+  border-radius: var(--radius-lg);
+
+  /* add a 1px border so it "pops" like the Abstract wrapper */
+  /* border: 1px solid var(--border-color, rgba(0, 0, 0, 0.1)); */
+
+  /* spacing & width to match */
+  padding: 2rem 1.5rem;
+  margin: 0 auto 3rem;
+  max-width: 900px;
+}
+
+.demo-intro p {
+  color: var(--text-color);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.demo-intro p:last-child {
+  padding-left: 1rem;
+  margin-bottom: 0;
+  border-left: 4px solid var(--primary-color);
+}
+
+.demo-intro strong {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.demo-intro em {
+  color: var(--secondary-color);
+  font-style: italic;
+}
+
+/* ===== DEMO INTRO "CARD" MATCHING ABSTRACT ===== */
+.demo-intro {
+  /* same tinted background */
+  background-color: rgba(235, 245, 255, 0.5);
+
+  /* same rounded corners & shadow */
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+  /* spacing */
+  padding: 2rem;
+  margin: 0 auto 3rem;
+  max-width: 750px;
+
+  /* remove any extra borders you added before */
+  border: none;
+}
+
+.demo-intro p {
+  color: var(--text-color);
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.demo-intro p:last-child {
+  padding-left: 1rem;
+  margin-bottom: 0;
+  border-left: 4px solid var(--primary-color);
+}
+
+.demo-intro strong {
+  color: var(--primary-color);
+}
+.demo-intro em {
+  color: var(--secondary-color);
+  font-style: italic;
+}
+
+/* ===== DEMO INTRO LIST MATCHING ABSTRACT ===== */
+.demo-intro ul {
+  /* remove browser defaults and match the text block width */
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  max-width: 850px; /* same as your demo-intro max-width minus padding */
+}
+
+.demo-intro li {
+  /* indent the text, add breathing room between items */
+  position: relative;
+  padding-left: 1.25rem;
+  margin-bottom: 0.75rem;
+  color: var(--text-color);
+  font-size: 1.2rem;
+  line-height: 1.6;
+}
+
+.demo-intro li:last-child {
+  margin-bottom: 0;
+}
+
+.demo-intro li::before {
+  /* small dot in your primary brand color */
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.8em;
+  width: 0.35rem;
+  height: 0.35rem;
+  background: var(--primary-color);
+  border-radius: 50%;
+}
+
+/* tighten up the paragraph above the list */
+.demo-intro p {
+  margin-bottom: 1rem;
+}
+
+.demo-intro em {
+  color: var(--text-color);
+}
+
 .demo-instructions {
   text-align: left;
   margin: 1rem auto;
@@ -676,6 +849,20 @@ video[controls] {
   .tech-card p {
     font-size: 0.9rem;
   }
+
+  .demo-intro {
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .demo-intro p {
+    font-size: 1rem !important;
+  }
+
+  .demo-intro p:last-child {
+    padding-left: 0.7rem !important;
+    border-left-width: 2px !important;
+  }
 }
 
 /* ===== LANDSCAPE MOBILE ===== */
@@ -849,5 +1036,34 @@ video[controls] {
 
   .carousel-control.next {
     right: 0px;
+  }
+
+  .demo-intro {
+    padding: 1rem;
+  }
+
+  .demo-intro p {
+    font-size: 0.95rem !important;
+  }
+
+  .demo-intro p:last-child {
+    padding-left: 0.5rem !important;
+    border-left-width: 2px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  /* restore the card border */
+  .demo-intro {
+    border: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
+    padding: 1.5rem 1rem; /* tighten up the padding slightly */
+    margin-bottom: 2rem; /* match the other cards */
+  }
+
+  /* scale down your copy for small screens */
+  .demo-intro p,
+  .demo-intro ul li {
+    font-size: 0.7rem;
+    line-height: 1.5;
   }
 }

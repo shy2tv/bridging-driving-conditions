@@ -24,6 +24,30 @@
     />
     <link rel="stylesheet" href="css/styles.css" />
     <link rel="stylesheet" href="css/technical-details.css" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="images/favicons/16x16.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="images/favicons/32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="48x48"
+      href="images/favicons/48x48.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="64x64"
+      href="images/favicons/64x64.png"
+    />
   </head>
   <body>
     <!-- Navigation -->
@@ -38,11 +62,13 @@
           <div class="nav-links">
             <a href="index.html">Home</a>
             <a href="index.html#demo">Demo</a>
-            <a href="#" class="active">Technical Details</a>
+            <a href="index.html#features">Key Features</a>
+            <a href="technical-details.html" class="active"
+              >Technical Details</a
+            >
             <a href="key-insights.html">Key Insights</a>
             <a href="#paper">Paper</a>
-            <a href="index.html#features">Key Features</a>
-            <a href="index.html#contact">Contact</a>
+            <a href="#contact">Contact</a>
             <a href="#" class="cta-button">arXiv</a>
           </div>
         </div>
@@ -77,23 +103,75 @@
 
           <ul class="key-points">
             <li>
-              <strong>S - Simulation:</strong> CARLA renders pixel-perfect
-              clear&nbsp;/ adverse pairs with full annotations.
+              <strong>S – Simulation:</strong>
+              <span class="tooltip-container">
+                CARLA<span class="info-icon">i</span>
+                <span class="tooltip">
+                  <strong>CARLA:</strong> Open-source autonomous driving
+                  simulator providing high-fidelity synthetic images with
+                  pixel-perfect labels.<br />
+                  <a href="https://carla.org" target="_blank">Visit CARLA →</a>
+                </span>
+              </span>
+              renders pixel-perfect clear/adverse pairs with full annotations.
             </li>
 
             <li>
-              <strong>D - Diffusion:</strong> Stable Diffusion&nbsp;/ ALDM
+              <strong>D – Diffusion:</strong>
+              <span class="tooltip-container">
+                Stable Diffusion<span class="info-icon">i</span>
+                <span class="tooltip">
+                  <strong>Stable Diffusion:</strong> Latent diffusion model for
+                  high-detail image synthesis.<br />
+                  <a
+                    href="https://stability.ai/blog/stable-diffusion-announcement"
+                    target="_blank"
+                    >Learn more →</a
+                  >
+                </span>
+              </span>
+              /
+              <span class="tooltip-container">
+                ALDM<span class="info-icon">i</span>
+                <span class="tooltip">
+                  <strong>ALDM:</strong> Adaptive Latent Diffusion Model that
+                  refines realism using segmentation guidance.<br />
+                  <a href="https://arxiv.org/abs/2401.08815" target="_blank"
+                    >View ALDM paper →</a
+                  >
+                </span>
+              </span>
               boosts realism, guided by segmentation masks.
             </li>
 
             <li>
-              <strong>G - GAN Adaptation:</strong> DA-UNIT, our domain-adaptive
-              UNIT GAN, learns on the curated <em>S + D</em> pairs <u>plus</u> a
-              10% mix of real ACDC-Clear frames. <br /><strong
-                >Inference:</strong
-              >
-              Feed any clear ACDC frame → DA-UNIT returns a photorealistic fog,
-              rain, or night image with labels preserved 1-for-1.
+              <strong>G – GAN Adaptation:</strong>
+              <span class="tooltip-container">
+                DA-UNIT<span class="info-icon">i</span>
+                <span class="tooltip">
+                  <strong>DA-UNIT:</strong> Domain Adaptation with Unsupervised
+                  Image-to-Image Translation Networks.<br />
+                  <a href="https://arxiv.org/abs/2302.04149" target="_blank"
+                    >View paper →</a
+                  >
+                </span>
+              </span>
+              learns on the curated <em>S + D</em> pairs plus a 10% mix of real
+              <span class="tooltip-container">
+                <strong>ACDC-Clear</strong><span class="info-icon">i</span>
+                <span class="tooltip">
+                  <strong>ACDC-Clear:</strong> Subset of the Adverse Conditions
+                  Dataset containing clear-weather driving images.<br />
+                  <a href="https://acdc.vision.ee.ethz.ch/" target="_blank"
+                    >Visit ACDC →</a
+                  >
+                </span>
+              </span>
+              frames.
+              <br />
+              <strong>Inference:</strong> Feed any clear ACDC frame → DA-UNIT
+              returns a photorealistic fog, rain, or night image with labels
+              preserved.
             </li>
           </ul>
         </div>
@@ -310,98 +388,7 @@
     </footer>
 
     <!-- Add JavaScript at the end of the file -->
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        // Always keep Technical Details highlighted on this page
-        const techDetailsLink = document.querySelector(
-          '.nav-links a[href="#"]'
-        );
-        if (techDetailsLink) {
-          techDetailsLink.classList.add("active");
-        }
-
-        // For section tracking - only affects other links, not Technical Details
-        const sections = document.querySelectorAll("section[id]");
-        const sectionLinks = document.querySelectorAll(
-          '.nav-links a[href^="#"]:not([href="#"])'
-        );
-
-        // Update active section link based on scroll position
-        function updateActiveSection() {
-          let currentSectionId = "";
-
-          sections.forEach((section) => {
-            const sectionTop = section.offsetTop - 100;
-            const sectionHeight = section.offsetHeight;
-            if (
-              window.scrollY >= sectionTop &&
-              window.scrollY < sectionTop + sectionHeight
-            ) {
-              currentSectionId = "#" + section.getAttribute("id");
-            }
-          });
-
-          // Update section links besides Technical Details
-          sectionLinks.forEach((link) => {
-            link.classList.toggle(
-              "active",
-              link.getAttribute("href") === currentSectionId
-            );
-          });
-
-          // Always keep Technical Details highlighted
-          if (techDetailsLink) {
-            techDetailsLink.classList.add("active");
-          }
-        }
-
-        // Listen for scroll events to update active section
-        window.addEventListener("scroll", updateActiveSection);
-
-        // Architecture image zoom functionality
-        const archImg = document.querySelector(".architecture-image");
-        const zoomIcon = document.querySelector(".zoom-icon");
-        const fullscreenOverlay = document.getElementById(
-          "architecture-fullscreen"
-        );
-        const closeFullscreen =
-          fullscreenOverlay.querySelector(".close-fullscreen");
-
-        function openFullscreen() {
-          fullscreenOverlay.style.display = "block";
-        }
-
-        function closeFullscreenHandler() {
-          fullscreenOverlay.style.display = "none";
-        }
-
-        if (zoomIcon) {
-          zoomIcon.addEventListener("click", openFullscreen);
-        }
-
-        if (archImg) {
-          archImg.addEventListener("click", openFullscreen);
-        }
-
-        if (closeFullscreen) {
-          closeFullscreen.addEventListener("click", closeFullscreenHandler);
-        }
-
-        fullscreenOverlay.addEventListener("click", function (e) {
-          if (
-            e.target === fullscreenOverlay ||
-            e.target.classList.contains("fullscreen-container")
-          ) {
-            closeFullscreenHandler();
-          }
-        });
-
-        document.addEventListener("keydown", function (e) {
-          if (e.key === "Escape") {
-            closeFullscreenHandler();
-          }
-        });
-      });
-    </script>
+    <script src="js/technical-details.js"></script>
+    <script src="js/main.js"></script>
   </body>
 </html>
