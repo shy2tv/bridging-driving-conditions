@@ -88,22 +88,24 @@ document.addEventListener("DOMContentLoaded", () => {
   // ————————————————
   const carousels = document.querySelectorAll(".carousel");
   const fullscreenOverlay = document.getElementById("fullscreen");
-  const fullscreenContainer = fullscreenOverlay.querySelector(
-    ".fullscreen-container"
-  );
-  const fullscreenImg = fullscreenOverlay.querySelector("img");
-  const fullscreenCaption = fullscreenOverlay.querySelector(
-    ".fullscreen-caption"
-  );
-  const fullscreenPrev = fullscreenOverlay.querySelector(
-    ".fullscreen-control.prev"
-  );
-  const fullscreenNext = fullscreenOverlay.querySelector(
-    ".fullscreen-control.next"
-  );
-  const fullscreenHistToggle = fullscreenOverlay.querySelector(
-    ".hist-toggle.fullscreen"
-  );
+  const fullscreenContainer = fullscreenOverlay
+    ? fullscreenOverlay.querySelector(".fullscreen-container")
+    : null;
+  const fullscreenImg = fullscreenOverlay
+    ? fullscreenOverlay.querySelector("img, video")
+    : null;
+  const fullscreenCaption = fullscreenOverlay
+    ? fullscreenOverlay.querySelector(".fullscreen-caption")
+    : null;
+  const fullscreenPrev = fullscreenOverlay
+    ? fullscreenOverlay.querySelector(".fullscreen-control.prev")
+    : null;
+  const fullscreenNext = fullscreenOverlay
+    ? fullscreenOverlay.querySelector(".fullscreen-control.next")
+    : null;
+  const fullscreenHistToggle = fullscreenOverlay
+    ? fullscreenOverlay.querySelector(".hist-toggle.fullscreen")
+    : null;
 
   let currentFullscreenSlideIndex = null;
   let currentCarouselSlides = null;
@@ -220,38 +222,42 @@ document.addEventListener("DOMContentLoaded", () => {
     "keydown",
     (e) => e.key === "Escape" && closeFullscreen()
   );
-  fullscreenContainer.addEventListener("click", (e) => {
-    if (e.target === fullscreenContainer) closeFullscreen();
-  });
-  const closeBtn = fullscreenOverlay.querySelector(".close-fullscreen");
-  if (closeBtn)
-    closeBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      closeFullscreen();
+  if (fullscreenOverlay) {
+    fullscreenContainer.addEventListener("click", (e) => {
+      if (e.target === fullscreenContainer) closeFullscreen();
     });
-  fullscreenPrev.addEventListener("click", (e) => {
-    e.stopPropagation();
-    navigateFullscreen(-1);
-  });
-  fullscreenNext.addEventListener("click", (e) => {
-    e.stopPropagation();
-    navigateFullscreen(1);
-  });
-  fullscreenHistToggle.addEventListener("click", (e) => {
-    e.stopPropagation();
-    toggleFullscreenHist();
-  });
-  fullscreenImg.addEventListener("click", function (e) {
-    e.stopPropagation();
-    const state =
-      this.style.animationPlayState === "paused" ? "running" : "paused";
-    this.style.animationPlayState = state;
-    if (currentCarouselSlides) {
-      const orig =
-        currentCarouselSlides[currentFullscreenSlideIndex].querySelector("img");
-      if (orig) orig.style.animationPlayState = state;
-    }
-  });
+    const closeBtn = fullscreenOverlay.querySelector(".close-fullscreen");
+    if (closeBtn)
+      closeBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        closeFullscreen();
+      });
+    fullscreenPrev?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      navigateFullscreen(-1);
+    });
+    fullscreenNext?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      navigateFullscreen(1);
+    });
+    fullscreenHistToggle?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      toggleFullscreenHist();
+    });
+    fullscreenImg?.addEventListener("click", function (e) {
+      e.stopPropagation();
+      const state =
+        this.style.animationPlayState === "paused" ? "running" : "paused";
+      this.style.animationPlayState = state;
+      if (currentCarouselSlides) {
+        const orig =
+          currentCarouselSlides[currentFullscreenSlideIndex].querySelector(
+            "img"
+          );
+        if (orig) orig.style.animationPlayState = state;
+      }
+    });
+  }
 
   // ————————————————
   // CAROUSEL LOGIC

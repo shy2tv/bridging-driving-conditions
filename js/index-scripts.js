@@ -475,13 +475,13 @@ document.addEventListener("DOMContentLoaded", function () {
   document.addEventListener("touchstart", (e) => {
     if (!isLandscape()) return;
 
-    // 1) If we’re in fullscreen, target that caption
+    // 1) If we're in fullscreen, target that caption
     if (fullscreenOverlay.style.display === "flex") {
       autoHideCaption(fullscreenCaption);
       return;
     }
 
-    // 2) Otherwise, for each carousel find the “0%” slide and target its caption
+    // 2) Otherwise, for each carousel find the "0%" slide and target its caption
     carousels.forEach((carousel) => {
       const activeSlide = Array.from(
         carousel.querySelectorAll(".carousel-slide")
@@ -495,4 +495,35 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   });
+
+  /* ————————————————
+     SMOOTH SCROLL FOR SAME-PAGE NAV
+     ———————————————— */
+  (function () {
+    // Run only if we are on the index page
+    const path = window.location.pathname.split("/").pop() || "index.html";
+    if (path !== "index.html") return;
+
+    const selector = 'a[href^="#"], a[href^="index.html#"]';
+    const internalLinks = document.querySelectorAll(selector);
+
+    internalLinks.forEach((link) => {
+      link.addEventListener("click", (e) => {
+        const href = link.getAttribute("href");
+        const hashPos = href.indexOf("#");
+        if (hashPos === -1) return;
+        const targetId = href.slice(hashPos + 1);
+        const targetEl = document.getElementById(targetId);
+        if (!targetEl) return;
+
+        // If the target is on the same page, smooth-scroll instead of jump
+        if (window.location.pathname.endsWith("index.html")) {
+          e.preventDefault();
+          targetEl.scrollIntoView({ behavior: "smooth", block: "start" });
+          // Update the URL hash without adding a new history entry
+          history.replaceState(null, "", "#" + targetId);
+        }
+      });
+    });
+  })();
 });

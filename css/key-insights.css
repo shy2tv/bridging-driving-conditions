@@ -445,7 +445,7 @@ p {
 
 /* make the header row extra dark */
 table.credit-assignment thead th {
-  background-color: rgb(26, 44, 83); /* or whatever “darker” blue you like */
+  background-color: rgb(26, 44, 83); /* or whatever "darker" blue you like */
   color: white;
   text-align: center;
 }
@@ -458,4 +458,39 @@ table.credit-assignment tbody tr:not(:last-child) {
 /* force the very last row (ACDC-All) to pure white */
 table.credit-assignment tbody tr:last-child {
   background-color: white !important;
+}
+
+@media (max-width: 768px) and (orientation: portrait) {
+  /* make the table wider */
+  .credit-assignment {
+    width: 100%;
+  }
+
+  /* Narrower cells */
+  .credit-assignment th,
+  .credit-assignment td {
+    padding: 0.35rem 0.2rem;
+    font-size: 0.75rem;
+  }
+
+  /* Left align table title */
+  .credit-assignment th:first-child {
+    text-align: left !important;
+  }
+  /* Keep the row-header ("Trained On…") visible */
+  .credit-assignment td:first-child {
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  /* Optional: add subtle border between row header and data */
+  .credit-assignment td:first-child {
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  /* Allow horizontal scroll if still too wide */
+  .table-container {
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -1rem;
+  }
 }

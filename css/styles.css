@@ -964,7 +964,7 @@ Landscape phones  (height ≤ 500 px)
   .nav-rail.at-start::before {
     opacity: 0.2;
   }
-  .nav-rail.at-end ::after {
+  .nav-rail.at-end::after {
     opacity: 0.2;
   }
 
@@ -1088,6 +1088,8 @@ Landscape phones  (height ≤ 500 px)
   visibility: visible;
 }
 
-html {
-  scroll-behavior: smooth; /* Enable smooth anchor scrolling */
+/* Force arrow fade on nav-rail edges */
+.nav-rail.at-start::before,
+.nav-rail.at-end::after {
+  opacity: 0.2 !important;
 }
