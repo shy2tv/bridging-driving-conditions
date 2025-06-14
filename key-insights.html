@@ -153,7 +153,7 @@
               A closer look at object-size distributions revealed the reason:
               adverse scenes are dominated by larger, easier detect objects,
               while clear scenes contain a much higher share of small, difficult
-              instances. This small-object bias in the “easy” clear data
+              instances. This small-object bias in the "easy" clear data
               explains why the models performs better on some adverse splits.
             </p>
             <p>
@@ -272,7 +272,7 @@
               This reveals that training exclusively on any single weather
               condition does not guarantee the best performance on that same
               condition—models trained on other splits can actually outperform
-              the “matched” model when evaluated under the same scenario. <br />
+              the "matched" model when evaluated under the same scenario. <br />
             </p>
           </div>
         </div>
@@ -595,9 +595,102 @@
         const closeFullscreen =
           fullscreenOverlay.querySelector(".close-fullscreen");
 
+        /* ── Magnifier lens setup ── */
+        const lens = document.createElement("div");
+        lens.className = "magnifier-lens";
+        fullscreenOverlay
+          .querySelector(".fullscreen-container")
+          .appendChild(lens);
+
+        const ZOOM = 3; // 3× magnification
+
+        function getCursorPos(e) {
+          const imgRect = fullscreenImg.getBoundingClientRect();
+          const x = e.touches ? e.touches[0].clientX : e.clientX;
+          const y = e.touches ? e.touches[0].clientY : e.clientY;
+          return {
+            x: x - imgRect.left,
+            y: y - imgRect.top,
+          };
+        }
+
+        function moveLens(e) {
+          e.preventDefault();
+
+          const pos = getCursorPos(e);
+          const img = fullscreenImg;
+          const cx = ZOOM;
+          const cy = ZOOM;
+
+          const w = lens.offsetWidth / 2;
+          const h = lens.offsetHeight / 2;
+
+          // Constrain pointer so the lens doesn't go outside the image
+          let x = pos.x;
+          let y = pos.y;
+          if (x < w / cx) x = w / cx;
+          if (x > img.width - w / cx) x = img.width - w / cx;
+          if (y < h / cy) y = h / cy;
+          if (y > img.height - h / cy) y = img.height - h / cy;
+
+          // Position lens so that the cursor is exactly in its centre
+          lens.style.left =
+            (e.touches ? e.touches[0].clientX : e.clientX) - w + "px";
+          lens.style.top =
+            (e.touches ? e.touches[0].clientY : e.clientY) - h + "px";
+
+          // Align background so the pixel under the cursor shows in the centre
+          lens.style.backgroundPosition =
+            "-" + (x * cx - w) + "px -" + (y * cy - h) + "px";
+        }
+
+        function enableMagnifier(src) {
+          lens.style.backgroundImage = `url(${src})`;
+          // Wait for the image to load natural dims
+          const img = fullscreenImg;
+          const updateBg = () => {
+            // background should be the displayed (on-screen) size × zoom factor
+            const bw = img.width * ZOOM;
+            const bh = img.height * ZOOM;
+            lens.style.backgroundSize = `${bw}px ${bh}px`;
+
+            // enlarge the lens — ~70 % of image width, 80 % of height
+            lens.style.width = Math.round(img.width * 0.35) + "px";
+            lens.style.height = Math.round(img.height * 0.5) + "px";
+            lens.style.borderRadius = "8px"; // big rectangle with slight rounding
+          };
+          if (img.complete) updateBg();
+          else img.onload = updateBg;
+
+          lens.style.display = "none"; // hidden until pointer enters img
+
+          img.addEventListener("mousemove", moveLens);
+          img.addEventListener("touchmove", moveLens);
+          img.addEventListener(
+            "mouseenter",
+            () => (lens.style.display = "block")
+          );
+          img.addEventListener(
+            "mouseleave",
+            () => (lens.style.display = "none")
+          );
+
+          // ensure cursor shows crosshair
+          img.style.cursor = "crosshair";
+        }
+
         function openFullscreen(imgSrc) {
           fullscreenImg.src = imgSrc;
           fullscreenOverlay.style.display = "block";
+
+          // Enable magnifier only for devices with a mouse / hover capability
+          if (window.matchMedia("(hover: hover)").matches) {
+            enableMagnifier(imgSrc);
+          } else {
+            // ensure lens hidden and cursor normal on touch devices
+            lens.style.display = "none";
+            fullscreenImg.style.cursor = "default";
+          }
         }
 
         function closeFullscreenHandler() {

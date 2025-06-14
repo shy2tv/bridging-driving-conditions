@@ -1065,7 +1065,7 @@ video[controls] {
   /* scale down your copy for small screens */
   .demo-intro p,
   .demo-intro ul li {
-    font-size: 0.7rem;
+    font-size: 0.9rem;
     line-height: 1.5;
   }
 }

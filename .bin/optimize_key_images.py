@@ -7,11 +7,11 @@ configs = [
         'images/aux_input_types_comparison-thumb.jpg',
         1600,
     ),
-    (
-        'images/controlnet_blending.png',
-        'images/controlnet_blending-thumb.jpg',
-        1600,
-    ),
+    # (
+    #     'images/controlnet_blending.png',
+    #     'images/controlnet_blending-thumb.jpg',
+    #     1600,
+    # ),
 ]
 
 QUALITY = 80

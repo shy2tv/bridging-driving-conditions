@@ -143,6 +143,7 @@ p {
   height: 100vh;
   background: rgba(0, 0, 0, 0.95);
   z-index: 9999;
+  cursor: default;
 }
 
 .fullscreen-container {
@@ -158,6 +159,7 @@ p {
   max-width: 90%;
   max-height: 90%;
   object-fit: contain;
+  cursor: crosshair;
 }
 
 .close-fullscreen {
@@ -493,4 +495,26 @@ table.credit-assignment tbody tr:last-child {
     -webkit-overflow-scrolling: touch;
     margin: 0 -1rem;
   }
+}
+
+/* ────────────── Magnifier Lens (fullscreen insight images) ────────────── */
+.magnifier-lens {
+  position: absolute;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+  display: none; /* shown on hover */
+  z-index: 10001;
+}
+
+/* Cursor cues */
+.fullscreen-overlay {
+  cursor: default;
+}
+.fullscreen-overlay img {
+  cursor: crosshair; /* precise point when hovering the image */
 }
