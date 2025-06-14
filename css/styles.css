@@ -1075,12 +1075,7 @@ Landscape phones  (height ≤ 500 px)
   }
 }
 
-.demo-section {
-  /* Add space above the section when scrolled to, to account for sticky header */
-  scroll-margin-top: 80px;
-}
-
-#features {
-  /* Add space above the section when scrolled to, to account for sticky header */
-  scroll-margin-top: 80px;
+.tooltip-container:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
 }

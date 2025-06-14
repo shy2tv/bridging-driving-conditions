@@ -2,6 +2,7 @@
 .demo-section {
   padding: 4rem 2rem;
   background-color: var(--light-bg);
+  scroll-margin-top: 5rem;
 }
 
 .demo-container {
@@ -564,6 +565,7 @@ video[controls] {
   padding: 4rem 1.5rem;
   max-width: 1200px;
   margin: 0 auto;
+  scroll-margin-top: 5rem;
 }
 
 .technical-section h2 {

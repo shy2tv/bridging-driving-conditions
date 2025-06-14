@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateActiveLink() {
     clearActive();
     const scrollY = window.scrollY;
-    const offset = 80; // tweak to your navbar height
+    const offset = 120; // reduced from 200px to 120px
     const atBottom =
       window.innerHeight + scrollY >= document.body.scrollHeight - 20;
 
@@ -54,7 +54,8 @@ document.addEventListener("DOMContentLoaded", () => {
     for (const sec of sections) {
       const top = sec.offsetTop - offset;
       const bottom = top + sec.offsetHeight;
-      if (scrollY >= top && scrollY < bottom) {
+      // Activate when we're approaching the section (within 100px instead of 150px)
+      if (scrollY >= top - 100 && scrollY < bottom) {
         const link = sectionLinkMap.get(sec.id);
         if (link) {
           link.classList.add("active");
@@ -368,57 +369,105 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(upd, 1000);
   })();
 
-  // ————————————————
-  // TOOLTIP LOGIC (JS-ONLY FIX)
-  // ————————————————
+  // ===== TOOLTIP LOGIC (patched) =====
   (function () {
-    // for every container, bind its icon ↔ tooltip
-    document.querySelectorAll(".tooltip-container").forEach((container) => {
-      const icon = container.querySelector(".info-icon");
-      const tooltip = container.querySelector(".tooltip");
-      if (!icon || !tooltip) return;
+    // only look inside tooltip-container divs
+    const containers = document.querySelectorAll(".tooltip-container");
+    const clickedStates = new Map();
 
-      // toggle on click (touch support)
+    containers.forEach((container) => {
+      const icon = container.querySelector(".info-icon");
+      const tip = container.querySelector(".tooltip");
+      if (!icon || !tip) return;
+
+      let isHovered = false;
+      clickedStates.set(container, false);
+
+      function showTooltip() {
+        tip.classList.add("show");
+      }
+
+      function hideTooltip() {
+        if (!isHovered && !clickedStates.get(container)) {
+          tip.classList.remove("show");
+        }
+      }
+
+      function hideAllOtherTooltips() {
+        document
+          .querySelectorAll(".tooltip-container .tooltip")
+          .forEach((t) => {
+            if (t !== tip) {
+              t.classList.remove("show");
+            }
+          });
+        // Reset other clicked states
+        containers.forEach((c) => {
+          if (c !== container) {
+            clickedStates.set(c, false);
+          }
+        });
+      }
+
+      // Click functionality
       icon.addEventListener("click", (e) => {
         e.preventDefault();
         e.stopPropagation();
-        // close others
-        document
-          .querySelectorAll(".tooltip-container .tooltip.show")
-          .forEach((t) => t !== tooltip && t.classList.remove("show"));
-        tooltip.classList.toggle("show");
+
+        hideAllOtherTooltips();
+
+        if (clickedStates.get(container)) {
+          clickedStates.set(container, false);
+          hideTooltip();
+        } else {
+          clickedStates.set(container, true);
+          showTooltip();
+        }
       });
 
-      // show on hover
+      // Hover functionality
       icon.addEventListener("mouseenter", () => {
-        // close others
-        document
-          .querySelectorAll(".tooltip-container .tooltip.show")
-          .forEach((t) => t !== tooltip && t.classList.remove("show"));
-        tooltip.classList.add("show");
+        isHovered = true;
+        hideAllOtherTooltips();
+        showTooltip();
       });
 
-      // hide when leaving the entire container (icon + tooltip)
-      container.addEventListener("mouseleave", () => {
+      icon.addEventListener("mouseleave", () => {
+        isHovered = false;
         setTimeout(() => {
-          // only hide if mouse isn’t over icon or tooltip
-          if (!icon.matches(":hover") && !tooltip.matches(":hover")) {
-            tooltip.classList.remove("show");
+          if (!tip.matches(":hover")) {
+            hideTooltip();
           }
         }, 100);
       });
+
+      // Keep tooltip open when hovering over it
+      tip.addEventListener("mouseenter", () => {
+        isHovered = true;
+      });
+
+      tip.addEventListener("mouseleave", () => {
+        isHovered = false;
+        hideTooltip();
+      });
+
+      // Prevent tooltip from closing when clicking inside it
+      tip.addEventListener("click", (e) => {
+        e.stopPropagation();
+      });
     });
 
-    // clicking anywhere else closes all
+    // Global click closes all tooltips
     document.addEventListener("click", () => {
       document
-        .querySelectorAll(".tooltip-container .tooltip.show")
-        .forEach((t) => t.classList.remove("show"));
+        .querySelectorAll(".tooltip-container .tooltip")
+        .forEach((tip) => {
+          tip.classList.remove("show");
+        });
+      // Reset all clicked states
+      containers.forEach((container) => {
+        clickedStates.set(container, false);
+      });
     });
-
-    // prevent inside-tooltip clicks from bubbling up
-    document
-      .querySelectorAll(".tooltip-container .tooltip")
-      .forEach((t) => t.addEventListener("click", (e) => e.stopPropagation()));
   })();
 });
