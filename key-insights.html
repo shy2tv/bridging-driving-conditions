@@ -290,9 +290,11 @@
           </div>
           <div class="insight-image">
             <img
-              src="images/aux_input_types_comparison.png"
+              src="images/aux_input_types_comparison-thumb.jpg"
+              data-fullsrc="images/aux_input_types_comparison.png"
               alt="Comparison of different auxiliary input types"
               class="insight-img"
+              loading="lazy"
             />
             <div class="zoom-icon"><i class="fas fa-expand"></i></div>
             <p class="image-caption">
@@ -321,9 +323,11 @@
           </div>
           <div class="insight-image">
             <img
-              src="images/controlnet_blending.png"
+              src="images/controlnet_blending-thumb.jpg"
+              data-fullsrc="images/controlnet_blending.png"
               alt="ControlNet blending technique visualization"
               class="insight-img"
+              loading="lazy"
             />
             <div class="zoom-icon"><i class="fas fa-expand"></i></div>
             <p class="image-caption">
@@ -569,14 +573,18 @@
         }
 
         insightImages.forEach((img) => {
-          img.addEventListener("click", () => openFullscreen(img.src));
+          img.addEventListener("click", () => {
+            const full = img.dataset.fullsrc || img.src;
+            openFullscreen(full);
+          });
         });
 
         zoomIcons.forEach((icon) => {
           icon.addEventListener("click", (e) => {
             e.stopPropagation();
-            const imgSrc = icon.previousElementSibling.src;
-            openFullscreen(imgSrc);
+            const img = icon.previousElementSibling;
+            const full = img.dataset.fullsrc || img.src;
+            openFullscreen(full);
           });
         });
 
