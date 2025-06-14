@@ -92,15 +92,25 @@
     <div class="main-content">
       <!-- Key Insights Overview -->
       <!-- Key Insights Overview -->
+
       <section id="overview" class="section">
         <h2>Research Insights</h2>
+
+        <p class="overview-intro">
+          After showing that <strong>SDG-DA</strong> can generate fog, rain,
+          snow, and night scenes without any real adverse-weather examples, we
+          distilled four core insights that explain how and why our pipeline
+          works—and how you can leverage it immediately.
+        </p>
+
         <div class="paper-summary">
           <h3>Major Findings</h3>
           <ul class="key-points">
             <li>
-              <strong>Zero-Shot Performance:</strong> Our model achieves
-              <em>78.57% mIoU</em> on ACDC-Adverse without any real
-              adverse-weather training data.
+              <strong>Zero-Shot Performance:</strong> Our pipeline generates
+              photorealistic adverse-condition images that boost semantic
+              segmentation to <strong>78.57% mIoU</strong> on ACDC-all without
+              using any real adverse-weather training data.
             </li>
             <li>
               <strong>Simulation-to-Real Gap:</strong> Combining CARLA
@@ -114,8 +124,8 @@
             </li>
             <li>
               <strong>Data Reusability:</strong> Generated adverse-condition
-              images are task-agnostic—use them for detection, depth,
-              segmentation, or any vision task.
+              images are task-agnostic—use them for detection, segmentation, or
+              any vision task.
             </li>
             <li>
               <strong>Operational Efficiency:</strong> Our pipeline drastically
@@ -134,11 +144,17 @@
           <div class="insight-content">
             <h3>Size Distribution Challenges</h3>
             <p>
-              Our analysis revealed a counterintuitive pattern: clear weather
-              scenes in ACDC contain a higher proportion of small objects
-              compared to adverse conditions. This explains why detection
-              performance can sometimes be lower on clear images despite better
-              visibility.
+              We were surprised to find that detection AP on certain ACDC
+              adverse-weather splits (e.g. fog) actually exceeded the score on
+              clear-weather images—despite the harsher conditions (lower
+              visibility).
+            </p>
+            <p>
+              A closer look at object-size distributions revealed the reason:
+              adverse scenes are dominated by larger, easier detect objects,
+              while clear scenes contain a much higher share of small, difficult
+              instances. This small-object bias in the “easy” clear data
+              explains why the models performs better on some adverse splits.
             </p>
             <p>
               This insight helped us optimize our pipeline to better handle the
@@ -154,9 +170,9 @@
             />
             <div class="zoom-icon"><i class="fas fa-expand"></i></div>
             <p class="image-caption">
-              Figure: Object size distribution across different weather
-              conditions. Clear weather (yellow) has significantly more small
-              objects than adverse conditions.
+              Figure: Distribution of object sizes (√area) across different
+              weather conditions. Clear weather (yellow) has significantly more
+              small objects than adverse conditions.
             </p>
           </div>
         </div>
@@ -183,7 +199,7 @@
                   <th scope="col"></th>
                   <!-- group header over all test columns -->
                   <th scope="colgroup" colspan="7" style="text-align: center">
-                    Tested On
+                    Evaluated On
                   </th>
                 </tr>
                 <tr>
@@ -250,6 +266,14 @@
                 </tr>
               </tbody>
             </table>
+
+            <p>
+              <br />
+              This reveals that training exclusively on any single weather
+              condition does not guarantee the best performance on that same
+              condition—models trained on other splits can actually outperform
+              the “matched” model when evaluated under the same scenario. <br />
+            </p>
           </div>
         </div>
 
