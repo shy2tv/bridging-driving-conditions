@@ -1087,3 +1087,7 @@ Landscape phones  (height ≤ 500 px)
   opacity: 1;
   visibility: visible;
 }
+
+html {
+  scroll-behavior: smooth; /* Enable smooth anchor scrolling */
+}
