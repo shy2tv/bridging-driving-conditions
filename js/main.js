@@ -476,4 +476,90 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   })();
+
+  // ————————————————
+  // ARXIV PLACEHOLDER POPUP
+  // ————————————————
+  (function () {
+    // Target only the top-navigation arXiv links that currently just point to the root arXiv site
+    const arxivBtns = document.querySelectorAll('a[href="https://arxiv.org/"]');
+    if (!arxivBtns.length) return;
+
+    function createModal() {
+      // Build overlay
+      const overlay = document.createElement("div");
+      Object.assign(overlay.style, {
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100vw",
+        height: "100vh",
+        background: "rgba(0,0,0,0.8)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        zIndex: 10000,
+        padding: "1rem",
+        boxSizing: "border-box",
+      });
+
+      // Modal box
+      const box = document.createElement("div");
+      Object.assign(box.style, {
+        background: "var(--light-bg, #fff)",
+        color: "var(--text-color, #222)",
+        borderRadius: "8px",
+        padding: "2rem 1.5rem",
+        maxWidth: "420px",
+        width: "100%",
+        textAlign: "center",
+        boxShadow: "0 4px 20px rgba(0,0,0,0.4)",
+      });
+
+      const heading = document.createElement("h3");
+      heading.textContent = "Paper Coming Soon";
+      heading.style.marginBottom = "0.75rem";
+      heading.style.color = "var(--primary-color, #c10510)";
+
+      const msg = document.createElement("p");
+      msg.textContent =
+        "Our manuscript is being finalized and will be available on arXiv shortly.";
+      msg.style.fontSize = "1rem";
+      msg.style.lineHeight = "1.5";
+      msg.style.marginBottom = "1.25rem";
+
+      const closeBtn = document.createElement("button");
+      closeBtn.textContent = "Close";
+      Object.assign(closeBtn.style, {
+        border: "none",
+        padding: "0.6rem 1.2rem",
+        borderRadius: "4px",
+        background: "var(--primary-color, #c10510)",
+        color: "#fff",
+        cursor: "pointer",
+        fontSize: "0.95rem",
+      });
+
+      function close() {
+        overlay.remove();
+      }
+      closeBtn.addEventListener("click", close);
+      overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) close();
+      });
+
+      box.appendChild(heading);
+      box.appendChild(msg);
+      box.appendChild(closeBtn);
+      overlay.appendChild(box);
+      document.body.appendChild(overlay);
+    }
+
+    arxivBtns.forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        createModal();
+      });
+    });
+  })();
 });
