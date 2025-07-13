@@ -1,2 +1,5 @@
 # Ignore all PDF files
 *.pdf 
+convert.py
+merge_videos.py
+.bin/*

@@ -1,2 +1,0 @@
-apng2gif==1.0.2
-moviepy==1.0.3 
